@@ -32,16 +32,16 @@ public class Compare {
     public static void main(String[] args) {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 
-        // Create JFrame
+        // JFrame 생성
         JFrame jframe = new JFrame("Cheese Friends");
         jframe.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        // Create VideoPanel
+        // 비디오 패널 생성
         VideoPanel videoPanel = new VideoPanel();
 
         JButton button = new JButton("출석하기!");
 
-        // Calculate button position
+        // 출석하기 버튼 위치 
         int frameWidth = 1000;
         int buttonWidth = 140;
         int buttonHeight = 40;
@@ -49,7 +49,7 @@ public class Compare {
 
         button.setBounds(buttonX, 30, buttonWidth, buttonHeight);
 
-        // Set font size
+       // 폰트 사이즈 
         Font buttonFont = new Font("맑은 고딕", Font.BOLD, 18);
         button.setFont(buttonFont);
 
@@ -60,23 +60,23 @@ public class Compare {
             }
         });
 
-        // Create JLayeredPane
+        // 패널 크기 
         JLayeredPane layeredPane = new JLayeredPane();
         layeredPane.setPreferredSize(new Dimension(1000, 700));
         videoPanel.setBounds(0, 0, 1000, 700);
         layeredPane.add(videoPanel, JLayeredPane.DEFAULT_LAYER);
         layeredPane.add(button, JLayeredPane.PALETTE_LAYER);
 
-        // Add JLayeredPane to JFrame
+
         jframe.setContentPane(layeredPane);
 
-        // Set JFrame size
+
         jframe.pack();
 
-        // Set JFrame visible
+
         jframe.setVisible(true);
 
-        // Start video stream
+
         videoPanel.startVideoStream();
     }
 
@@ -87,15 +87,15 @@ public class Compare {
 
         public void saveFrame() {
             if (!frame.empty()) {
-                // Convert the frame to grayscale
+                // 비디오 색상 
                 Mat grayFrame = new Mat();
                 Imgproc.cvtColor(frame, grayFrame, Imgproc.COLOR_BGR2GRAY);
 
-                // Detect faces in the grayscale frame
+                // 얼굴 확인
                 MatOfRect faceDetections = new MatOfRect();
                 faceCascade.detectMultiScale(grayFrame, faceDetections);
 
-                // Save only the first detected face
+                // 얼굴만 저장하기
                 if (faceDetections.toArray().length > 0) {
                     Rect rect = faceDetections.toArray()[0];
                     Mat detectedFace = new Mat(frame, rect);
@@ -105,12 +105,12 @@ public class Compare {
                     Imgcodecs.imwrite(filename, detectedFace);
                     System.out.println("Captured face saved to: " + filename);
 
-                    // Add this part
-                    String savedImagePath = "C:\\springboot2\\opencv_tesrt2\\attendance\\detected_face.jpg"; // Set the path of the saved image.
+                    
+                    String savedImagePath = "C:\\springboot2\\opencv_tesrt2\\attendance\\capture.jpg"; // Set the path of the saved image.
                     double similarity = FaceComparison.compareFaces(savedImagePath, filename);
-                    System.out.println("유사도: " + similarity);
+                    System.out.println("Similarity: " + similarity);
 
-                    // Attendance processing based on similarity
+                    // 유사도 확인하고 출석 처리 하기
                     if (similarity > 0.5) {
                         System.out.println("출석 처리 완료!");
                     } else {
@@ -119,6 +119,7 @@ public class Compare {
                 } else {
                     System.out.println("얼굴 감지 실패! 다시 시도해주세요.");
                 }
+
             }
         }
 
@@ -126,24 +127,24 @@ public class Compare {
 
 
         public VideoPanel() {
-            // Initialize VideoCapture
+
             capture = new VideoCapture(0);
             capture.set(Videoio.CAP_PROP_FPS, 15);
 
-            // Check if camera opened successfully
+
             if (!capture.isOpened()) {
                 System.out.println("카메라를 열 수 없습니다.");
                 return;
             }
 
-            // Set camera properties
+
             capture.set(Videoio.CAP_PROP_FRAME_WIDTH, 560);
             capture.set(Videoio.CAP_PROP_FRAME_HEIGHT, 360);
 
-            // Load cascade classifier for face detection
+
             faceCascade = new CascadeClassifier("C:\\Users\\User\\Downloads\\opencv\\opencv\\sources\\samples\\winrt\\FaceDetection\\FaceDetection\\Assets\\haarcascade_frontalface_alt.xml");
 
-            // Initialize frame
+
             frame = new Mat();
         }
 
@@ -163,19 +164,19 @@ public class Compare {
                 Mat resizedFrame = new Mat();
                 Mat grayFrame = new Mat();
 
-                // Resize the frame to fit the window
+                // 사이즈 
                 Imgproc.resize(frame, resizedFrame, new Size(1000, 700));
 
-                // Convert the frame to grayscale
+               
                 Imgproc.cvtColor(resizedFrame, grayFrame, Imgproc.COLOR_BGR2GRAY);
 
-                // Detect faces in the grayscale frame
+   
                 MatOfRect faceDetections = new MatOfRect();
                 faceCascade.detectMultiScale(grayFrame, faceDetections);
 
                 String savedImagePath = "C:\\springboot2\\opencv_tesrt2\\attendance\\capture.jpg"; // 저장된 이미지 경로를 설정하세요.
 
-                // Draw green rectangles around detected faces and compute similarity
+
                 for (Rect rect : faceDetections.toArray()) {
                     Mat detectedFace = new Mat(grayFrame, rect);
                     Imgproc.resize(detectedFace, detectedFace, new Size(200, 200));
@@ -196,10 +197,10 @@ public class Compare {
                     Imgproc.rectangle(resizedFrame, rect.tl(), rect.br(), color, 2);
                 }
 
-                // Convert Mat to BufferedImage
+
                 BufferedImage img = matToBufferedImage(resizedFrame);
 
-                // Draw the image on the panel
+
                 g.drawImage(img, 0, 0, getWidth(), getHeight(), null);
             }
         }
