@@ -79,7 +79,8 @@
 		    <artifactId>mysql-connector-java</artifactId>
 		    <version>8.0.29</version>
 		</dependency>
-		
+		<!-- https://mvnrepository.com/artifact/org.openpnp/opencv -->
+
 	</dependencies>
 	<build>
 		<plugins>
