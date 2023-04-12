@@ -31,7 +31,7 @@ public class Compare {
 
     public static void main(String[] args) {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-
+        new Compare();
         // JFrame 생성
         JFrame jframe = new JFrame("Cheese Friends");
         jframe.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
