@@ -36,5 +36,5 @@ public class CFR_AttendanceDaoImpl implements CFR_AttendanceDao {
 		// TODO Auto-generated method stub
 		
 	}
-    // Implement methods defined in AttendanceDao interface
+
 }
