@@ -13,7 +13,7 @@ public class CFR_User {
     private String phone;
     private String phone_public;
     private String join;
-    private int auth;
+    private String auth;
     private int breakaway;
     
     
@@ -89,10 +89,10 @@ public class CFR_User {
 	public void setJoin(String join) {
 		this.join = join;
 	}
-	public int getAuth() {
+	public String getAuth() {
 		return auth;
 	}
-	public void setAuth(int auth) {
+	public void setAuth(String auth) {
 		this.auth = auth;
 	}
 	public int getBreakaway() {

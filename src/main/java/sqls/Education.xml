@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mul.cam.a.dao.EducationDao">
+
+	<!-- 교육기관등록  -->
+	<insert id="eduAdd" parameterType="mul.cam.a.dto.EducationDto">
+		INSERT INTO EDUCATION(EDU_CODE, EDU_NAME, EDU_ADDRESS, EDU_PHONE)
+		VALUES(#{eduCode}, #{eduName}, #{eduAddress}, #{eduPhone})
+	</insert>
+	
+	<!-- 교육기관등록 시 메인계정 생성  -->
+	<insert id="eduAddAdmain" parameterType="mul.cam.a.dto.CFR_User">
+		INSERT INTO USER(ID, PASSWORD, NAME, ADDRESS, PHONE, AUTH)
+		VALUES(#{id}, #{password}, #{name}, #{address}, #{phone}, 'admin')
+	</insert>
+	<!-- 교육기관코드 중복체크 -->
+	<select id="eduCodeCheck" parameterType="String" resultType="Integer">
+		SELECT COUNT(*)
+		FROM EDUCATION
+		WHERE EDU_CODE=#{eduCode}
+	</select>
+	<!-- 이미 등록된 교육기관 중복체크 -->
+	<select id="eduDuplicateCheck" parameterType="mul.cam.a.dto.EducationDto" resultType="Integer">
+		SELECT COUNT(*)
+		FROM EDUCATION
+		WHERE EDU_ADDRESS=#{eduAddress} AND EDU_NAME=#{eduName}
+	</select>
+	<!-- 교육기관관리에 학원리스트 가져오기 -->
+	
+
+</mapper>
