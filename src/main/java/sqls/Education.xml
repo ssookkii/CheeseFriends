@@ -15,19 +15,70 @@
 		INSERT INTO USER(ID, PASSWORD, NAME, ADDRESS, PHONE, AUTH)
 		VALUES(#{id}, #{password}, #{name}, #{address}, #{phone}, 'admin')
 	</insert>
+	
 	<!-- 교육기관코드 중복체크 -->
 	<select id="eduCodeCheck" parameterType="String" resultType="Integer">
 		SELECT COUNT(*)
 		FROM EDUCATION
 		WHERE EDU_CODE=#{eduCode}
 	</select>
+	
 	<!-- 이미 등록된 교육기관 중복체크 -->
 	<select id="eduDuplicateCheck" parameterType="mul.cam.a.dto.EducationDto" resultType="Integer">
 		SELECT COUNT(*)
 		FROM EDUCATION
 		WHERE EDU_ADDRESS=#{eduAddress} AND EDU_NAME=#{eduName}
 	</select>
-	<!-- 교육기관관리에 학원리스트 가져오기 -->
 	
-
+	<!-- 교육기관리스트 가져오기 -->
+	<select id="getEduList" parameterType="mul.cam.a.dto.ListParam" resultType="mul.cam.a.dto.EducationDto">
+		SELECT E.EDU_CODE, E.EDU_NAME, E.EDU_PHONE,
+			   E.EDU_ADDRESS, I.ADDRESS,
+			   I.ID
+		FROM
+		EDUCATION E INNER JOIN USER I
+		ON E.EDU_ADDRESS = I.ADDRESS
+		WHERE 1=1
+		<if test="choice != null and choice != '' and search != null and search != '' ">
+			<if test="choice == 'eduCode'">
+	 			AND EDU_CODE =#{search}
+		 	</if>
+		 	<if test="choice == 'eduName'">
+		 		AND EDU_NAME LIKE CONCAT("%", #{search}, "%")
+		 	</if>
+		 	<if test="choice == 'eduAddress'">
+		 		AND EDU_ADDRESS LIKE CONCAT("%", #{search}, "%")
+		 	</if>
+		</if>
+		LIMIT #{start}, #{end}
+	</select>
+	
+	<!-- 교육기관 총 수 가져오기 -->
+	<select id="getAllEdu" parameterType="mul.cam.a.dto.ListParam" resultType="Integer">
+		SELECT IFNULL(COUNT(*), 0)
+		FROM EDUCATION
+		<if test="choice != null and choice != '' and search != null and search != '' ">
+		 	<if test="choice == 'eduCode'">
+		 		WHERE EDU_CODE =#{search}
+		 	</if>
+		 	<if test="choice == 'eduName'">
+		 		WHERE EDU_NAME LIKE CONCAT('%', #{search}, '%')
+		 	</if>
+		 	<if test="choice == 'eduAddress'">
+		 		WHERE EDU_ADDRESS LIKE CONCAT('%', #{search}, '%')
+		 	</if>
+		 </if>
+	</select>
+	<!-- 교육기관 데이터 가져오기 -->
+	<select id="getEdu" parameterType="String" resultType="mul.cam.a.dto.EducationDto">
+		SELECT EDU_NAME, EDU_ADDRESS, EDU_PHONE
+		FROM EDUCATION
+		WHERE EDU_CODE=#{eduCode}
+	</select>
+	<!-- 교육기관 수정 -->
+	<update id="eduUpdate" parameterType="mul.cam.a.dto.EducationDto">
+		UPDATE EDUCATION
+		SET EDU_NAME=#{eduName}, EDU_ADDRESS=#{eduAddress}, EDU_PHONE=#{eduPhone}
+		WHERE EDU_CODE=#{eduCode}
+	</update>
 </mapper>

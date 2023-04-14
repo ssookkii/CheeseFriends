@@ -1,5 +1,7 @@
 package mul.cam.a.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -7,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import mul.cam.a.dao.EducationDao;
 import mul.cam.a.dto.CFR_User;
 import mul.cam.a.dto.EducationDto;
+import mul.cam.a.dto.ListParam;
 
 @Service
 @Transactional
@@ -29,6 +32,19 @@ public class EducationService {
 	}
 	public boolean eduDuplicateCheck(EducationDto edu) {
 		int n = dao.eduDuplicateCheck(edu);
+		return n>0?true:false;
+	}
+	public List<EducationDto> getEduList(ListParam param) {
+		return dao.getEduList(param);
+	}
+	public int getAllEdu(ListParam param) {
+		return dao.getAllEdu(param);
+	}
+	public EducationDto getEdu(String eduCode) {
+		return dao.getEdu(eduCode);
+	}
+	public boolean eduUpdate(EducationDto edu) {
+		int n = dao.eduUpdate(edu);
 		return n>0?true:false;
 	}
 }

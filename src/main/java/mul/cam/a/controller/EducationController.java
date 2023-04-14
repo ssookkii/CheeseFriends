@@ -1,14 +1,18 @@
 package mul.cam.a.controller;
 
 import java.util.Date;
-
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import mul.cam.a.dto.CFR_User;
 import mul.cam.a.dto.EducationDto;
+import mul.cam.a.dto.ListParam;
 import mul.cam.a.service.EducationService;
 import mul.cam.a.util.RandomCode;
 
@@ -42,7 +46,7 @@ public class EducationController {
 		CFR_User admin = new CFR_User();
 		admin.setId("@" + eduCode);
 		admin.setPassword(eduCode + "1234");
-		admin.setName(edu.getEduAddress());
+		admin.setName(edu.getEduName());
 		admin.setAddress(edu.getEduAddress());
 		admin.setPhone(edu.getEduPhone());
 		admin.setAuth("admin");
@@ -55,12 +59,49 @@ public class EducationController {
 			boolean b = service.eduAddAdmain(admin);
 			
 			if(b) {
-				return "sucess";
+				return "success";
 			} else {
 				return "fail";
 			}
 		} else {
 			return "fail";
 		}
+	}
+	@GetMapping(value="edulist")
+	public Map<String, Object> edulist(ListParam param) {
+		System.out.println("EducationController edulist()" + new Date());
+		
+		// 글의 시작과 끝 
+		int pn = param.getPageNumber(); // 0 1 2 3 4
+		int start = (pn * 15);
+		int end = (pn + 1) * 15;
+		
+		param.setStart(start);
+		param.setEnd(end);
+		
+		System.out.println(param.getEnd());
+		List<EducationDto> list = service.getEduList(param);
+		
+		int len = service.getAllEdu(param);
+		Map<String, Object> map = new HashMap<>();
+		map.put("list", list);
+		map.put("cnt", len);	// react에 보낼 때
+		
+		return map;
+	}
+	@GetMapping(value="getEdu")
+	public EducationDto getEdu(String eduCode) {
+		System.out.println("EducationController getEdu()" + new Date());
+		return service.getEdu(eduCode);
+	}
+	@PostMapping(value="eduUpdate")
+	public String eduUpdate(EducationDto edu) {
+		System.out.println("EducationController update()" + new Date());
+
+		boolean isS = service.eduUpdate(edu);
+		if(isS) {
+			return "success";
+		}
+		return "fail";
 	}
 }

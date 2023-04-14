@@ -5,6 +5,7 @@ public class EducationDto {
 	private String eduName;
 	private String eduAddress;
 	private String eduPhone;
+	private String id;
 	
 	public EducationDto() {
 		
@@ -18,9 +19,26 @@ public class EducationDto {
 		this.eduPhone = eduPhone;
 	}
 
+	public EducationDto(String eduCode, String eduName, String eduAddress, String eduPhone, String id) {
+		super();
+		this.eduCode = eduCode;
+		this.eduName = eduName;
+		this.eduAddress = eduAddress;
+		this.eduPhone = eduPhone;
+		this.id = id;
+	}
+	
+	public EducationDto(String eduName, String eduAddress, String eduPhone) {
+		super();
+		this.eduName = eduName;
+		this.eduAddress = eduAddress;
+		this.eduPhone = eduPhone;
+	}
+
 	public String getEduCode() {
 		return eduCode;
 	}
+
 
 	public void setEduCode(String eduCode) {
 		this.eduCode = eduCode;
@@ -49,5 +67,14 @@ public class EducationDto {
 	public void setEduPhone(String eduPhone) {
 		this.eduPhone = eduPhone;
 	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+	
 	
 }
