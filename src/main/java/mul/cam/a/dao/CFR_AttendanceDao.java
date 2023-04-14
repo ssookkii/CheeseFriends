@@ -11,6 +11,6 @@ public interface CFR_AttendanceDao {
     void addAttendance(CFR_Attendance attendance);
     void updateAttendance(CFR_Attendance attendance);
     void deleteAttendance(int attendanceID);
-    List<AttendanceSubject> getSubjectByUserIdAndEduCode(String userId, String eduCode);
+    List<AttendanceSubject> getSubjectByUserIdAndEduCode(String userId, String eduCode, String subCode);
     void checkAttendance(CFR_Attendance attendance);
 }

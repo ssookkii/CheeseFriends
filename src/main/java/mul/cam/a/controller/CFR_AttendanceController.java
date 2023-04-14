@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 import org.opencv.core.Core;
 import org.springframework.http.HttpStatus;
@@ -13,9 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import mul.cam.a.camera.User_Face_Crop;
 import mul.cam.a.dto.AttendanceSubject;
@@ -25,6 +24,10 @@ import mul.cam.a.service.CFR_AttendanceService;
 @Controller
 public class CFR_AttendanceController {
     private CFR_AttendanceService attendanceService;
+    
+    public CFR_AttendanceController(CFR_AttendanceService attendanceService) {
+        this.attendanceService = attendanceService;
+    }
    
  //출석체크 실행 시스템   
     @PostMapping("/api/compareFaces")
@@ -48,9 +51,9 @@ public class CFR_AttendanceController {
                 similarity = Double.parseDouble(line.trim());
             }
         } catch (Exception e) {
-            e.printStackTrace();
+           e.printStackTrace();
             System.out.println("catch");
-        }
+       }
         return ResponseEntity.ok(similarity);
     }
 
@@ -87,42 +90,72 @@ public class CFR_AttendanceController {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
     }
     
- // 출석체크!
-    @RequestMapping(value = "/attendance", method = RequestMethod.POST)
-    public String checkAttendance(Model model, @RequestParam("userId") String userId, 
-                                  @RequestParam("eduCode") String eduCode, 
-                                  @RequestParam("subCode") String subCode) {
+    @PostMapping(value = "/attendance")
+    public ResponseEntity<?> postAttendance(@RequestBody Map<String, String> requestData, Model model) {
+      String userId = requestData.get("userId");
+      String eduCode = requestData.get("eduCode");
+      String subCode = requestData.get("subCode");
 
-        // 과목 정보 가져오기
+      List<AttendanceSubject> subjectList = attendanceService.getSubjectByUserIdAndEduCode(userId, eduCode, subCode);
+
+      
+      LocalDateTime now = LocalDateTime.now();
+      for (AttendanceSubject subject : subjectList) {
+          if (subject.getSubCode().equals(subCode)) {
+        	  
+              CFR_Attendance attendance = new CFR_Attendance();
+              
+              attendance.setStudentID(userId);
+              attendance.setSub_code(subCode);
+              attendance.setEdu_code(eduCode);
+
+              if (now.toLocalDate().isBefore(subject.getStartDate().toLocalDate())) {
+                  attendance.setStatus("출석");
+              } else {
+                  attendance.setStatus("지각");
+              }
+              attendanceService.checkAttendance(attendance);
+              break;
+              
+          }
+      }
+
+      return ResponseEntity.ok().build();
+    } 
+    
+    
+ /* 출석체크!
+    @PostMapping(value = "/attendance")
+    public String checkAttendance(Model model, @RequestBody AttendanceRequest request) {
+        String userId = request.getUserId();
+        String eduCode = request.getEduCode();
+        String subCode = request.getSubCode();
+        System.out.println(userId);
+        System.out.println(eduCode);
+        System.out.println(subCode);
+/*
         List<AttendanceSubject> subjectList = attendanceService.getSubjectByUserIdAndEduCode(userId, eduCode);
 
-     // 해당 과목의 시작시간과 현재 시간 비교
         LocalDateTime now = LocalDateTime.now();
         for (AttendanceSubject subject : subjectList) {
             if (subject.getSubCode().equals(subCode)) {
-                if (now.toLocalDate().isBefore(subject.getStartDate().toLocalDate())) { // 시작 시간 전이면 출석 처리
-                    CFR_Attendance attendance = new CFR_Attendance();
-                    attendance.setStudentID(userId);
-                    attendance.setSub_code(subCode);
+                CFR_Attendance attendance = new CFR_Attendance();
+                attendance.setStudentID(userId);
+                attendance.setSub_code(subCode);
+                attendance.setEdu_code(eduCode);
+                if (now.toLocalDate().isBefore(subject.getStartDate().toLocalDate())) {
                     attendance.setStatus("출석");
-                    attendance.setEdu_code(eduCode);
-                    attendanceService.checkAttendance(attendance);
-                    break;
-                } else { // 시작 시간 후면 지각 처리
-                    CFR_Attendance attendance = new CFR_Attendance();
-                    attendance.setStudentID(userId);
-                    attendance.setSub_code(subCode);
+                } else {
                     attendance.setStatus("지각");
-                    attendance.setEdu_code(eduCode);
-                    attendanceService.checkAttendance(attendance);
-                    break;
                 }
+                attendanceService.checkAttendance(attendance);
+                break;
+                
             }
         }
 
         return "redirect:/attendance";
-    }
-
+    } */
 
 }
 

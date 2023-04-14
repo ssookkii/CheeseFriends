@@ -42,14 +42,14 @@
     DELETE FROM cfr_attendance WHERE attendance_id = #{attendanceID}
   </delete>
   
-  <!-- userId와 eduCode를 이용하여 해당 학생이 듣는 모든 과목 가져오기 -->
-  <select id="getSubjectByUserIdAndEduCode" resultMap="subjectMap" parameterType="map">
-    SELECT s.sub_code, s.start_date, s.end_date 
-    FROM usersubject u 
-    JOIN subject s 
-    ON u.sub_code = s.sub_code 
-    WHERE u.user_id = #{userId} AND u.edu_code = #{eduCode}
-  </select>
+  <!--subcode, 시작시간 가져오기 -->
+<select id="getSubjectByUserIdAndEduCode" resultMap="subjectMap" parameterType="map">
+  SELECT s.sub_code, u. start_date
+  FROM usersubject u
+  JOIN subject s ON u.sub_code = s.sub_code
+WHERE u.user_id = #{userId} AND s.sub_code = #{subCode} AND s.edu_code =#{eduCode};
+</select>
+
   
   <!-- subjectMap 설정 -->
   <resultMap id="subjectMap" type="mul.cam.a.dto.AttendanceSubject">
@@ -60,7 +60,7 @@
   
   <!-- 출석 체크 하기 -->
   <insert id="checkAttendance" parameterType="mul.cam.a.dto.CFR_Attendance">
-    INSERT INTO cfr_attendance (student_id, sub_code, attendance_time, status, edu_code) 
+    INSERT INTO attendance (studentID, sub_code, attendanceTime, status, edu_code) 
     VALUES (#{studentID}, #{sub_code}, #{attendanceTime}, #{status}, #{edu_code})
   </insert>
   

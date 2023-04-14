@@ -13,8 +13,7 @@ public interface CFR_AttendanceService {
     void addAttendance(CFR_Attendance attendance);
     void updateAttendance(CFR_Attendance attendance);
     void deleteAttendance(int attendanceID);
-    // 사용자 ID와 교육 코드로 해당 사용자의 수강 과목 조회
-    List<AttendanceSubject> getSubjectByUserIdAndEduCode(String userId, String eduCode);
     // 출석체크
     void checkAttendance(CFR_Attendance attendance);
+	List<AttendanceSubject> getSubjectByUserIdAndEduCode(String userId, String eduCode, String subCode);
 }

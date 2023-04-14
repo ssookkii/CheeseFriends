@@ -46,10 +46,11 @@ public class CFR_AttendanceDaoImpl implements CFR_AttendanceDao {
     }
     
     @Override
-    public List<AttendanceSubject> getSubjectByUserIdAndEduCode(String userId, String eduCode) {
+    public List<AttendanceSubject> getSubjectByUserIdAndEduCode(String userId, String eduCode, String subCode) {
         Map<String, String> paramMap = new HashMap<>();
         paramMap.put("userId", userId);
         paramMap.put("eduCode", eduCode);
+        paramMap.put("subCode", subCode);
         
         return sqlSession.selectList(NS + "getSubjectByUserIdAndEduCode", paramMap);
     }

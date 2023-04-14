@@ -57,8 +57,9 @@ public class CFR_AttendanceServiceImpl implements CFR_AttendanceService {
 	}
 
 	@Override
-	public List<AttendanceSubject> getSubjectByUserIdAndEduCode(String userId, String eduCode) {
-	    // userId와 eduCode를 이용하여 수강 과목 정보를 조회한다
-	    return attendanceDao.getSubjectByUserIdAndEduCode(userId, eduCode);
+	public List<AttendanceSubject> getSubjectByUserIdAndEduCode(String userId, String eduCode, String subCode) {
+		return attendanceDao.getSubjectByUserIdAndEduCode(userId, eduCode, subCode);
 	}
+
+
 }
