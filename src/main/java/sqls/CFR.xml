@@ -1,12 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="mul.cam.a.dao.CFR_AttendanceDao">
+<!-- namespace 설정 -->
+<mapper namespace="CFR">
 
-
+  <!-- result map 설정 -->
+  <resultMap id="attendanceMap" type="mul.cam.a.dto.CFR_Attendance">
+    <id property="attendanceID" column="attendance_id"/>
+    <result property="studentID" column="student_id"/>
+    <result property="sub_code" column="sub_code"/>
+    <result property="attendanceTime" column="attendance_time"/>
+    <result property="status" column="status"/>
+    <result property="edu_code" column="edu_code"/>
+  </resultMap>
+  
+  <!-- attendance_id를 이용하여 출석 정보 가져오기 -->
+  <select id="getAttendanceById" resultMap="attendanceMap" parameterType="int">
+    SELECT * FROM cfr_attendance WHERE attendance_id = #{attendanceID}
+  </select>
+  
+  <!-- 모든 출석 정보 가져오기 -->
+  <select id="getAllAttendances" resultMap="attendanceMap">
+    SELECT * FROM cfr_attendance
+  </select>
+  
+  <!-- 출석 정보 추가하기 -->
+  <insert id="addAttendance" parameterType="mul.cam.a.dto.CFR_Attendance">
+    INSERT INTO cfr_attendance (student_id, sub_code, attendance_time, status, edu_code) 
+    VALUES (#{studentID}, #{sub_code}, #{attendanceTime}, #{status}, #{edu_code})
+  </insert>
+  
+  <!-- 출석 정보 업데이트하기 -->
+  <update id="updateAttendance" parameterType="mul.cam.a.dto.CFR_Attendance">
+    UPDATE cfr_attendance 
+    SET student_id = #{studentID}, sub_code = #{sub_code}, attendance_time = #{attendanceTime}, status = #{status}, edu_code = #{edu_code}
+    WHERE attendance_id = #{attendanceID}
+  </update>
+  
+  <!-- 출석 정보 삭제하기 -->
+  <delete id="deleteAttendance" parameterType="int">
+    DELETE FROM cfr_attendance WHERE attendance_id = #{attendanceID}
+  </delete>
+  
+  <!-- userId와 eduCode를 이용하여 해당 학생이 듣는 모든 과목 가져오기 -->
+  <select id="getSubjectByUserIdAndEduCode" resultMap="subjectMap" parameterType="map">
+    SELECT s.sub_code, s.start_date, s.end_date 
+    FROM usersubject u 
+    JOIN subject s 
+    ON u.sub_code = s.sub_code 
+    WHERE u.user_id = #{userId} AND u.edu_code = #{eduCode}
+  </select>
+  
+  <!-- subjectMap 설정 -->
+  <resultMap id="subjectMap" type="mul.cam.a.dto.AttendanceSubject">
+    <result property="subCode" column="sub_code"/>
+    <result property="startDate" column="start_date"/>
+    <result property="endDate" column="end_date"/>
+  </resultMap>
+  
+  <!-- 출석 체크 하기 -->
+  <insert id="checkAttendance" parameterType="mul.cam.a.dto.CFR_Attendance">
+    INSERT INTO cfr_attendance (student_id, sub_code, attendance_time, status, edu_code) 
+    VALUES (#{studentID}, #{sub_code}, #{attendanceTime}, #{status}, #{edu_code})
+  </insert>
+  
 </mapper>
-
-
-
-

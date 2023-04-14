@@ -8,6 +8,7 @@ public class CFR_Attendance {
     private Timestamp attendanceTime;
     private String status;
     private String edu_code;
+    
 	public int getAttendanceID() {
 		return attendanceID;
 	}

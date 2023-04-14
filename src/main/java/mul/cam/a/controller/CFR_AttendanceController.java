@@ -3,33 +3,30 @@ package mul.cam.a.controller;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.time.LocalDateTime;
+import java.util.List;
 
 import org.opencv.core.Core;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import mul.cam.a.camera.User_Face_Crop;
+import mul.cam.a.dto.AttendanceSubject;
+import mul.cam.a.dto.CFR_Attendance;
 import mul.cam.a.service.CFR_AttendanceService;
 
 @Controller
 public class CFR_AttendanceController {
     private CFR_AttendanceService attendanceService;
-
-   /* public CFR_AttendanceController(CFR_AttendanceService attendanceService) {
-        this.attendanceService = attendanceService;
-    }
-
-    @RequestMapping("/getAttendance")
-    public String getAttendanceById(@RequestParam("attendanceID") int attendanceID, Model model) {
-        CFR_Attendance attendance = attendanceService.getAttendanceById(attendanceID);
-        model.addAttribute("attendance", attendance);
-        return "attendanceDetails"; // 해당하는 View 이름을 반환합니다.
-    }*/
-    
-    
+   
+ //출석체크 실행 시스템   
     @PostMapping("/api/compareFaces")
     public ResponseEntity<Double> compareFaces() {
         String command = "java -cp .;opencv-470.jar mul.cam.a.camera.Compare";
@@ -58,7 +55,7 @@ public class CFR_AttendanceController {
     }
 
 
- // 일단 테스트용 사진 자르기
+ // userID별로 사진 크롭해서 저장
     @PostMapping("/api/imgcrop/{userId}")
     public ResponseEntity<Object> compareFaces(@PathVariable String userId) {
     	
@@ -89,6 +86,43 @@ public class CFR_AttendanceController {
     static {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
     }
+    
+ // 출석체크!
+    @RequestMapping(value = "/attendance", method = RequestMethod.POST)
+    public String checkAttendance(Model model, @RequestParam("userId") String userId, 
+                                  @RequestParam("eduCode") String eduCode, 
+                                  @RequestParam("subCode") String subCode) {
+
+        // 과목 정보 가져오기
+        List<AttendanceSubject> subjectList = attendanceService.getSubjectByUserIdAndEduCode(userId, eduCode);
+
+     // 해당 과목의 시작시간과 현재 시간 비교
+        LocalDateTime now = LocalDateTime.now();
+        for (AttendanceSubject subject : subjectList) {
+            if (subject.getSubCode().equals(subCode)) {
+                if (now.toLocalDate().isBefore(subject.getStartDate().toLocalDate())) { // 시작 시간 전이면 출석 처리
+                    CFR_Attendance attendance = new CFR_Attendance();
+                    attendance.setStudentID(userId);
+                    attendance.setSub_code(subCode);
+                    attendance.setStatus("출석");
+                    attendance.setEdu_code(eduCode);
+                    attendanceService.checkAttendance(attendance);
+                    break;
+                } else { // 시작 시간 후면 지각 처리
+                    CFR_Attendance attendance = new CFR_Attendance();
+                    attendance.setStudentID(userId);
+                    attendance.setSub_code(subCode);
+                    attendance.setStatus("지각");
+                    attendance.setEdu_code(eduCode);
+                    attendanceService.checkAttendance(attendance);
+                    break;
+                }
+            }
+        }
+
+        return "redirect:/attendance";
+    }
+
 
 }
 
