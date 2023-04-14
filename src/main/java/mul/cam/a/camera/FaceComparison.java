@@ -10,30 +10,30 @@ import org.opencv.imgproc.Imgproc;
 public class FaceComparison {
 
     public static double compareFaces(String imgPath1, String imgPath2) {
-        // Load the images
+        // 비교할 이미지 불러오기 
         Mat img1 = Imgcodecs.imread(imgPath1);
         Mat img2 = Imgcodecs.imread(imgPath2);
 
-        // Convert the images to grayscale
+        // 색상 관련
         Mat grayImg1 = new Mat();
         Mat grayImg2 = new Mat();
         Imgproc.cvtColor(img1, grayImg1, Imgproc.COLOR_BGR2GRAY);
         Imgproc.cvtColor(img2, grayImg2, Imgproc.COLOR_BGR2GRAY);
 
-        // Resize the images to the same size
-      Imgproc.resize(grayImg1, grayImg1, new Size(200, 200));
-      Imgproc.resize(grayImg2, grayImg2, new Size(200, 200));
+        // 이미지 사이즈를 같은 크기로 자르기
+      //Imgproc.resize(grayImg1, grayImg1, new Size(200, 200));
+      //Imgproc.resize(grayImg2, grayImg2, new Size(200, 200));
 
-        // Compute the absolute difference between the two images
+        // 이미지 사이의 차이 계산하기 
         Mat diff = new Mat();
         Core.absdiff(grayImg1, grayImg2, diff);
 
-        // Compute the mean squared error between the two images
+       
         Mat sqrDiff = new Mat();
         Core.pow(diff, 2, sqrDiff);
         Scalar mse = Core.mean(sqrDiff);
 
-        // Compute the similarity score (1 - (mse / 255))
+        // 유사도 계산하기
         double similarity = 1 - (mse.val[0] / 255);
 
         return similarity;
@@ -46,6 +46,6 @@ public class FaceComparison {
         String imgPath2 = "path/to/image2.jpg";
 
         double similarity = compareFaces(imgPath1, imgPath2);
-        System.out.println("Similarity: " + similarity);
+        System.out.println("유사도: " + similarity);
     }
 }

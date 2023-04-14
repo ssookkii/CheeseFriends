@@ -2,11 +2,14 @@ package mul.cam.a.camera;
 
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
+import java.io.File;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -30,6 +33,8 @@ import org.opencv.videoio.Videoio;
 public class Compare {
 
     public static void main(String[] args) {
+    	
+    	
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         new Compare();
         // JFrame 생성
@@ -66,17 +71,9 @@ public class Compare {
         videoPanel.setBounds(0, 0, 1000, 700);
         layeredPane.add(videoPanel, JLayeredPane.DEFAULT_LAYER);
         layeredPane.add(button, JLayeredPane.PALETTE_LAYER);
-
-
         jframe.setContentPane(layeredPane);
-
-
         jframe.pack();
-
-
         jframe.setVisible(true);
-
-
         videoPanel.startVideoStream();
     }
 
@@ -84,8 +81,92 @@ public class Compare {
         VideoCapture capture;
         CascadeClassifier faceCascade;
         Mat frame;
+        
+        public void startVideoStream() {
+            Timer timer = new Timer(30, e -> {
+                capture.read(frame);
+                try {
+					detectAndDrawFaces(frame);
+				} catch (FontFormatException | IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+                repaint();
+            });
+            timer.start();
+        }
+        
+        private void detectAndDrawFaces(Mat frame) throws FontFormatException, IOException {
+          
+            Mat grayFrame = new Mat();
+            Imgproc.cvtColor(frame, grayFrame, Imgproc.COLOR_BGR2GRAY);
 
-        public void saveFrame() {
+
+            MatOfRect faceDetections = new MatOfRect();
+            faceCascade.detectMultiScale(grayFrame, faceDetections);
+
+            // 비교할 이미지 경로
+            String savedImagePath = "./src/AttendanceFace/capture.jpg";
+
+         // 폰트 설정 ** 다시 확인 필요
+            String fontPath = "./src/ttf/NanumSquareNeo-cBd.ttf";
+            Font font = null;
+            try {
+                font = Font.createFont(Font.TRUETYPE_FONT, new File(fontPath)).deriveFont(10f);
+            } catch (Exception e) {
+                System.err.println("폰트 로딩 실패: " + e.getMessage());
+            }
+
+            // 얼굴 비교 시작
+            for (Rect rect : faceDetections.toArray()) {
+                // 얼굴 자르기
+                Mat detectedFace = new Mat(grayFrame, rect);
+                Imgproc.resize(detectedFace, detectedFace, new Size(300, 300));
+
+                // 화면에 찍히는 얼굴 사진 저장
+                String detectedFacePath = "./src/DetectedFace/detected_face.jpg";
+                Imgcodecs.imwrite(detectedFacePath, detectedFace);
+                double similarity = FaceComparison.compareFaces(savedImagePath, detectedFacePath);
+
+                // 이름 가져오기 확인 필요 **
+                String personName = getPersonName(similarity);
+                System.out.println("Similarity: " + similarity);
+
+                // 얼굴에 박스 표시
+                Scalar color;
+                if (similarity > 0.4) {
+                  
+                    color = new Scalar(80, 194, 49); // 유사함
+                   Imgproc.putText(frame, personName, rect.tl(), Imgproc.FONT_HERSHEY_SIMPLEX, 1, color, 2);
+                    //Imgproc.putText(frame, String.format("%.2f", similarity), new Point(rect.x, rect.y + rect.height + 25), Imgproc.FONT_HERSHEY_SIMPLEX, 0.8, color, 2);
+                } else {
+                    color = new Scalar(58, 58, 234); // 유사하지 않음
+                    Imgproc.putText(frame, personName, rect.tl(), Imgproc.FONT_HERSHEY_SIMPLEX, 1, color, 2);
+                }
+              
+
+                if (faceDetections.toArray().length > 0) {
+                    Imgproc.rectangle(frame, rect.tl(), rect.br(), color, 2);
+                    
+                }
+            }
+        }
+
+
+        private String getPersonName(double similarity) throws FontFormatException, IOException {
+            String name;
+            if (similarity > 0.4) {
+                name = "Success";
+            } else {
+                name = "Unknown";
+            }
+            return name;
+        }
+
+
+// 출석하기 버튼 누르면 사진 저장 *** 이건 나중에 수정되어야 할 듯 text 용이였음
+        public double saveFrame() {
+            double similarity = 0.0;
             if (!frame.empty()) {
                 // 비디오 색상 
                 Mat grayFrame = new Mat();
@@ -99,19 +180,21 @@ public class Compare {
                 if (faceDetections.toArray().length > 0) {
                     Rect rect = faceDetections.toArray()[0];
                     Mat detectedFace = new Mat(frame, rect);
-                    Imgproc.resize(detectedFace, detectedFace, new Size(200, 200));
+                    Imgproc.resize(detectedFace, detectedFace, new Size(300, 300));
 
-                    String filename = "C:\\springboot2\\opencv_tesrt2\\attendance\\capture.jpg";
+                    String filename = "./src/AttendanceFace/capture.jpg";
                     Imgcodecs.imwrite(filename, detectedFace);
                     System.out.println("Captured face saved to: " + filename);
 
-                    
-                    String savedImagePath = "C:\\springboot2\\opencv_tesrt2\\attendance\\capture.jpg"; // Set the path of the saved image.
-                    double similarity = FaceComparison.compareFaces(savedImagePath, filename);
-                    System.out.println("Similarity: " + similarity);
+                    String savedImagePath = "./src/AttendanceFace/capture.jpg"; // 저장된 이미지
+                    String detectedFacePath = "./src/DetectedFace/detected_face.jpg";
+                    Imgcodecs.imwrite(detectedFacePath, detectedFace);
+                            
+                    similarity = FaceComparison.compareFaces(savedImagePath, detectedFacePath);
+                   //System.out.println("Similarity: " + similarity);
 
                     // 유사도 확인하고 출석 처리 하기
-                    if (similarity > 0.5) {
+                    if (similarity > 0.4) {
                         System.out.println("출석 처리 완료!");
                     } else {
                         System.out.println("출석 처리 실패! 다시 시도해주세요.");
@@ -119,9 +202,10 @@ public class Compare {
                 } else {
                     System.out.println("얼굴 감지 실패! 다시 시도해주세요.");
                 }
-
             }
+            return similarity;
         }
+
 
 
 
@@ -129,7 +213,7 @@ public class Compare {
         public VideoPanel() {
 
             capture = new VideoCapture(0);
-            capture.set(Videoio.CAP_PROP_FPS, 15);
+            capture.set(Videoio.CAP_PROP_FPS, 5);
 
 
             if (!capture.isOpened()) {
@@ -138,8 +222,8 @@ public class Compare {
             }
 
 
-            capture.set(Videoio.CAP_PROP_FRAME_WIDTH, 560);
-            capture.set(Videoio.CAP_PROP_FRAME_HEIGHT, 360);
+            capture.set(Videoio.CAP_PROP_FRAME_WIDTH, 400);
+            capture.set(Videoio.CAP_PROP_FRAME_HEIGHT, 250);
 
 
             faceCascade = new CascadeClassifier("C:\\Users\\User\\Downloads\\opencv\\opencv\\sources\\samples\\winrt\\FaceDetection\\FaceDetection\\Assets\\haarcascade_frontalface_alt.xml");
@@ -148,13 +232,7 @@ public class Compare {
             frame = new Mat();
         }
 
-        public void startVideoStream() {
-            Timer timer = new Timer(30, e -> {
-                capture.read(frame);
-                repaint();
-            });
-            timer.start();
-        }
+
 
         @Override
         protected void paintComponent(Graphics g) {
@@ -174,28 +252,37 @@ public class Compare {
                 MatOfRect faceDetections = new MatOfRect();
                 faceCascade.detectMultiScale(grayFrame, faceDetections);
 
-                String savedImagePath = "C:\\springboot2\\opencv_tesrt2\\attendance\\capture.jpg"; // 저장된 이미지 경로를 설정하세요.
+                String savedImagePath = "./src/AttendanceFace/capture.jpg"; // 저장된 이미지 경로를 설정하세요.
 
 
                 for (Rect rect : faceDetections.toArray()) {
                     Mat detectedFace = new Mat(grayFrame, rect);
-                    Imgproc.resize(detectedFace, detectedFace, new Size(200, 200));
+                    Imgproc.resize(detectedFace, detectedFace, new Size(300, 300));
 
-                    String detectedFacePath = "C:\\springboot2\\opencv_tesrt2\\attendance\\detected_face.jpg";
+                    String detectedFacePath = "./src/DetectedFace./detected_face.jpg";
                     Imgcodecs.imwrite(detectedFacePath, detectedFace);
-                    
+
                     double similarity = FaceComparison.compareFaces(savedImagePath, detectedFacePath);
-                    System.out.println("Similarity: " + similarity);
+                    //System.out.println("Similarity: " + similarity);
+
+                    /* 얼굴 위치에 이름 추가
+                    Imgproc.putText(resizedFrame, "Name", rect.tl(), Imgproc.FONT_HERSHEY_SIMPLEX, 1, new Scalar(0, 255, 0), 2);
 
                     Scalar color;
                     if (similarity > 0.5) { // 유사도 임계값을 적절하게 설정하세요.
                         color = new Scalar(0, 255, 0); // Green
                     } else {
                         color = new Scalar(0, 0, 255); // Red
-                    }
-
-                    Imgproc.rectangle(resizedFrame, rect.tl(), rect.br(), color, 2);
+                    }*/
+                    /*    
+                    try (PrintWriter out = new PrintWriter("similarity.txt")) {
+                        out.println(similarity);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }*/
+                   // Imgproc.rectangle(resizedFrame, rect.tl(), rect.br(), color, 2);
                 }
+
 
 
                 BufferedImage img = matToBufferedImage(resizedFrame);
@@ -220,4 +307,5 @@ public class Compare {
             return img;
         }
     }
+    
 }
