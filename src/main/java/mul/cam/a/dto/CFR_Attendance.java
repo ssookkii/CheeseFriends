@@ -4,10 +4,11 @@ import java.sql.Timestamp;
 public class CFR_Attendance {
     private int attendanceID;
     private String studentID;
-    private String sub_code;
+    private String subCode;
     private Timestamp attendanceTime;
     private String status;
-    private String edu_code;
+    private String eduCode;
+    
 	public int getAttendanceID() {
 		return attendanceID;
 	}
@@ -21,10 +22,10 @@ public class CFR_Attendance {
 		this.studentID = studentID;
 	}
 	public String getSub_code() {
-		return sub_code;
+		return subCode;
 	}
-	public void setSub_code(String sub_code) {
-		this.sub_code = sub_code;
+	public void setSub_code(String subCode) {
+		this.subCode = subCode;
 	}
 	public Timestamp getAttendanceTime() {
 		return attendanceTime;
@@ -39,10 +40,10 @@ public class CFR_Attendance {
 		this.status = status;
 	}
 	public String getEdu_code() {
-		return edu_code;
+		return eduCode;
 	}
-	public void setEdu_code(String edu_code) {
-		this.edu_code = edu_code;
+	public void setEdu_code(String eduCode) {
+		this.eduCode = eduCode;
 	}
 
 

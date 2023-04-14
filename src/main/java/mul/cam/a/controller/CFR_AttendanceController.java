@@ -3,33 +3,33 @@ package mul.cam.a.controller;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
 
 import org.opencv.core.Core;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import mul.cam.a.camera.User_Face_Crop;
+import mul.cam.a.dto.AttendanceSubject;
+import mul.cam.a.dto.CFR_Attendance;
 import mul.cam.a.service.CFR_AttendanceService;
 
 @Controller
 public class CFR_AttendanceController {
     private CFR_AttendanceService attendanceService;
-
-   /* public CFR_AttendanceController(CFR_AttendanceService attendanceService) {
+    
+    public CFR_AttendanceController(CFR_AttendanceService attendanceService) {
         this.attendanceService = attendanceService;
     }
-
-    @RequestMapping("/getAttendance")
-    public String getAttendanceById(@RequestParam("attendanceID") int attendanceID, Model model) {
-        CFR_Attendance attendance = attendanceService.getAttendanceById(attendanceID);
-        model.addAttribute("attendance", attendance);
-        return "attendanceDetails"; // 해당하는 View 이름을 반환합니다.
-    }*/
-    
-    
+   
+ //출석체크 실행 시스템   
     @PostMapping("/api/compareFaces")
     public ResponseEntity<Double> compareFaces() {
         String command = "java -cp .;opencv-470.jar mul.cam.a.camera.Compare";
@@ -51,14 +51,14 @@ public class CFR_AttendanceController {
                 similarity = Double.parseDouble(line.trim());
             }
         } catch (Exception e) {
-            e.printStackTrace();
+           e.printStackTrace();
             System.out.println("catch");
-        }
+       }
         return ResponseEntity.ok(similarity);
     }
 
 
- // 일단 테스트용 사진 자르기
+ // userID별로 사진 크롭해서 저장
     @PostMapping("/api/imgcrop/{userId}")
     public ResponseEntity<Object> compareFaces(@PathVariable String userId) {
     	
@@ -89,6 +89,73 @@ public class CFR_AttendanceController {
     static {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
     }
+    
+    @PostMapping(value = "/attendance")
+    public ResponseEntity<?> postAttendance(@RequestBody Map<String, String> requestData, Model model) {
+      String userId = requestData.get("userId");
+      String eduCode = requestData.get("eduCode");
+      String subCode = requestData.get("subCode");
+
+      List<AttendanceSubject> subjectList = attendanceService.getSubjectByUserIdAndEduCode(userId, eduCode, subCode);
+
+      
+      LocalDateTime now = LocalDateTime.now();
+      for (AttendanceSubject subject : subjectList) {
+          if (subject.getSubCode().equals(subCode)) {
+        	  
+              CFR_Attendance attendance = new CFR_Attendance();
+              
+              attendance.setStudentID(userId);
+              attendance.setSub_code(subCode);
+              attendance.setEdu_code(eduCode);
+
+              if (now.toLocalDate().isBefore(subject.getStartDate().toLocalDate())) {
+                  attendance.setStatus("출석");
+              } else {
+                  attendance.setStatus("지각");
+              }
+              attendanceService.checkAttendance(attendance);
+              break;
+              
+          }
+      }
+
+      return ResponseEntity.ok().build();
+    } 
+    
+    
+ /* 출석체크!
+    @PostMapping(value = "/attendance")
+    public String checkAttendance(Model model, @RequestBody AttendanceRequest request) {
+        String userId = request.getUserId();
+        String eduCode = request.getEduCode();
+        String subCode = request.getSubCode();
+        System.out.println(userId);
+        System.out.println(eduCode);
+        System.out.println(subCode);
+/*
+        List<AttendanceSubject> subjectList = attendanceService.getSubjectByUserIdAndEduCode(userId, eduCode);
+
+        LocalDateTime now = LocalDateTime.now();
+        for (AttendanceSubject subject : subjectList) {
+            if (subject.getSubCode().equals(subCode)) {
+                CFR_Attendance attendance = new CFR_Attendance();
+                attendance.setStudentID(userId);
+                attendance.setSub_code(subCode);
+                attendance.setEdu_code(eduCode);
+                if (now.toLocalDate().isBefore(subject.getStartDate().toLocalDate())) {
+                    attendance.setStatus("출석");
+                } else {
+                    attendance.setStatus("지각");
+                }
+                attendanceService.checkAttendance(attendance);
+                break;
+                
+            }
+        }
+
+        return "redirect:/attendance";
+    } */
 
 }
 
