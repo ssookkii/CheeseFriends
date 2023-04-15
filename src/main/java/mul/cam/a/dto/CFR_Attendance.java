@@ -2,18 +2,18 @@ package mul.cam.a.dto;
 import java.sql.Timestamp;
 
 public class CFR_Attendance {
-    private int attendanceID;
+    private String attendanceID;
     private String studentID;
     private String subCode;
     private Timestamp attendanceTime;
     private String status;
     private String eduCode;
     
-	public int getAttendanceID() {
+	public String getAttendanceID() {
 		return attendanceID;
 	}
-	public void setAttendanceID(int attendanceID) {
-		this.attendanceID = attendanceID;
+	public void setAttendanceID(String string) {
+		this.attendanceID = string;
 	}
 	public String getStudentID() {
 		return studentID;

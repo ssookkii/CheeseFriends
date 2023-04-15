@@ -61,5 +61,10 @@ public class CFR_AttendanceServiceImpl implements CFR_AttendanceService {
 		return attendanceDao.getSubjectByUserIdAndEduCode(userId, eduCode, subCode);
 	}
 
+	@Override
+    public boolean checkAttendanceId(String studentId, String subCode, String eduCode, String attendanceId) {
+        List<String> existingAttendanceIds = attendanceDao.findAttendanceIdsByStudentAndSubject(studentId, subCode, eduCode);
+        return !existingAttendanceIds.contains(attendanceId);
+    }
 
 }

@@ -2,6 +2,8 @@ package mul.cam.a.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import mul.cam.a.dto.AttendanceSubject;
 import mul.cam.a.dto.CFR_Attendance;
 
@@ -13,4 +15,8 @@ public interface CFR_AttendanceDao {
     void deleteAttendance(int attendanceID);
     List<AttendanceSubject> getSubjectByUserIdAndEduCode(String userId, String eduCode, String subCode);
     void checkAttendance(CFR_Attendance attendance);
-}
+    List<String> findAttendanceIdsByStudentAndSubject(@Param("studentId") String studentId,
+                                                           @Param("subCode") String subCode, 
+                                                           @Param("eduCode") String eduCode);
+    }
+

@@ -60,8 +60,16 @@ WHERE u.user_id = #{userId} AND s.sub_code = #{subCode} AND s.edu_code =#{eduCod
   
   <!-- 출석 체크 하기 -->
   <insert id="checkAttendance" parameterType="mul.cam.a.dto.CFR_Attendance">
-    INSERT INTO attendance (studentID, sub_code, attendanceTime, status, edu_code) 
-    VALUES (#{studentID}, #{sub_code}, #{attendanceTime}, #{status}, #{edu_code})
+    INSERT INTO attendance (attendanceID, studentID, sub_code, attendanceTime, status, edu_code) 
+    VALUES (#{attendanceID},#{studentID}, #{sub_code}, #{attendanceTime}, #{status}, #{edu_code})
   </insert>
+  
+  <!-- 출석 ID 가져오기 -->
+  
+  <select id="findAttendanceIdsByStudentAndSubject" parameterType="map" resultType="string">
+    SELECT attendanceID
+    FROM attendance
+    WHERE studentID = #{studentId} AND sub_code = #{subCode} AND edu_code = #{eduCode}
+	</select>
   
 </mapper>
