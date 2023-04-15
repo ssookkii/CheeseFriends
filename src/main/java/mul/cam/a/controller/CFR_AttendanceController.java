@@ -4,8 +4,12 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.opencv.core.Core;
 import org.springframework.http.HttpStatus;
@@ -107,8 +111,13 @@ public class CFR_AttendanceController {
         // Attendance ID 중복 체크
         boolean checkattendanceIds = attendanceService.checkAttendanceId(userId, subCode, eduCode, AttendanceID);
 
+        LocalDateTime nowTime = now.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
 
         for (AttendanceSubject subject : subjectList) {
+        	LocalDateTime startDate = subject.getStartDate();
+        	System.out.println("지금시간 :" + nowTime.toString());
+        	System.out.println("수업시간 :" + startDate.toString());
+
             if(checkattendanceIds==false) {
             	System.out.println(userId + "이미 출석했습니다");
             }
@@ -121,13 +130,15 @@ public class CFR_AttendanceController {
                     attendance.setEdu_code(eduCode);
 
                     // 현재 시간이 출석 시작 시간보다 빠르면 출석으로 처리, 아니면 지각으로 처리
-                    if (now.getTime() < subject.getStartDate().getTime()) {                	
+                    if (nowTime.isBefore(startDate)) {
                         attendance.setStatus("출석");
+                        System.out.println(userId + " 출석했습니다.");
                     } else {
                         attendance.setStatus("지각");
+                        System.out.println(userId + " 지각했습니다.");
                     }
 
-                 System.out.println(userId + " 출석했습니다.");
+
                     attendanceService.checkAttendance(attendance);
                     break;
                 }
@@ -139,41 +150,6 @@ public class CFR_AttendanceController {
         return ResponseEntity.ok().build();
     }
 
-
-    
-    
- /* 출석체크!
-    @PostMapping(value = "/attendance")
-    public String checkAttendance(Model model, @RequestBody AttendanceRequest request) {
-        String userId = request.getUserId();
-        String eduCode = request.getEduCode();
-        String subCode = request.getSubCode();
-        System.out.println(userId);
-        System.out.println(eduCode);
-        System.out.println(subCode);
-/*
-        List<AttendanceSubject> subjectList = attendanceService.getSubjectByUserIdAndEduCode(userId, eduCode);
-
-        LocalDateTime now = LocalDateTime.now();
-        for (AttendanceSubject subject : subjectList) {
-            if (subject.getSubCode().equals(subCode)) {
-                CFR_Attendance attendance = new CFR_Attendance();
-                attendance.setStudentID(userId);
-                attendance.setSub_code(subCode);
-                attendance.setEdu_code(eduCode);
-                if (now.toLocalDate().isBefore(subject.getStartDate().toLocalDate())) {
-                    attendance.setStatus("출석");
-                } else {
-                    attendance.setStatus("지각");
-                }
-                attendanceService.checkAttendance(attendance);
-                break;
-                
-            }
-        }
-
-        return "redirect:/attendance";
-    } */
 
 }
 

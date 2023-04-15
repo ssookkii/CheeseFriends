@@ -1,12 +1,13 @@
 package mul.cam.a.dto;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 public class AttendanceSubject {
     private String userId;
     private String subCode;
-    private Date startDate;
-    private Date endDate;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
     
 	public String getUserId() {
 		return userId;
@@ -20,16 +21,16 @@ public class AttendanceSubject {
 	public void setSubCode(String subCode) {
 		this.subCode = subCode;
 	}
-	public Date getStartDate() {
+	public LocalDateTime getStartDate() {
 		return startDate;
 	}
-	public void setStartDate(Date startDate) {
+	public void setStartDate(LocalDateTime startDate) {
 		this.startDate = startDate;
 	}
-	public Date getEndDate() {
+	public LocalDateTime getEndDate() {
 		return endDate;
 	}
-	public void setEndDate(Date endDate) {
+	public void setEndDate(LocalDateTime endDate) {
 		this.endDate = endDate;
 	}
 
