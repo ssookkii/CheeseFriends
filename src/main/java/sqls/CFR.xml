@@ -10,3 +10,4 @@
 
 
 
+  <resultMap id="attendanceMap" type="mul.cam.a.dto.CFR_Attendance">
