@@ -16,7 +16,7 @@ public class AttendanceSubject {
 		this.userId = userId;
 	}
 	public String getSubCode() {
-		return subCode;
+		return subCode; 
 	}
 	public void setSubCode(String subCode) {
 		this.subCode = subCode;
