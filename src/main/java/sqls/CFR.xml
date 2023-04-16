@@ -50,9 +50,6 @@
 WHERE u.user_id = #{userId} AND s.sub_code = #{subCode} AND s.edu_code =#{eduCode};
 </select>
 
-<<<<<<< HEAD
-  <resultMap id="attendanceMap" type="mul.cam.a.dto.CFR_Attendance">
-=======
   
   <!-- subjectMap 설정 -->
   <resultMap id="subjectMap" type="mul.cam.a.dto.AttendanceSubject">
@@ -76,4 +73,3 @@ WHERE u.user_id = #{userId} AND s.sub_code = #{subCode} AND s.edu_code =#{eduCod
 	</select>
   
 </mapper>
->>>>>>> efa6c10a3dd9073ce4b9ae2c6968c603f5142c10
