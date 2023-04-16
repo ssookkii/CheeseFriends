@@ -60,5 +60,15 @@ public class CFR_AttendanceDaoImpl implements CFR_AttendanceDao {
         sqlSession.insert(NS + "checkAttendance", attendance);
     }
 
+    @Override
+    public List<String> findAttendanceIdsByStudentAndSubject(String studentId, String subCode, String eduCode) {
+    	 Map<String, String> paramMap = new HashMap<>();
+         paramMap.put("studentId", studentId);
+         paramMap.put("eduCode", eduCode);
+         paramMap.put("subCode", subCode);
+         
+         return sqlSession.selectList(NS + "findAttendanceIdsByStudentAndSubject", paramMap);
+    }
+
     
 }

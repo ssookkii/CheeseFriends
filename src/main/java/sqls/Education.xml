@@ -27,42 +27,7 @@
 		FROM EDUCATION
 		WHERE EDU_ADDRESS=#{eduAddress} AND EDU_NAME=#{eduName}
 	</select>
-	<!-- 교육기관리스트 가져오기 -->
-	<select id="getEduList" parameterType="mul.cam.a.dto.ListParam" resultType="mul.cam.a.dto.EducationDto">
-		SELECT E.EDU_CODE, E.EDU_NAME, E.EDU_PHONE,
-			   E.EDU_ADDRESS, I.ADDRESS,
-			   I.ID
-		FROM EDUCATION E INNER JOIN USER I ON E.EDU_ADDRESS = I.ADDRESS
-		WHERE 1=1
-		<if test="choice != null and choice != '' and search != null and search != '' ">
-			<if test="choice == 'eduCode'">
-	 			AND WHERE EDU_CODE =#{search}
-		 	</if>
-		 	<if test="choice == 'eduName'">
-		 		AND WHERE EDU_NAME LIKE CONCAT('%', #{search}, '%')
-		 	</if>
-		 	<if test="choice == 'eduAddress'">
-		 		AND WHERE EDU_ADDRESS LIKE CONCAT('%', #{search}, '%')
-		 	</if>
-		</if>
-		LIMIT #{start}, #{end}
-			
-	</select>
-	<!-- 교육기관 총 수 가져오기 -->
-	<select id="getAllEdu" parameterType="mul.cam.a.dto.ListParam" resultType="Integer">
-		SELECT IFNULL(COUNT(*), 0)
-		FROM EDUCATION
-		<if test="choice != null and choice != '' and search != null and search != '' ">
-		 	<if test="choice == 'eduCode'">
-		 		WHERE EDU_CODE =#{search}
-		 	</if>
-		 	<if test="choice == 'eduName'">
-		 		WHERE EDU_NAME LIKE CONCAT('%', #{search}, '%')
-		 	</if>
-		 	<if test="choice == 'eduAddress'">
-		 		WHERE EDU_ADDRESS LIKE CONCAT('%', #{search}, '%')
-		 	</if>
-		 </if>
-	</select>
+	<!-- 교육기관관리에 학원리스트 가져오기 -->
+	
 
 </mapper>

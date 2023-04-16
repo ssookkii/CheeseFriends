@@ -16,4 +16,7 @@ public interface CFR_AttendanceService {
     // 출석체크
     void checkAttendance(CFR_Attendance attendance);
 	List<AttendanceSubject> getSubjectByUserIdAndEduCode(String userId, String eduCode, String subCode);
+	
+
+    public boolean checkAttendanceId(String studentId, String subCode, String eduCode, String attendanceId) ;
 }
