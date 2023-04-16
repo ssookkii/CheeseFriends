@@ -95,6 +95,7 @@ public class CFR_AttendanceController {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
     }
     
+    //출석하기
     @PostMapping(value = "/attendance")
     public ResponseEntity<?> postAttendance(@RequestBody AttendanceRequest request, Model model) {
         String userId = request.getUserId();
