@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="mul.cam.a.dao.UserDao">
+
+<select id="idcheck" parameterType="String" resultType="String">
+	SELECT ID
+	FROM USER
+	WHERE ID=#{id}
+</select>
+
+<select id="subjectlist" parameterType="String" resultType="mul.cam.a.dto.TestEduDto">
+	select sub_name, sub_code, edu_code
+	from subject
+	where edu_code=#{edu_code}
+</select>
+
+</mapper>
