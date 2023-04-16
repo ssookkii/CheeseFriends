@@ -42,13 +42,13 @@
 		<dependency>
 		    <groupId>com.fasterxml.jackson.core</groupId>
 		    <artifactId>jackson-core</artifactId>
-		    <version>2.14.2</version>
+		    <version>2.14.1</version>
 		</dependency>
 		
 		<dependency>
 		    <groupId>com.fasterxml.jackson.core</groupId>
 		    <artifactId>jackson-databind</artifactId>
-		    <version>2.14.2</version>
+		    <version>2.14.1</version>
 		</dependency>
 		
 		<dependency>
@@ -92,31 +92,20 @@
 	    <version>2.7.1</version>
 	</dependency>
 	<!-- https://mvnrepository.com/artifact/org.openpnp/opencv -->
-	<dependency>
-	    <groupId>org.openpnp</groupId>
-	    <artifactId>opencv</artifactId>
-	    <version>4.7.0-0</version>
-	</dependency>
-	<!-- https://mvnrepository.com/artifact/org.springframework/spring-context -->
-	<dependency>
-	    <groupId>org.springframework</groupId>
-	    <artifactId>spring-context</artifactId>
-
-	</dependency>
-<!-- https://mvnrepository.com/artifact/org.springframework/spring-core -->
 <dependency>
-    <groupId>org.springframework</groupId>
-    <artifactId>spring-core</artifactId>
-    
-    <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter -->
-
+    <groupId>org.openpnp</groupId>
+    <artifactId>opencv</artifactId>
+    <version>4.7.0-0</version>
 </dependency>
 
+<<<<<<< HEAD
 	<dependency>
     	<groupId>org.springframework.boot</groupId>
     	<artifactId>spring-boot-starter</artifactId>
     	<version>3.0.5</version>
 	</dependency>
+=======
+>>>>>>> bdde49bc7a6e7f85a0465b1c0c1f428355e24eb5
 	</dependencies>
 	<build>
 		<plugins>
@@ -124,6 +113,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+<<<<<<< HEAD
 			<plugin>
 			    <groupId>org.apache.maven.plugins</groupId>
 			    <artifactId>maven-surefire-plugin</artifactId>
@@ -132,8 +122,9 @@
 			      <skipTests>true</skipTests>
 			    </configuration>
 		  </plugin>
+=======
+>>>>>>> bdde49bc7a6e7f85a0465b1c0c1f428355e24eb5
 		</plugins>
-
 	</build>
 
 </project>
