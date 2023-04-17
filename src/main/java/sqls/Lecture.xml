@@ -5,7 +5,7 @@
 <mapper namespace="Lecture">
 
 <select id="lectureList" parameterType="Integer" resultType="mul.cam.a.dto.LectureDto">
-	select seq, subject, subjectCode, title, writer, content, regdate
+	select seq
 	from lecture
 	where seq=#{seq}
 
