@@ -1,5 +1,6 @@
 package mul.cam.a.dao.impl;
 
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import mul.cam.a.dao.CFR_AttendanceDao;
+import mul.cam.a.dto.AttendanceSearch;
 import mul.cam.a.dto.AttendanceSubject;
+import mul.cam.a.dto.AttendanceTimetable;
 import mul.cam.a.dto.CFR_Attendance;
 
 @Repository
@@ -26,8 +29,8 @@ public class CFR_AttendanceDaoImpl implements CFR_AttendanceDao {
     }
 
     @Override
-    public List<CFR_Attendance> getAllAttendances() {
-        return sqlSession.selectList(NS + "getAllAttendances");
+    public List<String> getAllAttendances(String subCode) {
+        return sqlSession.selectList(NS + "getAllAttendances", subCode);
     }
 
     @Override
@@ -46,7 +49,7 @@ public class CFR_AttendanceDaoImpl implements CFR_AttendanceDao {
     }
     
     @Override
-    public List<AttendanceSubject> getSubjectByUserIdAndEduCode(String userId, String eduCode, String subCode) {
+    public List<AttendanceTimetable> getSubjectByUserIdAndEduCode(String userId, String eduCode, String subCode) {
         Map<String, String> paramMap = new HashMap<>();
         paramMap.put("userId", userId);
         paramMap.put("eduCode", eduCode);
@@ -69,6 +72,30 @@ public class CFR_AttendanceDaoImpl implements CFR_AttendanceDao {
          
          return sqlSession.selectList(NS + "findAttendanceIdsByStudentAndSubject", paramMap);
     }
+    
+    @Override
+    public List<AttendanceSubject> getAllSubjects() {
+        return sqlSession.selectList(NS + "getAllSubjects");
+    }
 
+	@Override
+	public List<AttendanceSubject> getAllUser() {
+		 return sqlSession.selectList(NS + "getAllUser");
+	}
+
+	 @Override
+	    public List<AttendanceTimetable> getSubjectByDayOfWeek(String subDay) {
+	        return sqlSession.selectList(NS + "getSubjectByDayOfWeek", subDay);
+	    }
+
+	    @Override
+	    public List<String> findAbsentAttendanceIdsBySubCodeAndEndTime(String subCode, LocalTime endTime) {
+	        return sqlSession.selectList(NS + "findAbsentAttendanceIdsBySubCodeAndEndTime", new AttendanceSearch(subCode, endTime));
+	    }
+
+	    @Override
+	    public List<String> getStudentIdsBySubCode(String subCode) {
+	        return sqlSession.selectList(NS + "getStudentIdsBySubCode", subCode);
+	    }
     
 }
