@@ -75,6 +75,12 @@ public class EducationDto {
 	public void setId(String id) {
 		this.id = id;
 	}
+
+	@Override
+	public String toString() {
+		return "EducationDto [eduCode=" + eduCode + ", eduName=" + eduName + ", eduAddress=" + eduAddress
+				+ ", eduPhone=" + eduPhone + ", id=" + id + "]";
+	}
 	
 	
 }

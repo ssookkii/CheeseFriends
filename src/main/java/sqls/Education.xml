@@ -11,7 +11,7 @@
 	</insert>
 	
 	<!-- 교육기관등록 시 메인계정 생성  -->
-	<insert id="eduAddAdmain" parameterType="mul.cam.a.dto.CFR_User">
+	<insert id="eduAddAdmain" parameterType="mul.cam.a.dto.UserDto">
 		INSERT INTO USER(ID, PASSWORD, NAME, ADDRESS, PHONE, AUTH)
 		VALUES(#{id}, #{password}, #{name}, #{address}, #{phone}, 'admin')
 	</insert>
@@ -69,16 +69,32 @@
 		 	</if>
 		 </if>
 	</select>
+	
 	<!-- 교육기관 데이터 가져오기 -->
 	<select id="getEdu" parameterType="String" resultType="mul.cam.a.dto.EducationDto">
 		SELECT EDU_NAME, EDU_ADDRESS, EDU_PHONE
 		FROM EDUCATION
 		WHERE EDU_CODE=#{eduCode}
 	</select>
+	
 	<!-- 교육기관 수정 -->
 	<update id="eduUpdate" parameterType="mul.cam.a.dto.EducationDto">
-		UPDATE EDUCATION
-		SET EDU_NAME=#{eduName}, EDU_ADDRESS=#{eduAddress}, EDU_PHONE=#{eduPhone}
-		WHERE EDU_CODE=#{eduCode}
+		UPDATE EDUCATION E
+		INNER JOIN USER U ON E.EDU_ADDRESS = U.ADDRESS
+		SET 
+		  E.EDU_NAME=#{eduName}, 
+		  E.EDU_ADDRESS=#{eduAddress},
+		  E.EDU_PHONE=#{eduPhone},
+		  U.NAME=#{eduName},
+		  U.ADDRESS=#{eduAddress},
+		  U.PHONE=#{eduPhone}
+		WHERE E.EDU_CODE=#{eduCode} AND U.ID=#{id}
 	</update>
+	
+	<!-- 교육기관 삭제 -->
+	<delete id="eduDelete" parameterType="mul.cam.a.dto.EducationDto">
+		DELETE EDUCATION, USER
+		FROM EDUCATION INNER JOIN USER ON EDUCATION.EDU_ADDRESS = USER.ADDRESS
+		WHERE EDUCATION.EDU_CODE=#{eduCode} AND USER.ID=#{id};
+	</delete>
 </mapper>

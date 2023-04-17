@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import mul.cam.a.dto.CFR_User;
 import mul.cam.a.dto.EducationDto;
 import mul.cam.a.dto.ListParam;
+import mul.cam.a.dto.UserDto;
 import mul.cam.a.service.EducationService;
 import mul.cam.a.util.RandomCode;
 
@@ -43,7 +44,7 @@ public class EducationController {
 		}
 		
 		// 학원 메인계정 아이디 생성
-		CFR_User admin = new CFR_User();
+		UserDto admin = new UserDto();
 		admin.setId("@" + eduCode);
 		admin.setPassword(eduCode + "1234");
 		admin.setName(edu.getEduName());
@@ -94,14 +95,36 @@ public class EducationController {
 		System.out.println("EducationController getEdu()" + new Date());
 		return service.getEdu(eduCode);
 	}
+	
 	@PostMapping(value="eduUpdate")
 	public String eduUpdate(EducationDto edu) {
 		System.out.println("EducationController update()" + new Date());
 
+		// 등록된 교육기관인지 확인
+		boolean eduDuplicate = service.eduDuplicateCheck(edu);
+		if(eduDuplicate) {
+			return "duplicate";
+		}
+		
+		edu.setId("@"+edu.getEduCode());		
 		boolean isS = service.eduUpdate(edu);
+		
 		if(isS) {
 			return "success";
 		}
 		return "fail";
 	}
+	@PostMapping(value="eduDelete")
+	public String eduDelete(EducationDto edu) {
+		System.out.println("EducationController eduDelete()" + new Date());
+		
+		edu.setId("@"+edu.getEduCode());
+		boolean isS = service.eduDelete(edu);
+		
+		if(isS) {
+			return "success";
+		}
+		return "fail";
+	}
+	
 }
