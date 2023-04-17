@@ -159,7 +159,7 @@ public class CFR_AttendanceController {
     }
     
     // 결석
-    @Scheduled(cron = "* * * * * *") // 매 시간 5분에 실행
+    @Scheduled(cron = "0 5 * * * *") // 매 시간 5분에 실행
     public void checkAbsence() {
         // 요일 문자열을 숫자로 변환 (일: 1, 월: 2, ... , 토: 7)
     	System.out.println("결석 체크 실행");
