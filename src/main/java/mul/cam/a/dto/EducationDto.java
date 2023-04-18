@@ -10,7 +10,7 @@ public class EducationDto {
 	public EducationDto() {
 		
 	}
-	// education 테이블용
+	
 	public EducationDto(String eduCode, String eduName, String eduAddress, String eduPhone) {
 		super();
 		this.eduCode = eduCode;
@@ -18,7 +18,7 @@ public class EducationDto {
 		this.eduAddress = eduAddress;
 		this.eduPhone = eduPhone;
 	}
-	// 메인계정생성할 때 user입력용
+	
 	public EducationDto(String eduCode, String eduName, String eduAddress, String eduPhone, String id) {
 		super();
 		this.eduCode = eduCode;
