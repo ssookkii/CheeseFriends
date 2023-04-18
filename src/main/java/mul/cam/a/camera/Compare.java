@@ -1,17 +1,14 @@
 package mul.cam.a.camera;
 
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Graphics;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
-import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
@@ -33,8 +30,7 @@ import org.opencv.videoio.Videoio;
 public class Compare {
 
     public static void main(String[] args) {
-    	
-    	
+
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         new Compare();
         // JFrame 생성
@@ -44,7 +40,7 @@ public class Compare {
         // 비디오 패널 생성
         VideoPanel videoPanel = new VideoPanel();
 
-        JButton button = new JButton("출석하기!");
+       /* JButton button = new JButton("출석하기!");
 
         // 출석하기 버튼 위치 
         int frameWidth = 1000;
@@ -64,13 +60,14 @@ public class Compare {
                 videoPanel.saveFrame();
             }
         });
+        */
 
         // 패널 크기 
         JLayeredPane layeredPane = new JLayeredPane();
         layeredPane.setPreferredSize(new Dimension(1000, 700));
         videoPanel.setBounds(0, 0, 1000, 700);
         layeredPane.add(videoPanel, JLayeredPane.DEFAULT_LAYER);
-        layeredPane.add(button, JLayeredPane.PALETTE_LAYER);
+       // layeredPane.add(button, JLayeredPane.PALETTE_LAYER);
         jframe.setContentPane(layeredPane);
         jframe.pack();
         jframe.setVisible(true);
@@ -78,6 +75,7 @@ public class Compare {
     }
 
     static class VideoPanel extends JPanel {
+    	
         VideoCapture capture;
         CascadeClassifier faceCascade;
         Mat frame;
@@ -97,7 +95,6 @@ public class Compare {
         }
         
         private void detectAndDrawFaces(Mat frame) throws FontFormatException, IOException {
-          
             Mat grayFrame = new Mat();
             Imgproc.cvtColor(frame, grayFrame, Imgproc.COLOR_BGR2GRAY);
 
@@ -106,16 +103,8 @@ public class Compare {
             faceCascade.detectMultiScale(grayFrame, faceDetections);
 
             // 비교할 이미지 경로
-            String savedImagePath = "./src/AttendanceFace/capture.jpg";
-
-         // 폰트 설정 ** 다시 확인 필요
-            String fontPath = "./src/ttf/NanumSquareNeo-cBd.ttf";
-            Font font = null;
-            try {
-                font = Font.createFont(Font.TRUETYPE_FONT, new File(fontPath)).deriveFont(10f);
-            } catch (Exception e) {
-                System.err.println("폰트 로딩 실패: " + e.getMessage());
-            }
+            String savedImagePath = "C:\\springboot2\\CheeseFriends\\STS\\cheesefriends_back\\src\\AttendanceFace\\member1.jpg";
+    
 
             // 얼굴 비교 시작
             for (Rect rect : faceDetections.toArray()) {
@@ -124,7 +113,7 @@ public class Compare {
                 Imgproc.resize(detectedFace, detectedFace, new Size(300, 300));
 
                 // 화면에 찍히는 얼굴 사진 저장
-                String detectedFacePath = "./src/DetectedFace/detected_face.jpg";
+                String detectedFacePath = "C:\\springboot2\\CheeseFriends\\STS\\cheesefriends_back\\src\\DetectedFace\\detected_face.jpg";
                 Imgcodecs.imwrite(detectedFacePath, detectedFace);
                 double similarity = FaceComparison.compareFaces(savedImagePath, detectedFacePath);
 
@@ -164,7 +153,7 @@ public class Compare {
         }
 
 
-// 출석하기 버튼 누르면 사진 저장 *** 이건 나중에 수정되어야 할 듯 text 용이였음
+/* 출석하기 버튼 누르면 사진 저장 *** 이건 나중에 수정되어야 할 듯 text 용이였음
         public double saveFrame() {
             double similarity = 0.0;
             if (!frame.empty()) {
@@ -182,12 +171,12 @@ public class Compare {
                     Mat detectedFace = new Mat(frame, rect);
                     Imgproc.resize(detectedFace, detectedFace, new Size(300, 300));
 
-                    String filename = "./src/AttendanceFace/capture.jpg";
+                    String filename = "C:\\springboot2\\CheeseFriends\\STS\\cheesefriends_back\\src\\AttendanceFace\\capture.jpg";
                     Imgcodecs.imwrite(filename, detectedFace);
                     System.out.println("Captured face saved to: " + filename);
 
-                    String savedImagePath = "./src/AttendanceFace/capture.jpg"; // 저장된 이미지
-                    String detectedFacePath = "./src/DetectedFace/detected_face.jpg";
+                    String savedImagePath = "C:\\springboot2\\CheeseFriends\\STS\\cheesefriends_back\\src\\AttendanceFace\\capture.jpg"; // 저장된 이미지
+                    String detectedFacePath = "C:\\springboot2\\CheeseFriends\\STS\\cheesefriends_back\\src\\DetectedFace\\detected_face.jpg";
                     Imgcodecs.imwrite(detectedFacePath, detectedFace);
                             
                     similarity = FaceComparison.compareFaces(savedImagePath, detectedFacePath);
@@ -206,7 +195,7 @@ public class Compare {
             return similarity;
         }
 
-
+*/
 
 
 
@@ -226,7 +215,7 @@ public class Compare {
             capture.set(Videoio.CAP_PROP_FRAME_HEIGHT, 250);
 
 
-            faceCascade = new CascadeClassifier("C:\\Users\\User\\Downloads\\opencv\\opencv\\sources\\samples\\winrt\\FaceDetection\\FaceDetection\\Assets\\haarcascade_frontalface_alt.xml");
+            faceCascade = new CascadeClassifier("C:\\Users\\User\\Downloads\\opencv\\sources\\samples\\winrt\\FaceDetection\\FaceDetection\\Assets\\haarcascade_frontalface_alt.xml");
 
 
             frame = new Mat();
@@ -252,14 +241,14 @@ public class Compare {
                 MatOfRect faceDetections = new MatOfRect();
                 faceCascade.detectMultiScale(grayFrame, faceDetections);
 
-                String savedImagePath = "./src/AttendanceFace/capture.jpg"; // 저장된 이미지 경로를 설정하세요.
+                String savedImagePath = "C:\\springboot2\\CheeseFriends\\STS\\cheesefriends_back\\src\\AttendanceFace\\member1.jpg"; // 저장된 이미지 경로를 설정하세요.
 
 
                 for (Rect rect : faceDetections.toArray()) {
                     Mat detectedFace = new Mat(grayFrame, rect);
                     Imgproc.resize(detectedFace, detectedFace, new Size(300, 300));
 
-                    String detectedFacePath = "./src/DetectedFace./detected_face.jpg";
+                    String detectedFacePath = "C:\\springboot2\\CheeseFriends\\STS\\cheesefriends_back\\src\\DetectedFace\\detected_face.jpg";
                     Imgcodecs.imwrite(detectedFacePath, detectedFace);
 
                     double similarity = FaceComparison.compareFaces(savedImagePath, detectedFacePath);
@@ -274,12 +263,12 @@ public class Compare {
                     } else {
                         color = new Scalar(0, 0, 255); // Red
                     }*/
-                    /*    
+                       
                     try (PrintWriter out = new PrintWriter("similarity.txt")) {
                         out.println(similarity);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
-                    }*/
+                    }
                    // Imgproc.rectangle(resizedFrame, rect.tl(), rect.br(), color, 2);
                 }
 

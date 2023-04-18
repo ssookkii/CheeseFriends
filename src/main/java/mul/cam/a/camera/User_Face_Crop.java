@@ -1,6 +1,13 @@
 package mul.cam.a.camera;
 
-import org.opencv.core.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.opencv.core.Core;
+import org.opencv.core.Mat;
+import org.opencv.core.MatOfRect;
+import org.opencv.core.Rect;
+import org.opencv.core.Size;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
@@ -17,6 +24,7 @@ public class User_Face_Crop {
             System.exit(1);
         }
     }
+    
     
     // 얼굴 크롭 메서드
     public boolean cropUserFace(String imagePath, String outputImagePath) {
@@ -49,6 +57,27 @@ public class User_Face_Crop {
 
         // 이미지 저장
         Imgcodecs.imwrite(outputImagePath, resized);
+        
+        // 데이터 증강
+        List<Mat> augmentedImages = new ArrayList<>();
+        
+        // 이미지 수평 뒤집기
+        Mat flipped = new Mat();
+        Core.flip(resized, flipped, 1);
+        augmentedImages.add(flipped);
+        
+        // 이미지 회전
+        Mat rotated = new Mat();
+        for (int i = 1; i <= 3; i++) {
+            Core.rotate(resized, rotated, i);
+            augmentedImages.add(rotated.clone());
+        }
+        
+        // 증강된 이미지 저장
+        for (int i = 0; i < augmentedImages.size(); i++) {
+            outputImagePath =  outputImagePath + i + ".jpg";
+            Imgcodecs.imwrite(outputImagePath, augmentedImages.get(i));
+        }
 
         return true;
     }
