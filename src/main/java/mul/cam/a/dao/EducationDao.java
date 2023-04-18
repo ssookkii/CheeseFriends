@@ -43,3 +43,6 @@ public interface EducationDao {
 	// 교육기관 삭제
 	int eduDelete(EducationDto edu);
 }
+
+
+

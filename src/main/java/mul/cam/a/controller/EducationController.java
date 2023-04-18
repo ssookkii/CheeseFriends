@@ -126,5 +126,5 @@ public class EducationController {
 		}
 		return "fail";
 	}
-	
 }
+

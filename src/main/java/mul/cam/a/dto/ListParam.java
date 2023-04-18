@@ -1,17 +1,17 @@
 package mul.cam.a.dto;
 
 public class ListParam {
-	private String choice;
-	private String search;
-	private int pageNumber;
+	private String choice;	//	제목/내용/작성
+	private String search;	//	검색어
+	private int pageNumber;	//	[1][2][3]
 	
 	private int start;
 	private int end;
 	
 	public ListParam() {
-		
+		// TODO Auto-generated constructor stub
 	}
-
+	
 	public ListParam(String choice, String search, int pageNumber, int start, int end) {
 		super();
 		this.choice = choice;
@@ -63,7 +63,7 @@ public class ListParam {
 
 	@Override
 	public String toString() {
-		return "ListParam [choice=" + choice + ", search=" + search + ", pageNumber=" + pageNumber + ", start=" + start
+		return "ListParams [choice=" + choice + ", search=" + search + ", pageNumber=" + pageNumber + ", start=" + start
 				+ ", end=" + end + "]";
 	}
 	
