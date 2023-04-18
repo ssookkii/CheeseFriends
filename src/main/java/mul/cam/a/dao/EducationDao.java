@@ -29,4 +29,10 @@ public interface EducationDao {
 	
 	// 교육기관 총 수
 	int getAllEdu(ListParam param);
+	
+	// 교육기관 데이터
+	EducationDto getEdu(String eduCode);
+	
+	// 교육기관 수정
+	int eduUpdate(EducationDto edu);
 }

@@ -59,7 +59,7 @@ public class EducationController {
 			boolean b = service.eduAddAdmain(admin);
 			
 			if(b) {
-				return "sucess";
+				return "success";
 			} else {
 				return "fail";
 			}
@@ -73,20 +73,35 @@ public class EducationController {
 		
 		// 글의 시작과 끝 
 		int pn = param.getPageNumber(); // 0 1 2 3 4
-		int start = 1 + (pn * 15);	
-		int end = (pn + 1) * 15;	
-
+		int start = (pn * 15);
+		int end = (pn + 1) * 15;
+		
 		param.setStart(start);
 		param.setEnd(end);
 		
+		System.out.println(param.getEnd());
 		List<EducationDto> list = service.getEduList(param);
 		
 		int len = service.getAllEdu(param);
-		
 		Map<String, Object> map = new HashMap<>();
 		map.put("list", list);
 		map.put("cnt", len);	// react에 보낼 때
 		
 		return map;
+	}
+	@GetMapping(value="getEdu")
+	public EducationDto getEdu(String eduCode) {
+		System.out.println("EducationController getEdu()" + new Date());
+		return service.getEdu(eduCode);
+	}
+	@PostMapping(value="eduUpdate")
+	public String eduUpdate(EducationDto edu) {
+		System.out.println("EducationController update()" + new Date());
+
+		boolean isS = service.eduUpdate(edu);
+		if(isS) {
+			return "success";
+		}
+		return "fail";
 	}
 }

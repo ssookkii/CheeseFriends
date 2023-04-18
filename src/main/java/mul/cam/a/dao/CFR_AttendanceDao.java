@@ -35,4 +35,3 @@ public interface CFR_AttendanceDao {
 	    List<String> getStudentIdsBySubCode(String subCode);
 
     }
-

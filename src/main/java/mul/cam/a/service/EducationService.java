@@ -40,4 +40,11 @@ public class EducationService {
 	public int getAllEdu(ListParam param) {
 		return dao.getAllEdu(param);
 	}
+	public EducationDto getEdu(String eduCode) {
+		return dao.getEdu(eduCode);
+	}
+	public boolean eduUpdate(EducationDto edu) {
+		int n = dao.eduUpdate(edu);
+		return n>0?true:false;
+	}
 }
