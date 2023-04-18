@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mul.cam.a.dao.SubjectDao">
+	
+	<!-- 과목리스트 가져오기 -->
+	<select id="getSubList" parameterType="mul.cam.a.dto.ListParam" resultType="mul.cam.a.dto.SubjectDto">
+		SELECT S.EDU_CODE, E.EDU_NAME, 
+			   S.SUB_CODE, S.SUB_NAME,
+			   S.EDUCATOR_NAME, I.NAME
+		FROM
+		SUBJECT S INNER JOIN EDUCATION E
+			ON S.EDU_CODE = E.EDU_CODE
+				INNER JOIN USER I
+				ON S.EDUCATOR_NAME = I.ID
+		WHERE 1=1
+		<if test="choice != null and choice != '' and search != null and search != '' ">
+			<if test="choice == 'eduCode'">
+	 			AND S.EDU_CODE =#{search}
+		 	</if>
+		 	<if test="choice == 'eduName'">
+		 		AND E.EDU_NAME LIKE CONCAT("%", #{search}, "%")
+		 	</if>
+		 	<if test="choice == 'subCode'">
+		 		AND S.SUB_CODE LIKE CONCAT("%", #{search}, "%")
+		 	</if>
+		 	<if test="choice == 'subName'">
+		 		AND S.SUB_NAME LIKE CONCAT("%", #{search}, "%")
+		 	</if>
+		 	<if test="choice == 'id'">
+		 		AND S.EDUCATOR_NAME LIKE CONCAT("%", #{search}, "%")
+		 	</if>
+		</if>
+		LIMIT #{start}, #{end}
+	</select>
+	
+	<!-- 과목 총 수 가져오기 -->
+	<select id="getAllSub" parameterType="mul.cam.a.dto.ListParam" resultType="Integer">
+		SELECT IFNULL(COUNT(*), 0)
+		FROM
+		SUBJECT S INNER JOIN EDUCATION E
+			ON S.EDU_CODE = E.EDU_CODE
+				INNER JOIN USER I
+				ON S.EDUCATOR_NAME = I.ID
+		<if test="choice != null and choice != '' and search != null and search != '' ">
+		 	<if test="choice == 'eduCode'">
+	 			AND S.EDU_CODE =#{search}
+		 	</if>
+		 	<if test="choice == 'eduName'">
+		 		AND E.EDU_NAME LIKE CONCAT("%", #{search}, "%")
+		 	</if>
+		 	<if test="choice == 'subCode'">
+		 		AND S.SUB_CODE LIKE CONCAT("%", #{search}, "%")
+		 	</if>
+		 	<if test="choice == 'subName'">
+		 		AND S.SUB_NAME LIKE CONCAT("%", #{search}, "%")
+		 	</if>
+		 	<if test="choice == 'id'">
+		 		AND S.EDUCATOR_NAME LIKE CONCAT("%", #{search}, "%")
+		 	</if>
+		 </if>
+	</select>
+	
+	<!-- 과목 데이터 가져오기 -->
+	<select id="getSub" parameterType="String" resultType="mul.cam.a.dto.SubjectDto">
+		SELECT S.EDU_CODE, E.EDU_NAME, 
+			   S.SUB_CODE, S.SUB_NAME,
+			   S.EDUCATOR_NAME
+		FROM
+		SUBJECT S INNER JOIN EDUCATION E
+			ON S.EDU_CODE = E.EDU_CODE
+				INNER JOIN USER I
+				ON S.EDUCATOR_NAME = I.ID
+		WHERE S.SUB_CODE=#{subCode}
+	</select>
+	
+	<!-- 과목 수정 -->
+	<update id="subUpdate" parameterType="mul.cam.a.dto.SubjectDto">
+		UPDATE SUBJECT
+		SET SUB_NAME=#{subName}, EDUCATOR_NAME=#{educatorName}
+		WHERE SUB_CODE=#{subCode}
+	</update>
+	
+	<!-- 과목 삭제 -->
+	<delete id="subDelete" parameterType="String">
+		DELETE FROM SUBJECT
+		WHERE SUB_CODE=#{subCode}
+	</delete>
+	
+	<!-- 아이디리스트 가져오기 -->
+	<select id="getIdList" parameterType="String" resultType="mul.cam.a.dto.UserDto">
+		SELECT ID
+		FROM USER
+		WHERE AUTH=#{auth}
+	</select>
+</mapper>

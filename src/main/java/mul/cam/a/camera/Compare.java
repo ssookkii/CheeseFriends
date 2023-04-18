@@ -42,19 +42,15 @@ public class Compare {
         VideoPanel videoPanel = new VideoPanel();
 
        /* JButton button = new JButton("출석하기!");
-
         // 출석하기 버튼 위치 
         int frameWidth = 1000;
         int buttonWidth = 140;
         int buttonHeight = 40;
         int buttonX = (frameWidth - buttonWidth) / 2;
-
         button.setBounds(buttonX, 30, buttonWidth, buttonHeight);
-
        // 폰트 사이즈 
         Font buttonFont = new Font("맑은 고딕", Font.BOLD, 18);
         button.setFont(buttonFont);
-
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

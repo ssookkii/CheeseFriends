@@ -37,11 +37,7 @@ public class CFR_AttendanceController {
     public CFR_AttendanceController(CFR_AttendanceService attendanceService) {
         this.attendanceService = attendanceService;
     }
-    
-    static {
-        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-    }
-    
+   
  //출석체크 실행 시스템   
     @PostMapping("/api/compareFaces")
     public ResponseEntity<Double> compareFaces() {
@@ -61,8 +57,8 @@ public class CFR_AttendanceController {
             System.out.println(process);
             System.out.println(line);
             if (line != null && line.matches("\\d+(\\.\\d+)?")) {
-            similarity = Double.parseDouble(line.trim());
-           }
+                similarity = Double.parseDouble(line.trim());
+            }
         } catch (Exception e) {
            e.printStackTrace();
             System.out.println("catch");
@@ -98,7 +94,10 @@ public class CFR_AttendanceController {
             return ResponseEntity.badRequest().body("Failed to crop image");
         }
     }
-
+    
+    static {
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+    }
     
   //출석
     @PostMapping(value = "/attendance")
