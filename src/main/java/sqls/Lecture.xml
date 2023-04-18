@@ -2,12 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- 강의 목록 가져오기 -->
-<mapper namespace="Lecture">
+<mapper namespace="mul.cam.a.dao.LectureDao">
 
 <select id="lectureList" parameterType="Integer" resultType="mul.cam.a.dto.LectureDto">
-	select seq
+	select seq subject, subjectCode, title, writer, content, regdate
 	from lecture
-	where seq=#{seq}
 
 </select>
 
