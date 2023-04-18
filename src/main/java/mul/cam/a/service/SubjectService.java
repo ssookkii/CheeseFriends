@@ -18,7 +18,7 @@ public class SubjectService {
 	
 	@Autowired
 	SubjectDao dao;
-	
+	//
 	public List<SubjectDto> getSubList(ListParam param) {
 		return dao.getSubList(param);
 	}
