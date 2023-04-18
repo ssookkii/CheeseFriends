@@ -18,4 +18,26 @@
 	where edu_code=#{edu_code}
 </select>
 
+<select id="eduname" parameterType="String" resultType="String">
+	select edu_name
+	from education
+	where edu_code=#{edu_code}
+</select>
+
+<select id="subname" parameterType="String" resultType="String">
+	select sub_name
+	from subject
+	where sub_code=#{sub_code}
+</select>
+
+<insert id="adduser" parameterType="mul.cam.a.dto.UserDto">
+	insert into user(id, password, name, gender, email, birth, address, facename, newfacename, phone, phone_public, jointype, auth, breakaway, regidate)
+	values(#{id}, #{password}, #{name}, #{gender}, #{email}, #{birth}, #{address}, #{facename}, '0', #{phone}, '0', 'cheesefriends', #{auth}, '0', now())
+</insert>
+
+<insert id="addusersubject" parameterType="mul.cam.a.dto.TestEduDto">
+	insert into usersubject(user_id, sub_code, start_date, end_date)
+	values(#{id}, #{subcode}, now(), now())
+</insert> 
+
 </mapper>
