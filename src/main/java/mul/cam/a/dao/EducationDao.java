@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import mul.cam.a.dto.CFR_User;
 import mul.cam.a.dto.EducationDto;
 import mul.cam.a.dto.ListParam;
+import mul.cam.a.dto.UserDto;
 
 @Mapper
 @Repository
@@ -16,7 +17,7 @@ public interface EducationDao {
 	int eduAdd(EducationDto edu);
 	
 	// 교육기관등록 시 메인계정 생성
-	int eduAddAdmain(CFR_User admin);
+	int eduAddAdmain(UserDto admin);
 	
 	// 교육기관코드 중복체크
 	int eduCodeCheck(String eduCode);
@@ -35,4 +36,13 @@ public interface EducationDao {
 	
 	// 교육기관 수정
 	int eduUpdate(EducationDto edu);
+	
+	// 교육기관 계정 수정
+	int eduUpdateAdmin(EducationDto edu);
+	
+	// 교육기관 삭제
+	int eduDelete(EducationDto edu);
 }
+
+
+

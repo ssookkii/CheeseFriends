@@ -5,6 +5,7 @@ import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -41,19 +42,15 @@ public class Compare {
         VideoPanel videoPanel = new VideoPanel();
 
        /* JButton button = new JButton("출석하기!");
-
         // 출석하기 버튼 위치 
         int frameWidth = 1000;
         int buttonWidth = 140;
         int buttonHeight = 40;
         int buttonX = (frameWidth - buttonWidth) / 2;
-
         button.setBounds(buttonX, 30, buttonWidth, buttonHeight);
-
        // 폰트 사이즈 
         Font buttonFont = new Font("맑은 고딕", Font.BOLD, 18);
         button.setFont(buttonFont);
-
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -98,13 +95,8 @@ public class Compare {
             Mat grayFrame = new Mat();
             Imgproc.cvtColor(frame, grayFrame, Imgproc.COLOR_BGR2GRAY);
 
-
             MatOfRect faceDetections = new MatOfRect();
             faceCascade.detectMultiScale(grayFrame, faceDetections);
-
-            // 비교할 이미지 경로
-            String savedImagePath = "C:\\springboot2\\CheeseFriends\\STS\\cheesefriends_back\\src\\AttendanceFace\\member1.jpg";
-    
 
             // 얼굴 비교 시작
             for (Rect rect : faceDetections.toArray()) {
@@ -112,34 +104,42 @@ public class Compare {
                 Mat detectedFace = new Mat(grayFrame, rect);
                 Imgproc.resize(detectedFace, detectedFace, new Size(300, 300));
 
-                // 화면에 찍히는 얼굴 사진 저장
+                // 이름 가져오기 확인 필요 **
+                String personName = "Unknown";
+
+                // 경로에 있는 모든 이미지 파일에 대해 비교
+                File folder = new File("C:\\springboot2\\CheeseFriends\\STS\\cheesefriends_back\\src\\AttendanceFace\\");
+                File[] files = folder.listFiles();
+                double maxSimilarity = 0.0;
                 String detectedFacePath = "C:\\springboot2\\CheeseFriends\\STS\\cheesefriends_back\\src\\DetectedFace\\detected_face.jpg";
                 Imgcodecs.imwrite(detectedFacePath, detectedFace);
-                double similarity = FaceComparison.compareFaces(savedImagePath, detectedFacePath);
+                for (File file : files) {
+                    if (file.isFile()) {
+                        double similarity = FaceComparison.compareFaces(file.getAbsolutePath(), detectedFacePath);
+                        if (similarity > maxSimilarity && similarity > 0.4) {
+                            maxSimilarity = similarity;
+                            // 파일 이름에서 확장자 제거 후 UserID 추출
+                            String filename = file.getName();
+                            String userID = filename.substring(0, filename.lastIndexOf('.'));
+                            personName = userID;
+                        }
+                    }
+                }
 
-                // 이름 가져오기 확인 필요 **
-                String personName = getPersonName(similarity);
-                System.out.println("Similarity: " + similarity);
+                System.out.println("Similarity: " + maxSimilarity);
 
                 // 얼굴에 박스 표시
                 Scalar color;
-                if (similarity > 0.4) {
-                  
+                if (maxSimilarity > 0.4) {
                     color = new Scalar(80, 194, 49); // 유사함
-                   Imgproc.putText(frame, personName, rect.tl(), Imgproc.FONT_HERSHEY_SIMPLEX, 1, color, 2);
-                    //Imgproc.putText(frame, String.format("%.2f", similarity), new Point(rect.x, rect.y + rect.height + 25), Imgproc.FONT_HERSHEY_SIMPLEX, 0.8, color, 2);
                 } else {
                     color = new Scalar(58, 58, 234); // 유사하지 않음
-                    Imgproc.putText(frame, personName, rect.tl(), Imgproc.FONT_HERSHEY_SIMPLEX, 1, color, 2);
                 }
-              
-
-                if (faceDetections.toArray().length > 0) {
-                    Imgproc.rectangle(frame, rect.tl(), rect.br(), color, 2);
-                    
-                }
+                Imgproc.putText(frame, personName, rect.tl(), Imgproc.FONT_HERSHEY_SIMPLEX, 1, color, 2);
+                Imgproc.rectangle(frame, rect.tl(), rect.br(), color, 2);
             }
         }
+
 
 
         private String getPersonName(double similarity) throws FontFormatException, IOException {
@@ -151,52 +151,6 @@ public class Compare {
             }
             return name;
         }
-
-
-/* 출석하기 버튼 누르면 사진 저장 *** 이건 나중에 수정되어야 할 듯 text 용이였음
-        public double saveFrame() {
-            double similarity = 0.0;
-            if (!frame.empty()) {
-                // 비디오 색상 
-                Mat grayFrame = new Mat();
-                Imgproc.cvtColor(frame, grayFrame, Imgproc.COLOR_BGR2GRAY);
-
-                // 얼굴 확인
-                MatOfRect faceDetections = new MatOfRect();
-                faceCascade.detectMultiScale(grayFrame, faceDetections);
-
-                // 얼굴만 저장하기
-                if (faceDetections.toArray().length > 0) {
-                    Rect rect = faceDetections.toArray()[0];
-                    Mat detectedFace = new Mat(frame, rect);
-                    Imgproc.resize(detectedFace, detectedFace, new Size(300, 300));
-
-                    String filename = "C:\\springboot2\\CheeseFriends\\STS\\cheesefriends_back\\src\\AttendanceFace\\capture.jpg";
-                    Imgcodecs.imwrite(filename, detectedFace);
-                    System.out.println("Captured face saved to: " + filename);
-
-                    String savedImagePath = "C:\\springboot2\\CheeseFriends\\STS\\cheesefriends_back\\src\\AttendanceFace\\capture.jpg"; // 저장된 이미지
-                    String detectedFacePath = "C:\\springboot2\\CheeseFriends\\STS\\cheesefriends_back\\src\\DetectedFace\\detected_face.jpg";
-                    Imgcodecs.imwrite(detectedFacePath, detectedFace);
-                            
-                    similarity = FaceComparison.compareFaces(savedImagePath, detectedFacePath);
-                   //System.out.println("Similarity: " + similarity);
-
-                    // 유사도 확인하고 출석 처리 하기
-                    if (similarity > 0.4) {
-                        System.out.println("출석 처리 완료!");
-                    } else {
-                        System.out.println("출석 처리 실패! 다시 시도해주세요.");
-                    }
-                } else {
-                    System.out.println("얼굴 감지 실패! 다시 시도해주세요.");
-                }
-            }
-            return similarity;
-        }
-
-*/
-
 
 
         public VideoPanel() {
@@ -252,24 +206,14 @@ public class Compare {
                     Imgcodecs.imwrite(detectedFacePath, detectedFace);
 
                     double similarity = FaceComparison.compareFaces(savedImagePath, detectedFacePath);
-                    //System.out.println("Similarity: " + similarity);
-
-                    /* 얼굴 위치에 이름 추가
-                    Imgproc.putText(resizedFrame, "Name", rect.tl(), Imgproc.FONT_HERSHEY_SIMPLEX, 1, new Scalar(0, 255, 0), 2);
-
-                    Scalar color;
-                    if (similarity > 0.5) { // 유사도 임계값을 적절하게 설정하세요.
-                        color = new Scalar(0, 255, 0); // Green
-                    } else {
-                        color = new Scalar(0, 0, 255); // Red
-                    }*/
+                   
                        
                     try (PrintWriter out = new PrintWriter("similarity.txt")) {
                         out.println(similarity);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
-                   // Imgproc.rectangle(resizedFrame, rect.tl(), rect.br(), color, 2);
+                
                 }
 
 
