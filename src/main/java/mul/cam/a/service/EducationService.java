@@ -10,6 +10,7 @@ import mul.cam.a.dao.EducationDao;
 import mul.cam.a.dto.CFR_User;
 import mul.cam.a.dto.EducationDto;
 import mul.cam.a.dto.ListParam;
+import mul.cam.a.dto.UserDto;
 
 @Service
 @Transactional
@@ -22,7 +23,7 @@ public class EducationService {
 		int n = dao.eduAdd(edu);
 		return n>0?true:false;
 	}
-	public boolean eduAddAdmain(CFR_User admin) {
+	public boolean eduAddAdmain(UserDto admin) {
 		int n = dao.eduAddAdmain(admin);
 		return n>0?true:false;
 	}
@@ -39,5 +40,20 @@ public class EducationService {
 	}
 	public int getAllEdu(ListParam param) {
 		return dao.getAllEdu(param);
+	}
+	public EducationDto getEdu(String eduCode) {
+		return dao.getEdu(eduCode);
+	}
+	public boolean eduUpdate(EducationDto edu) {
+		int n = dao.eduUpdate(edu);
+		return n>0?true:false;
+	}
+	public boolean eduUpdateAdmin(EducationDto edu) {
+		int n = dao.eduUpdateAdmin(edu);
+		return n>0?true:false;
+	}
+	public boolean eduDelete(EducationDto edu) {
+		int n = dao.eduDelete(edu);
+		return n>0?true:false;
 	}
 }
