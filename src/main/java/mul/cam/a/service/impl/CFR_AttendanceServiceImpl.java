@@ -2,6 +2,7 @@ package mul.cam.a.service.impl;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import mul.cam.a.dao.CFR_AttendanceDao;
 import mul.cam.a.dto.AttendanceSubject;
+import mul.cam.a.dto.AttendanceTimetable;
 import mul.cam.a.dto.CFR_Attendance;
 import mul.cam.a.service.CFR_AttendanceService;
 
@@ -51,13 +53,13 @@ public class CFR_AttendanceServiceImpl implements CFR_AttendanceService {
 	}
 
 	@Override
-	public List<CFR_Attendance> getAllAttendances() {
+	public List<String> getAllAttendances(String subCode) {
 	    // 모든 출석체크 정보를 조회한다
-	    return attendanceDao.getAllAttendances();
+	    return attendanceDao.getAllAttendances(subCode);
 	}
 
 	@Override
-	public List<AttendanceSubject> getSubjectByUserIdAndEduCode(String userId, String eduCode, String subCode) {
+	public List<AttendanceTimetable> getSubjectByUserIdAndEduCode(String userId, String eduCode, String subCode) {
 		return attendanceDao.getSubjectByUserIdAndEduCode(userId, eduCode, subCode);
 	}
 
@@ -66,5 +68,36 @@ public class CFR_AttendanceServiceImpl implements CFR_AttendanceService {
         List<String> existingAttendanceIds = attendanceDao.findAttendanceIdsByStudentAndSubject(studentId, subCode, eduCode);
         return !existingAttendanceIds.contains(attendanceId);
     }
+	
+	    @Override
+	    public List<AttendanceSubject> getAllSubjects() {
+	        return attendanceDao.getAllSubjects();
+	    }
 
-}
+		@Override
+		public List<AttendanceSubject> getAllUser() {
+			   return attendanceDao.getAllUser();
+		}
+		
+		  @Override
+		    public List<AttendanceTimetable> getSubjectByDayOfWeek(String subDay) {
+		        return attendanceDao.getSubjectByDayOfWeek(subDay);
+		    }
+
+		    @Override
+		    public List<String> findAbsentAttendanceIdsBySubCodeAndEndTime(String subCode, LocalTime endTime) {
+		        return attendanceDao.findAbsentAttendanceIdsBySubCodeAndEndTime(subCode, endTime);
+		    }
+
+		    @Override
+		    public List<String> getStudentIdsBySubCode(String subCode) {
+		        return attendanceDao.getStudentIdsBySubCode(subCode);
+		    }
+
+		    @Override
+		    public String generateAttendanceId(String userId, String subCode, int month, int day) {
+		        return userId + subCode + String.format("%02d", month) + String.format("%02d", day);
+		    }	
+	}
+
+

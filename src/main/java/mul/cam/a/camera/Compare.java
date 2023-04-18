@@ -1,16 +1,14 @@
 package mul.cam.a.camera;
 
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Graphics;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
@@ -105,7 +103,7 @@ public class Compare {
             faceCascade.detectMultiScale(grayFrame, faceDetections);
 
             // 비교할 이미지 경로
-            String savedImagePath = "C:\\springboot2\\CheeseFriends\\STS\\cheesefriends_back\\src\\AttendanceFace\\capture.jpg";
+            String savedImagePath = "C:\\springboot2\\CheeseFriends\\STS\\cheesefriends_back\\src\\AttendanceFace\\member1.jpg";
     
 
             // 얼굴 비교 시작
@@ -243,7 +241,7 @@ public class Compare {
                 MatOfRect faceDetections = new MatOfRect();
                 faceCascade.detectMultiScale(grayFrame, faceDetections);
 
-                String savedImagePath = "C:\\springboot2\\CheeseFriends\\STS\\cheesefriends_back\\src\\AttendanceFace\\capture.jpg"; // 저장된 이미지 경로를 설정하세요.
+                String savedImagePath = "C:\\springboot2\\CheeseFriends\\STS\\cheesefriends_back\\src\\AttendanceFace\\member1.jpg"; // 저장된 이미지 경로를 설정하세요.
 
 
                 for (Rect rect : faceDetections.toArray()) {
@@ -265,12 +263,12 @@ public class Compare {
                     } else {
                         color = new Scalar(0, 0, 255); // Red
                     }*/
-                    /*    
+                       
                     try (PrintWriter out = new PrintWriter("similarity.txt")) {
                         out.println(similarity);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
-                    }*/
+                    }
                    // Imgproc.rectangle(resizedFrame, rect.tl(), rect.br(), color, 2);
                 }
 
