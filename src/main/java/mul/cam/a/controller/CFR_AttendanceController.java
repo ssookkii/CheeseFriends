@@ -82,7 +82,7 @@ public class CFR_AttendanceController {
             User_Face_Crop faceCrop = new User_Face_Crop();
             String imagePath = "./src/MemberFace/" + userId + ".jpg";
             System.out.println(imagePath);
-            String croppedImagePath = "./src/AttendanceFace/"+"test"+userId+".jpg";
+            String croppedImagePath = "./src/AttendanceFace/"+userId+".jpg";
             boolean cropSuccess = faceCrop.cropUserFace(imagePath, croppedImagePath);
 
             // 자르기가 성공했는지에 따라 결과 반환
