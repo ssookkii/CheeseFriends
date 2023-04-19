@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Param;
 import mul.cam.a.dto.AttendanceSubject;
 import mul.cam.a.dto.AttendanceTimetable;
 import mul.cam.a.dto.CFR_Attendance;
+import mul.cam.a.dto.CFR_User;
 
 public interface CFR_AttendanceDao {
     CFR_Attendance getAttendanceById(int attendanceID);
@@ -33,5 +34,7 @@ public interface CFR_AttendanceDao {
 
 	    // 해당 강의에 대해 수강하는 학생들의 UserID 조회
 	    List<String> getStudentIdsBySubCode(String subCode);
+	    
+	    String getNameById(String userId);
 
     }

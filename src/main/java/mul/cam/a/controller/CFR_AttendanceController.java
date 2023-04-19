@@ -23,9 +23,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import mul.cam.a.camera.User_Face_Crop;
+import mul.cam.a.dao.CFR_AttendanceDao;
 import mul.cam.a.dto.AttendanceRequest;
 import mul.cam.a.dto.AttendanceTimetable;
 import mul.cam.a.dto.CFR_Attendance;
@@ -33,13 +33,9 @@ import mul.cam.a.service.CFR_AttendanceService;
 
 @Controller
 public class CFR_AttendanceController {
+	private CFR_AttendanceDao userDAO;
+	
     private CFR_AttendanceService attendanceService;
-    private final SseEmitter sseEmitter = new SseEmitter();
-    
-    @GetMapping("/api/attendance-stream")
-    public SseEmitter getAttendanceStream() {
-        return sseEmitter;
-    }
     
     public CFR_AttendanceController(CFR_AttendanceService attendanceService) {
         this.attendanceService = attendanceService;
@@ -68,7 +64,6 @@ public class CFR_AttendanceController {
 
             if (line != null) {
                 userId = line.trim();
-                sseEmitter.send(userId); 
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -149,6 +144,8 @@ public class CFR_AttendanceController {
         boolean checkattendanceIds = attendanceService.checkAttendanceId(userId, subCode, eduCode, AttendanceID);
 
         LocalDateTime nowTime = now.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        String attendanceStatus = "";
+        String attendanceMessage = "";
 
         for (AttendanceTimetable timetable : timetableList) {
             LocalTime startTime = timetable.getSubStartTime();
@@ -171,12 +168,15 @@ public class CFR_AttendanceController {
 
                 // 현재 시간이 출석 시작 시간보다 빠르면 출석으로 처리, 아니면 지각으로 처리
                 if (nowTime.toLocalTime().isBefore(startTime)) {
+                	attendanceStatus = "출석";
                     attendance.setStatus("출석");
                     System.out.println(userId + " 출석했습니다.");
                 } else if(nowTime.toLocalTime().isAfter(endTime)) {
+                	attendanceStatus = "결석";
                     attendance.setStatus("결석");
                     System.out.println(userId + " 결석했습니다.");
                 }else {
+                	attendanceStatus = "지각";
                     attendance.setStatus("지각");
                     System.out.println(userId + " 지각했습니다.");
                 }
@@ -186,7 +186,13 @@ public class CFR_AttendanceController {
             }
         }
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(attendanceStatus);
+    }
+    
+    @GetMapping("/user/{userId}/name")
+    public ResponseEntity<String> getNameById(@PathVariable String userId) {
+        String name = userDAO.getNameById(userId);
+        return ResponseEntity.ok(name);
     }
     
     // 결석

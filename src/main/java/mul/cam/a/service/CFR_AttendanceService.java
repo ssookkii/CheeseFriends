@@ -38,4 +38,6 @@ public interface CFR_AttendanceService {
 
     // UserID, SubCode, Month, Day를 결합하여 AttendanceID 생성
     String generateAttendanceId(String userId, String subCode, int month, int day);
+    
+    
 }
