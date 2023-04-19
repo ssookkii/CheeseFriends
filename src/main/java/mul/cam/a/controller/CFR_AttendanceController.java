@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.TextStyle;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -20,9 +19,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import mul.cam.a.camera.User_Face_Crop;
 import mul.cam.a.dto.AttendanceRequest;
@@ -33,6 +34,12 @@ import mul.cam.a.service.CFR_AttendanceService;
 @Controller
 public class CFR_AttendanceController {
     private CFR_AttendanceService attendanceService;
+    private final SseEmitter sseEmitter = new SseEmitter();
+    
+    @GetMapping("/api/attendance-stream")
+    public SseEmitter getAttendanceStream() {
+        return sseEmitter;
+    }
     
     public CFR_AttendanceController(CFR_AttendanceService attendanceService) {
         this.attendanceService = attendanceService;
@@ -41,34 +48,56 @@ public class CFR_AttendanceController {
     static {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
     }
-    
- //출석체크 실행 시스템   
+   
     @PostMapping("/api/compareFaces")
-    public ResponseEntity<Double> compareFaces() {
+    public ResponseEntity<String> compareFaces() {
         String command = "java -cp .;opencv-470.jar mul.cam.a.camera.Compare";
-        double similarity = 0.0;
+        String userId = "Unknown";
         System.out.println("출석체크 시스템 실행");
         System.out.println(getClass().getProtectionDomain().getCodeSource().getLocation());
 
         try {
-        	
             ProcessBuilder builder = new ProcessBuilder(command.split(" "));
             builder.directory(new File("./target/classes"));
             Process process = builder.start();
-            BufferedReader reader = new BufferedReader(new FileReader("./target/classes/similarity.txt"));
+            BufferedReader reader = new BufferedReader(new FileReader("userId.txt"));
             String line = reader.readLine();
             System.out.println(command);
             System.out.println(process);
             System.out.println(line);
-            if (line != null && line.matches("\\d+(\\.\\d+)?")) {
-            similarity = Double.parseDouble(line.trim());
-           }
+
+            if (line != null) {
+                userId = line.trim();
+                sseEmitter.send(userId); 
+            }
         } catch (Exception e) {
-           e.printStackTrace();
+            e.printStackTrace();
             System.out.println("catch");
-       }
-        return ResponseEntity.ok(similarity);
+        }
+        System.out.println(userId);
+        return ResponseEntity.ok(userId);
     }
+    
+       
+        @GetMapping("/api/userId")
+        public ResponseEntity<String> getUserId() {
+            String userId = "Unknown";
+            
+            try {
+                BufferedReader reader = new BufferedReader(new FileReader("userId.txt"));
+                String line = reader.readLine();
+                
+                if (line != null) {
+                    userId = line.trim();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            
+            return ResponseEntity.ok(userId);
+        }
+        
+    
 
 
  // userID별로 사진 크롭해서 저장
@@ -98,6 +127,7 @@ public class CFR_AttendanceController {
             return ResponseEntity.badRequest().body("Failed to crop image");
         }
     }
+    
 
     
   //출석
@@ -158,6 +188,7 @@ public class CFR_AttendanceController {
 
         return ResponseEntity.ok().build();
     }
+    
     // 결석
     @Scheduled(cron = "0 5 * * * *") // 매 시간 5분에 실행
     public void checkAbsence() {
@@ -207,7 +238,6 @@ public class CFR_AttendanceController {
             }
         }
     }
-   
 }
 
 
@@ -218,6 +248,5 @@ public class CFR_AttendanceController {
     
 
     
-
 
 
