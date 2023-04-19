@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="AttManage">
+<select id="getAttendanceList" resultMap="attendanceResultMap">
+    SELECT attendanceTime, status FROM attendance
+    WHERE studentID = #{studentID}
+    AND sub_code = #{subCode}
+    AND edu_code = #{eduCode}
+</select>
+
+  <resultMap id="attendanceResultMap" type="mul.cam.a.dto.CFR_Attendance">
+    <result column="attendanceTime" property="attendanceTime"/>
+    <result column="status" property="status"/>
+  </resultMap>
+
+</mapper>

@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Locale;
 
 import org.opencv.core.Core;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -29,11 +30,13 @@ import mul.cam.a.dao.CFR_AttendanceDao;
 import mul.cam.a.dto.AttendanceRequest;
 import mul.cam.a.dto.AttendanceTimetable;
 import mul.cam.a.dto.CFR_Attendance;
+import mul.cam.a.dto.CFR_User;
 import mul.cam.a.service.CFR_AttendanceService;
 
 @Controller
 public class CFR_AttendanceController {
-	private CFR_AttendanceDao userDAO;
+	@Autowired
+	private CFR_AttendanceDao attendanceuserDAO;
 	
     private CFR_AttendanceService attendanceService;
     
@@ -158,6 +161,7 @@ public class CFR_AttendanceController {
           
 
             if (checkattendanceIds == false) {
+            	attendanceStatus = "이미 출석을 완료";
                 System.out.println(userId + "이미 출석했습니다");
             } else {
                 CFR_Attendance attendance = new CFR_Attendance();
@@ -189,9 +193,10 @@ public class CFR_AttendanceController {
         return ResponseEntity.ok(attendanceStatus);
     }
     
-    @GetMapping("/user/{userId}/name")
+    @GetMapping("/user/{userId}")
     public ResponseEntity<String> getNameById(@PathVariable String userId) {
-        String name = userDAO.getNameById(userId);
+    	System.out.println(userId);
+        String name = attendanceuserDAO.getNameById(userId);
         return ResponseEntity.ok(name);
     }
     

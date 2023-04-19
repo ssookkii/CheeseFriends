@@ -101,7 +101,13 @@ public class CFR_AttendanceDaoImpl implements CFR_AttendanceDao {
 
 		@Override
 		public String getNameById(String userId) {
-			return sqlSession.selectOne(NS + "getNameById", userId);
+			String name = sqlSession.selectOne(NS + "getNameById", userId);
+			 CFR_User user = new CFR_User();
+		        user.setName(name);
+		        return user.getName();
+		}
+
+
 		}
     
-}
+

@@ -9,9 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import mul.cam.a.dao.CFR_AttendanceDao;
+import mul.cam.a.dao.CFR_UserDao;
 import mul.cam.a.dto.AttendanceSubject;
 import mul.cam.a.dto.AttendanceTimetable;
 import mul.cam.a.dto.CFR_Attendance;
+import mul.cam.a.dto.CFR_User;
 import mul.cam.a.service.CFR_AttendanceService;
 
 @Service
@@ -97,7 +99,13 @@ public class CFR_AttendanceServiceImpl implements CFR_AttendanceService {
 		    @Override
 		    public String generateAttendanceId(String userId, String subCode, int month, int day) {
 		        return userId + subCode + String.format("%02d", month) + String.format("%02d", day);
-		    }	
-	}
+		    }
 
+			@Override
+			public String getNameById(String userId) {
+				return attendanceDao.getNameById(userId);
+			}
+
+
+	}
 
