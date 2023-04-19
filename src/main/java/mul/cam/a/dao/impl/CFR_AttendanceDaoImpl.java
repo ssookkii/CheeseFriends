@@ -14,6 +14,7 @@ import mul.cam.a.dto.AttendanceSearch;
 import mul.cam.a.dto.AttendanceSubject;
 import mul.cam.a.dto.AttendanceTimetable;
 import mul.cam.a.dto.CFR_Attendance;
+import mul.cam.a.dto.CFR_User;
 
 @Repository
 public class CFR_AttendanceDaoImpl implements CFR_AttendanceDao {
@@ -97,5 +98,16 @@ public class CFR_AttendanceDaoImpl implements CFR_AttendanceDao {
 	    public List<String> getStudentIdsBySubCode(String subCode) {
 	        return sqlSession.selectList(NS + "getStudentIdsBySubCode", subCode);
 	    }
+
+		@Override
+		public String getNameById(String userId) {
+			String name = sqlSession.selectOne(NS + "getNameById", userId);
+			 CFR_User user = new CFR_User();
+		        user.setName(name);
+		        return user.getName();
+		}
+
+
+		}
     
-}
+
