@@ -21,9 +21,9 @@ public class LectureController {
 	@GetMapping(value = "lecturelist")
 	
 	public List<LectureDto> lectureList(Integer seq) {
-		// System.out.println("LectureController lectureList " + new Date());
+		 System.out.println("LectureController lectureList " + new Date());
 		List<LectureDto> list = service.lectureList(seq);
-		System.out.println(list);
+		// System.out.println(list);
 		return list;
 
 	}
