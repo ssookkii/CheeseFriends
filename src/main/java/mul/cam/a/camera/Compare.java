@@ -24,40 +24,27 @@ import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
+import org.opencv.ml.SVM;
 import org.opencv.objdetect.CascadeClassifier;
 import org.opencv.videoio.VideoCapture;
 import org.opencv.videoio.Videoio;
 
 public class Compare {
 
+
+	
     public static void main(String[] args) {
 
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+        
         new Compare();
+        
         // JFrame 생성
         JFrame jframe = new JFrame("Cheese Friends");
         jframe.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         // 비디오 패널 생성
         VideoPanel videoPanel = new VideoPanel();
-
-       /* JButton button = new JButton("출석하기!");
-        // 출석하기 버튼 위치 
-        int frameWidth = 1000;
-        int buttonWidth = 140;
-        int buttonHeight = 40;
-        int buttonX = (frameWidth - buttonWidth) / 2;
-        button.setBounds(buttonX, 30, buttonWidth, buttonHeight);
-       // 폰트 사이즈 
-        Font buttonFont = new Font("맑은 고딕", Font.BOLD, 18);
-        button.setFont(buttonFont);
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                videoPanel.saveFrame();
-            }
-        });
-        */
 
         // 패널 크기 
         JLayeredPane layeredPane = new JLayeredPane();
@@ -120,8 +107,16 @@ public class Compare {
                             maxSimilarity = similarity;
                             // 파일 이름에서 확장자 제거 후 UserID 추출
                             String filename = file.getName();
-                            String userID = filename.substring(0, filename.lastIndexOf('.'));
+                            String userID = filename.replaceAll("_\\d+\\.\\w+$", ""); // _num.확장자 제거
+                            //userID = userID.substring(0, userID.lastIndexOf('.')); // .확장자 제거
                             personName = userID;
+                            
+                            try (PrintWriter out = new PrintWriter("C:\\springboot2\\CheeseFriends\\STS\\cheesefriends_back\\userId.txt")) {
+                                out.println(personName);
+                           } catch (FileNotFoundException e) {
+                                e.printStackTrace();
+                            }
+
                         }
                     }
                 }
@@ -195,7 +190,7 @@ public class Compare {
                 MatOfRect faceDetections = new MatOfRect();
                 faceCascade.detectMultiScale(grayFrame, faceDetections);
 
-                String savedImagePath = "C:\\springboot2\\CheeseFriends\\STS\\cheesefriends_back\\src\\AttendanceFace\\member1.jpg"; // 저장된 이미지 경로를 설정하세요.
+                //String savedImagePath = "C:\\springboot2\\CheeseFriends\\STS\\cheesefriends_back\\src\\AttendanceFace\\member1.jpg"; // 저장된 이미지 경로를 설정하세요.
 
 
                 for (Rect rect : faceDetections.toArray()) {
@@ -205,14 +200,14 @@ public class Compare {
                     String detectedFacePath = "C:\\springboot2\\CheeseFriends\\STS\\cheesefriends_back\\src\\DetectedFace\\detected_face.jpg";
                     Imgcodecs.imwrite(detectedFacePath, detectedFace);
 
-                    double similarity = FaceComparison.compareFaces(savedImagePath, detectedFacePath);
+                   // double similarity = FaceComparison.compareFaces(savedImagePath, detectedFacePath);
                    
                        
-                    try (PrintWriter out = new PrintWriter("similarity.txt")) {
-                        out.println(similarity);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
+//                    try (PrintWriter out = new PrintWriter("similarity.txt")) {
+//                        out.println(similarity);
+//                    } catch (FileNotFoundException e) {
+//                        e.printStackTrace();
+//                    }
                 
                 }
 

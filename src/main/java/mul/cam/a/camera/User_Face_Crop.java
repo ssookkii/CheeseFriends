@@ -2,6 +2,7 @@ package mul.cam.a.camera;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
@@ -73,12 +74,26 @@ public class User_Face_Crop {
             augmentedImages.add(rotated.clone());
         }
         
+        
+     // 이미지 블러링
+        Mat blurred = new Mat();
+        Imgproc.GaussianBlur(resized, blurred, new Size(5, 5), 0);
+        augmentedImages.add(blurred);
+        
+     // 이미지 노이즈 추가
+        Mat noise = new Mat(resized.size(), resized.type());
+        Core.randn(noise, 0, 50); // 표준편차 50인 노이즈 생성
+        Mat noisyImage = new Mat();
+        Core.add(resized, noise, noisyImage);
+        augmentedImages.add(noisyImage);
+       
         // 증강된 이미지 저장
+        
+     // 증강된 이미지 저장
         for (int i = 0; i < augmentedImages.size(); i++) {
-            outputImagePath =  outputImagePath + i + ".jpg";
-            Imgcodecs.imwrite(outputImagePath, augmentedImages.get(i));
+            String outputImagePathWithIndex = outputImagePath.replace(".jpg", "_"+ i + ".jpg");
+            Imgcodecs.imwrite(outputImagePathWithIndex, augmentedImages.get(i));
         }
-
         return true;
     }
 }

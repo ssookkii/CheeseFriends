@@ -33,6 +33,8 @@ public interface CFR_AttendanceDao {
 
 	    // 해당 강의에 대해 수강하는 학생들의 UserID 조회
 	    List<String> getStudentIdsBySubCode(String subCode);
+	    
+	    String getNameById(String userId);
+	    
 
     }
-
