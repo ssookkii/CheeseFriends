@@ -4,9 +4,11 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import mul.cam.a.dao.AttManageDao;
 import mul.cam.a.dto.CFR_Attendance;
+import mul.cam.a.dto.SubjectDto;
 
 @Service
 public class AttManageService {
@@ -16,6 +18,23 @@ public class AttManageService {
 
     public List<CFR_Attendance> getAttendanceList(String studentID, String subCode, String eduCode) {
         return attManageDao.getAttendanceList(studentID, subCode, eduCode);
+    }
+    
+    public List<SubjectDto> getSubjectsByUserId(String userId) {
+        return attManageDao.getSubjectsByUserId(userId);
+    }
+    
+    public List<CFR_Attendance> getAttendanceBySubjectCode(String subCode) {
+    	return attManageDao.getAttendanceBySubjectCode(subCode);
+}
+    @Transactional
+    public int updateAttendanceStatus(String attendanceID, String status) {
+        return attManageDao.updateAttendanceStatus(attendanceID, status);
+    }
+    
+    @Transactional
+    public int updateAttendancecomment(String attendanceID, String comment) {
+        return attManageDao.updateAttendancecomment(attendanceID, comment);
     }
 }
 
