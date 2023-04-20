@@ -9,29 +9,35 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.TextStyle;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 import org.opencv.core.Core;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import mul.cam.a.camera.User_Face_Crop;
+import mul.cam.a.dao.CFR_AttendanceDao;
 import mul.cam.a.dto.AttendanceRequest;
 import mul.cam.a.dto.AttendanceTimetable;
 import mul.cam.a.dto.CFR_Attendance;
+import mul.cam.a.dto.CFR_User;
 import mul.cam.a.service.CFR_AttendanceService;
 
 @Controller
 public class CFR_AttendanceController {
+	@Autowired
+	private CFR_AttendanceDao attendanceuserDAO;
+	
     private CFR_AttendanceService attendanceService;
     
     public CFR_AttendanceController(CFR_AttendanceService attendanceService) {
@@ -41,34 +47,55 @@ public class CFR_AttendanceController {
     static {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
     }
-    
- //출석체크 실행 시스템   
+   
     @PostMapping("/api/compareFaces")
-    public ResponseEntity<Double> compareFaces() {
+    public ResponseEntity<String> compareFaces() {
         String command = "java -cp .;opencv-470.jar mul.cam.a.camera.Compare";
-        double similarity = 0.0;
+        String userId = "Unknown";
         System.out.println("출석체크 시스템 실행");
         System.out.println(getClass().getProtectionDomain().getCodeSource().getLocation());
 
         try {
-        	
             ProcessBuilder builder = new ProcessBuilder(command.split(" "));
             builder.directory(new File("./target/classes"));
             Process process = builder.start();
-            BufferedReader reader = new BufferedReader(new FileReader("./target/classes/similarity.txt"));
+            BufferedReader reader = new BufferedReader(new FileReader("userId.txt"));
             String line = reader.readLine();
             System.out.println(command);
             System.out.println(process);
             System.out.println(line);
-            if (line != null && line.matches("\\d+(\\.\\d+)?")) {
-            similarity = Double.parseDouble(line.trim());
-           }
+
+            if (line != null) {
+                userId = line.trim();
+            }
         } catch (Exception e) {
-           e.printStackTrace();
+            e.printStackTrace();
             System.out.println("catch");
-       }
-        return ResponseEntity.ok(similarity);
+        }
+        System.out.println(userId);
+        return ResponseEntity.ok(userId);
     }
+    
+       
+        @GetMapping("/api/userId")
+        public ResponseEntity<String> getUserId() {
+            String userId = "Unknown";
+            
+            try {
+                BufferedReader reader = new BufferedReader(new FileReader("userId.txt"));
+                String line = reader.readLine();
+                
+                if (line != null) {
+                    userId = line.trim();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            
+            return ResponseEntity.ok(userId);
+        }
+        
+    
 
 
  // userID별로 사진 크롭해서 저장
@@ -98,6 +125,7 @@ public class CFR_AttendanceController {
             return ResponseEntity.badRequest().body("Failed to crop image");
         }
     }
+    
 
     
   //출석
@@ -119,6 +147,8 @@ public class CFR_AttendanceController {
         boolean checkattendanceIds = attendanceService.checkAttendanceId(userId, subCode, eduCode, AttendanceID);
 
         LocalDateTime nowTime = now.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        String attendanceStatus = "";
+        String attendanceMessage = "";
 
         for (AttendanceTimetable timetable : timetableList) {
             LocalTime startTime = timetable.getSubStartTime();
@@ -131,6 +161,7 @@ public class CFR_AttendanceController {
           
 
             if (checkattendanceIds == false) {
+            	attendanceStatus = "이미 출석을 완료";
                 System.out.println(userId + "이미 출석했습니다");
             } else {
                 CFR_Attendance attendance = new CFR_Attendance();
@@ -141,12 +172,15 @@ public class CFR_AttendanceController {
 
                 // 현재 시간이 출석 시작 시간보다 빠르면 출석으로 처리, 아니면 지각으로 처리
                 if (nowTime.toLocalTime().isBefore(startTime)) {
+                	attendanceStatus = "출석";
                     attendance.setStatus("출석");
                     System.out.println(userId + " 출석했습니다.");
                 } else if(nowTime.toLocalTime().isAfter(endTime)) {
+                	attendanceStatus = "결석";
                     attendance.setStatus("결석");
                     System.out.println(userId + " 결석했습니다.");
                 }else {
+                	attendanceStatus = "지각";
                     attendance.setStatus("지각");
                     System.out.println(userId + " 지각했습니다.");
                 }
@@ -156,8 +190,16 @@ public class CFR_AttendanceController {
             }
         }
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(attendanceStatus);
     }
+    
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<String> getNameById(@PathVariable String userId) {
+    	System.out.println(userId);
+        String name = attendanceuserDAO.getNameById(userId);
+        return ResponseEntity.ok(name);
+    }
+    
     // 결석
     @Scheduled(cron = "0 5 * * * *") // 매 시간 5분에 실행
     public void checkAbsence() {
@@ -207,7 +249,6 @@ public class CFR_AttendanceController {
             }
         }
     }
-   
 }
 
 
@@ -218,6 +259,5 @@ public class CFR_AttendanceController {
     
 
     
-
 
 

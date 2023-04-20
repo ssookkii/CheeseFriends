@@ -2,17 +2,28 @@ package mul.cam.a.camera;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfFloat;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
+import org.opencv.objdetect.HOGDescriptor;
 
 public class FaceComparison {
-
+	  private static final int IMAGE_WIDTH = 300;
+	    private static final int IMAGE_HEIGHT = 300;
+	    private static final Size WINDOW_SIZE = new Size(128, 128);
+	    private static final Size BLOCK_SIZE = new Size(64, 64);
+	    private static final Size BLOCK_STRIDE = new Size(32, 32);
+	    private static final Size CELL_SIZE = new Size(32, 32);
+	    private static final int NUM_BINS = 9;
+	    private static final double EPS = 1e-7;
+	    
     public static double compareFaces(String imgPath1, String imgPath2) {
         // 비교할 이미지 불러오기 
         Mat img1 = Imgcodecs.imread(imgPath1);
         Mat img2 = Imgcodecs.imread(imgPath2);
+        
 
         // 색상 관련
         Mat grayImg1 = new Mat();
@@ -38,7 +49,40 @@ public class FaceComparison {
 
         return similarity;
     }
+    
+    public static Mat computeHOG(Mat image) {
+        // HOG Descriptor 계산을 위한 HOGDescriptor 객체 생성
+        HOGDescriptor hogDescriptor = new HOGDescriptor(
+            WINDOW_SIZE,
+            BLOCK_SIZE,
+            BLOCK_STRIDE,
+            CELL_SIZE,
+            NUM_BINS,
+            1,
+            -1,
+            HOGDescriptor.DEFAULT_NLEVELS,
+            HOGDescriptor.DESCR_FORMAT_ROW_BY_ROW
+        );
 
+        // 입력 이미지의 크기를 300x300 으로 조정
+        Mat resizedImage = new Mat();
+        Imgproc.resize(image, resizedImage, new Size(IMAGE_WIDTH, IMAGE_HEIGHT));
+
+        // HOG Descriptor 계산
+        MatOfFloat descriptor = new MatOfFloat();
+        hogDescriptor.compute(resizedImage, descriptor);
+
+        // 계산된 HOG Descriptor를 1차원 벡터로 변환
+        Mat hogDescriptorMat = new Mat();
+        descriptor.copyTo(hogDescriptorMat);
+
+        // L2-Normalization을 적용
+        Core.normalize(hogDescriptorMat, hogDescriptorMat);
+
+        // 반환
+        return hogDescriptorMat.reshape(1, 1);
+    }
+    
     public static void main(String[] args) {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 
