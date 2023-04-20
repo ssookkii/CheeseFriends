@@ -153,12 +153,7 @@ public class CFR_AttendanceController {
         for (AttendanceTimetable timetable : timetableList) {
             LocalTime startTime = timetable.getSubStartTime();
             LocalTime endTime = timetable.getSubEndTime();
-            System.out.println(startTime);
-
-            System.out.println("지금시간 :" + nowTime.toString());
-            System.out.println("수업시간 :" + startTime.toString());
-            
-          
+    
 
             if (checkattendanceIds == false) {
             	attendanceStatus = "이미 출석을 완료";
