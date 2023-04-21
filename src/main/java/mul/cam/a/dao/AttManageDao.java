@@ -1,13 +1,16 @@
 package mul.cam.a.dao;
 
+import java.time.DayOfWeek;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import mul.cam.a.dto.AttendanceSMSCheck;
 import mul.cam.a.dto.CFR_Attendance;
 import mul.cam.a.dto.SubjectDto;
 
@@ -49,5 +52,41 @@ public class AttManageDao {
         parameters.put("comment", comment);
         return sqlSession.update(NS+"updateAttendancecomment", parameters);
       }
+
+    public int updateUserSMSCheck(AttendanceSMSCheck SMSCheck) {
+       return sqlSession.insert(NS+"updateUserSMSCheck", SMSCheck);
+    }
+    public int updateUserSMSCheckAbsent(AttendanceSMSCheck SMSCheckAbsent) {
+        return sqlSession.insert(NS+"updateUserSMSCheckAbsent", SMSCheckAbsent);
+     }
+    
+    public List<AttendanceSMSCheck> getAlarm(String userId) {
+  	  return sqlSession.selectList(NS+ "getAlarm", userId);
+    }
+    public List<AttendanceSMSCheck> getAbsentAlarm(String userId) {
+    	  return sqlSession.selectList(NS+ "getAbsentAlarm", userId);
+      }
+    public String getPhoneNumber(String userId) {
+        return sqlSession.selectOne(NS+"getPhoneNumber", userId);
+    }
+    
+    public List<String> findUserMinCheckTrue(){
+    	return sqlSession.selectList(NS + "findUserMinCheckTrue" );
+    }
+    public List<String> findSubCodesByUserId(String userId){
+    	return sqlSession.selectList(NS + "findSubCodesByUserId", userId);
+    }
+    
+    public String findSubStartTimeBySubCode(String subCode, String displayName) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("subCode", subCode);
+        params.put("displayName", displayName);
+        return sqlSession.selectOne(NS + "findSubStartTimeBySubCode", params);
+    }
+
+
+    public String findSubName(String subCode) {
+    	return sqlSession.selectOne(NS + "findSubName" , subCode);
+    }
 
 }

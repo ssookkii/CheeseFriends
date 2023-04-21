@@ -1,5 +1,6 @@
 package mul.cam.a.service;
 
+import java.time.DayOfWeek;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import mul.cam.a.dao.AttManageDao;
+import mul.cam.a.dto.AttendanceSMSCheck;
 import mul.cam.a.dto.CFR_Attendance;
 import mul.cam.a.dto.SubjectDto;
 
@@ -36,5 +38,36 @@ public class AttManageService {
     public int updateAttendancecomment(String attendanceID, String comment) {
         return attManageDao.updateAttendancecomment(attendanceID, comment);
     }
+    
+    public int updateUserSMSCheck(AttendanceSMSCheck SMSCheck) {
+    	return attManageDao.updateUserSMSCheck(SMSCheck);
+    }
+    public int updateUserSMSCheckAbsent(AttendanceSMSCheck SMSCheckAbsent) {
+    	return attManageDao.updateUserSMSCheckAbsent(SMSCheckAbsent);
+    }
+    
+    public List<AttendanceSMSCheck> getAlarm(String userId) {
+    	return attManageDao.getAlarm(userId);
+}
+    public List<AttendanceSMSCheck> getAbsentAlarm(String userId) {
+    	return attManageDao.getAbsentAlarm(userId);
+}
+    public String getPhoneNumber(String userId) {
+        return attManageDao.getPhoneNumber(userId);
+    }
+
+	public List<String> findUserMinCheckTrue() {
+		 return attManageDao.findUserMinCheckTrue();
+	}
+	public List<String> findSubCodesByUserId(String userId){
+		return attManageDao.findSubCodesByUserId(userId);
+	}
+	public String findSubStartTimeBySubCode(String subCode, String displayName){
+		return attManageDao.findSubStartTimeBySubCode(subCode, displayName);
+	}
+	public String findSubName(String subCode) {
+		return attManageDao.findSubName(subCode);
+	}
+
 }
 

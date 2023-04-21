@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import mul.cam.a.attendSMS.AbsentSender;
 import mul.cam.a.camera.User_Face_Crop;
 import mul.cam.a.dao.CFR_AttendanceDao;
 import mul.cam.a.dto.AttendanceRequest;
@@ -36,9 +37,10 @@ import mul.cam.a.service.CFR_AttendanceService;
 @Controller
 public class CFR_AttendanceController {
 	@Autowired
-	private CFR_AttendanceDao attendanceuserDAO;
-	
+	private CFR_AttendanceDao attendanceuserDAO;	
     private CFR_AttendanceService attendanceService;
+    @Autowired
+    private AbsentSender AbsentSender;
     
     public CFR_AttendanceController(CFR_AttendanceService attendanceService) {
         this.attendanceService = attendanceService;
@@ -235,7 +237,10 @@ public class CFR_AttendanceController {
                         attendance.setEdu_code(timetable.getEduCode());
                         attendance.setStatus("결석");
                         attendanceService.checkAttendance(attendance);
+                        // 결석 문자 보내기
+                        //AbsentSender.sendSMS(studentId, subName);
                         System.out.println(studentId + " 학생의 결석 처리 완료");
+                        
                     }
                 } else {
                     // 해당 출석번호가 이미 있으면 건너뜀

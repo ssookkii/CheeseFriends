@@ -1,13 +1,20 @@
 package mul.cam.a.controller;
 
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +22,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import mul.cam.a.attendSMS.AbsentSender;
+import mul.cam.a.attendSMS.SmsSender;
+import mul.cam.a.dto.AttendanceSMSCheck;
 import mul.cam.a.dto.CFR_Attendance;
 import mul.cam.a.dto.SubjectDto;
 import mul.cam.a.service.AttManageService;
@@ -24,6 +34,9 @@ import mul.cam.a.service.AttManageService;
 public class AttManageController {
     @Autowired
     private AttManageService attManageService;
+    @Autowired
+    private SmsSender smsSender;
+
     
     @GetMapping("/{studentID}/{subCode}/{eduCode}")
     public ResponseEntity<?> getAttendanceList(@PathVariable String studentID,
@@ -66,6 +79,76 @@ public class AttManageController {
     	int attendance = attManageService.updateAttendancecomment(attendanceID, updatedAttendancecomment.getComment());
     	return ResponseEntity.ok(attendance);
     }
+    
+    
+    @PostMapping("/{userId}/AlarmTrue")
+    public ResponseEntity<?> updateUserSMSCheck(@PathVariable String userId, @RequestBody Map<String, Object> requestMap) {
+        Boolean minCheck = (Boolean) requestMap.get("minCheck");
+        AttendanceSMSCheck SMSCheckset = new AttendanceSMSCheck();
+        SMSCheckset.setUserID(userId);
+        SMSCheckset.setMinCheck(minCheck);
+
+        attManageService.updateUserSMSCheck(SMSCheckset);
+        return ResponseEntity.ok(SMSCheckset);
+    }
+    
+    @PostMapping("/{userId}/AbsentAlarmTrue")
+    public ResponseEntity<?> updateUserSMSCheckAbsent(@PathVariable String userId, @RequestBody Map<String, Object> requestMap) {
+        Boolean absentAlarm = (Boolean) requestMap.get("absentAlarm");
+        AttendanceSMSCheck absentSMSCheckset = new AttendanceSMSCheck();
+        absentSMSCheckset.setUserId(userId);
+        absentSMSCheckset.setAbsentCheck(absentAlarm);
+        attManageService.updateUserSMSCheckAbsent(absentSMSCheckset);
+        return ResponseEntity.ok(absentSMSCheckset);
+    }
+    
+    @GetMapping("/{userId}/GetAlarm")
+    public ResponseEntity<?> getAlarm(@PathVariable String userId) {
+        List<AttendanceSMSCheck> minCheck = attManageService.getAlarm(userId);
+      return ResponseEntity.ok(minCheck);
+    }
+    
+    @GetMapping("/{userId}/AbsentAlarm")
+    public ResponseEntity<?> getAbsentAlarm(@PathVariable String userId) {
+        List<AttendanceSMSCheck> absentAlarm = attManageService.getAbsentAlarm(userId);
+      return ResponseEntity.ok(absentAlarm);
+    }
+    
+    
+    //@Scheduled(cron = "0 30 * * * *") // 매 시간 30분에 실행 -> 30분 이전 알림 체크라서
+    @Scheduled(cron = "0 0 0 * * *") // 매일 자정에 실행
+    public String sendSms() {
+        List<String> userIds = attManageService.findUserMinCheckTrue();
+        for (String userId : userIds) {
+        	List<String> subCodes = attManageService.findSubCodesByUserId(userId);
+            LocalDate nowDate = LocalDate.now();
+            DayOfWeek dayOfWeek = nowDate.getDayOfWeek(); 
+            String displayName = dayOfWeek.getDisplayName(TextStyle.FULL_STANDALONE, Locale.KOREAN);
+            
+        	for (String subCode : subCodes) {
+        	String subName = attManageService.findSubName(subCode);
+            String subStartTimeStr = attManageService.findSubStartTimeBySubCode(subCode, displayName);
+            if (subStartTimeStr == null) {
+                continue;
+            }
+            LocalTime subStartTime = LocalTime.parse(subStartTimeStr);
+
+            // 현재 시각
+            LocalDateTime now = LocalDateTime.now();
+            LocalTime currentTime = now.toLocalTime();
+            
+            System.out.println(subStartTime);
+            System.out.println(currentTime);
+
+         // 30분 이내라면 문자 발송
+            if (subStartTime.isBefore(currentTime.plusMinutes(30)) && subStartTime.isAfter(currentTime)) {
+                smsSender.sendSMS(userId, subName);
+            }
+        }
+        }
+        return "SMS Sent Successfully!";
+    }
+    
     
 }
 
