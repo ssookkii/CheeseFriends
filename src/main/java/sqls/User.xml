@@ -40,4 +40,60 @@
 	values(#{id}, #{subcode}, now(), now())
 </insert> 
 
+<select id="idmatching" parameterType="String" resultType="mul.cam.a.dto.UserDto">
+	select id, name, auth
+	from user
+	where id=#{studentid}
+</select>
+
+<insert id="adduserparents" parameterType="mul.cam.a.dto.UserparentsDto">
+	insert into userparents(studentid, parentsid)
+	values(#{studentid}, #{parentsid})
+</insert>
+
+<select id="edusearch" parameterType="String" resultType="mul.cam.a.dto.EducationDto">
+	select edu_code, edu_name
+	from education
+	where edu_name like concat('%', #{edu_name}, '%')
+</select>
+
+<insert id="adduseredu" parameterType="mul.cam.a.dto.TestEduDto">
+	insert into useredu(user_id, edu_code)
+	values(#{id}, #{educode})
+</insert>
+
+<select id="idsearch" parameterType="mul.cam.a.dto.UserDto" resultType="mul.cam.a.dto.UserDto">
+	SELECT ID, regidate
+	FROM USER
+	WHERE name=#{name}
+	and phone=#{phone}
+</select>
+
+<select id="idchecktwo" parameterType="mul.cam.a.dto.UserDto"  resultType="String">
+	SELECT ID
+	FROM USER
+	WHERE ID=#{id}
+	and phone=#{phone}
+</select>
+
+<update id="updatepassword" parameterType="mul.cam.a.dto.UserDto">
+	update user
+	set password=#{password}
+	where id=#{id}
+</update>
+
+<select id="login" parameterType="mul.cam.a.dto.UserDto" resultType="mul.cam.a.dto.UserDto">
+	select id, password, name, gender, email, birth, address, facename, newfacename, phone, phone_public, jointype, auth, breakaway, regidate
+	from user
+	where id=#{id} and password=#{password}
+</select>
+
+<update id="changeuser" parameterType="mul.cam.a.dto.UserDto">
+	update user
+	set password=#{password}, name=#{name}, gender=#{gender}, email=#{email}, address=#{address}, 
+		facename=#{facename}, phone=#{phone}
+	where id=#{id}
+</update>
+
+
 </mapper>
