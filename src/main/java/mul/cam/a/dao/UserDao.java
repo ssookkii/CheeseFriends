@@ -48,7 +48,7 @@ public interface UserDao {
 	
 	// 개인정보 변경
 	int changeuser(UserDto dto);
-	
+
 }
 	
 
