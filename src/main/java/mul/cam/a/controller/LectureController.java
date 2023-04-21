@@ -10,12 +10,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import mul.cam.a.dto.LectureDto;
 import mul.cam.a.dto.LectureParam;
 import mul.cam.a.service.LectureService;
 
-@Controller
+@RestController
 public class LectureController {
 
 	@Autowired
@@ -33,6 +34,7 @@ public class LectureController {
 
 	}
 	
+	@ResponseBody
 	@PostMapping(value="writeLecture")
 	public String writeLecture(LectureDto bbs) {
 		System.out.println("LectureController writeLecture " + new Date());
@@ -46,14 +48,7 @@ public class LectureController {
 		return "YES";
 	}
 	
-	@GetMapping(value="learningList")
-	public List<LectureDto> learninglist (LectureParam param) {
-		System.out.println("LectureController learninglist" + new Date());
-		
-		List<LectureDto> learninglist = service.learningList(param);
-		
-		return learninglist;
-	}
+
 	
 
 }

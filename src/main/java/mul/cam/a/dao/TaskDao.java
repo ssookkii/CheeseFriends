@@ -5,18 +5,16 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
-import mul.cam.a.dto.LectureDto;
 import mul.cam.a.dto.LectureParam;
+import mul.cam.a.dto.TaskDto;
 
 @Mapper
 @Repository
-public interface LectureDao {
-
-	// 강의 목록
-	List<LectureDto> lectureList(LectureParam param);
+public interface TaskDao {
 	
-	// 강의 자료 등록
-	int writeLecture(LectureDto bbs);
+	// 과제 제출 목록
+	List<TaskDto> taskList(LectureParam param);
 	
-
+	// 과제 등록
+	int writeTask (TaskDto bbs);
 }

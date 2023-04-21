@@ -8,4 +8,17 @@
 	SELECT seq, subject, subjectCode, title, writer, content, regdate
 	FROM learning
 </select>
+
+<!--  수업 자료 글쓰기 -->
+<insert id="writeLearning" parameterType="mul.cam.a.dto.LearningDto">
+	INSERT INTO learning(subject, subjectCode, title, writer, content, regdate, filename, newfilename)
+	VALUES( #{subject}, #{subjectCode}, #{title}, #{writer}, #{content}, now(), #{filename}, #{newfilename} )
+</insert>
+
+<!-- 수업자료 상세 -->
+<select id="getLearning" parameterType="Integer" resultType="mul.cam.a.dto.LearningDto">
+	SELECT seq, subject, subjectCode, title, writer, content, regdate
+	FROM learning
+	WHERE seq=#{seq}
+</select>
 </mapper>
