@@ -6,25 +6,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import mul.cam.a.dao.LectureDao;
-import mul.cam.a.dto.LectureDto;
+import mul.cam.a.dao.TaskDao;
 import mul.cam.a.dto.LectureParam;
+import mul.cam.a.dto.TaskDto;
 
 @Service
 @Transactional
-public class LectureService {
-	
-	@Autowired
-	LectureDao dao;
-	
-	public List<LectureDto> lectureList(LectureParam param){
-		return dao.lectureList(param);
+public class TaskService {
 
+	@Autowired
+	TaskDao dao;
+	
+	public List<TaskDto> taskList(LectureParam param) {
+		return dao.taskList(param);
 	}
 	
-	public boolean writeLecture(LectureDto bbs) {
-		int n = dao.writeLecture(bbs);
+	public boolean writeTask(TaskDto bbs) {
+		int n = dao.writeTask(bbs);
 		return n>0? true:false;
 	}
-	
 }
