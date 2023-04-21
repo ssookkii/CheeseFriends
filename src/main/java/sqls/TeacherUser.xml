@@ -23,7 +23,7 @@
 		 		AND E.EDU_NAME LIKE CONCAT("%", #{search}, "%")
 		 	</if>
 		 	<if test="choice == 'id'">
-		 		AND S.EDUCATOR_NAME LIKE CONCAT("%", #{search}, "%")
+		 		AND I.ID =#{search}
 		 	</if>
 		</if>
 		LIMIT #{start}, #{end}
@@ -40,13 +40,13 @@
 		WHERE I.AUTH="teacher"
 		<if test="choice != null and choice != '' and search != null and search != '' ">
 		 	<if test="choice == 'eduCode'">
-	 			AND S.EDU_CODE =#{search}
+	 			AND E.EDU_CODE =#{search}
 		 	</if>
 		 	<if test="choice == 'eduName'">
 		 		AND E.EDU_NAME LIKE CONCAT("%", #{search}, "%")
 		 	</if>
 		 	<if test="choice == 'id'">
-		 		AND S.EDUCATOR_NAME LIKE CONCAT("%", #{search}, "%")
+		 		AND I.ID =#{search}
 		 	</if>
 		 </if>
 	</select>
