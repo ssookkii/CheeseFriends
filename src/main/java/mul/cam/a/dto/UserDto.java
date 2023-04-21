@@ -24,6 +24,12 @@ public class UserDto implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
+	public UserDto(String id, String name) {
+		super();
+		this.id = id;
+		this.name = name;
+	}
+
 	public UserDto(String id, String password, String name, String gender, String email, String birth, String address,
 			String facename, String newfacename, String phone, String phone_public, String jointype, String auth,
 			int breakaway, String regidate) {
