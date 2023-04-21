@@ -6,6 +6,7 @@ import java.util.List;
 import mul.cam.a.dto.AttendanceSubject;
 import mul.cam.a.dto.AttendanceTimetable;
 import mul.cam.a.dto.CFR_Attendance;
+import mul.cam.a.dto.CFR_User;
 
 public interface CFR_AttendanceService {
 	// attendance ID로 출석 정보 조회
@@ -38,4 +39,7 @@ public interface CFR_AttendanceService {
 
     // UserID, SubCode, Month, Day를 결합하여 AttendanceID 생성
     String generateAttendanceId(String userId, String subCode, int month, int day);
+    
+    String getNameById(String userId);
+
 }

@@ -56,13 +56,6 @@
     SELECT * FROM timetable WHERE sub_day = #{subDay}
 </select>
 
-<!-- 해당 강의에 대해 지정된 시간 이후 결석한 학생들의 AttendanceID 조회
-<select id="findAbsentAttendanceIdsBySubCodeAndEndTime" resultType="java.lang.String">
-    SELECT ATTENDANCE_ID FROM ATTENDANCE
-    WHERE SUB_CODE = #{subCode}
-    AND CAST(STRFTIME('%H%M%S', ATTEND_TIME) AS INTEGER) > CAST(STRFTIME('%H%M%S', #{endTime}) AS INTEGER)
-    AND STATUS != '출석'
-</select> -->
 
 <!-- 해당 강의에 대해 수강하는 학생들의 UserID 조회 -->
 <select id="getStudentIdsBySubCode" resultType="java.lang.String">
@@ -79,5 +72,12 @@
 <select id="getAllAttendances" resultType="java.lang.String">
   SELECT * FROM attendance WHERE sub_code = #{subCode}
 </select>
+
+  <select id="getNameById" resultType="String" parameterType="String">
+    SELECT name
+    FROM user
+    WHERE id = #{userId}
+  </select>
+
 
 </mapper>
