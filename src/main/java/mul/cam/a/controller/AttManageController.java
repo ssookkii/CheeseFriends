@@ -10,10 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import mul.cam.a.dto.CFR_Attendance;
+import mul.cam.a.dto.SubjectDto;
 import mul.cam.a.service.AttManageService;
 
 @RestController
@@ -39,6 +42,30 @@ public class AttManageController {
         }
         return ResponseEntity.ok(newAttendanceData);
     }
+    
+    @GetMapping("/subjects/{userId}")
+    public ResponseEntity<List<SubjectDto>> getSubjectsByUserId(@PathVariable String userId) {
+        List<SubjectDto> subjects = attManageService.getSubjectsByUserId(userId);
+        return ResponseEntity.ok(subjects);
+    }
+    
+    @GetMapping("/{subCode}")
+    public List<CFR_Attendance> getAttendanceBySubjectCode(@PathVariable String subCode) {
+      return attManageService.getAttendanceBySubjectCode(subCode);
+    }
+    
 
+    @PostMapping("/{attendanceID}/attendance")
+    public ResponseEntity<Integer> updateAttendanceStatus(@PathVariable String attendanceID, @RequestBody CFR_Attendance updatedAttendance) {
+    	int attendance = attManageService.updateAttendanceStatus(attendanceID, updatedAttendance.getStatus());
+    	return ResponseEntity.ok(attendance);
+    }
+
+    @PostMapping("/{attendanceID}/comment")
+    public ResponseEntity<Integer> updateAttendancecomment(@PathVariable String attendanceID, @RequestBody CFR_Attendance updatedAttendancecomment) {
+    	int attendance = attManageService.updateAttendancecomment(attendanceID, updatedAttendancecomment.getComment());
+    	return ResponseEntity.ok(attendance);
+    }
+    
 }
 

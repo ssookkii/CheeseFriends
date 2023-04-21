@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import mul.cam.a.dto.CFR_Attendance;
+import mul.cam.a.dto.SubjectDto;
 
 @Repository
 public class AttManageDao {
@@ -27,5 +28,26 @@ public class AttManageDao {
         return sqlSession.selectList(NS + "getAttendanceList", paramMap);
     }
 
+    public List<SubjectDto> getSubjectsByUserId(String userId) {
+        return sqlSession.selectList(NS+ "getSubjectsByUserId", userId);
+    }
+
+    public List<CFR_Attendance> getAttendanceBySubjectCode(String subCode) {
+    	  return sqlSession.selectList(NS+ "getAttendanceBySubjectCode", subCode);
+      }
+
+    public int updateAttendanceStatus(String attendanceID, String status) {
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("attendanceID", attendanceID);
+        parameters.put("status", status);
+        return sqlSession.update(NS+ "updateAttendanceStatus", parameters);
+      }
+    
+    public int updateAttendancecomment(String attendanceID, String comment) {
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("attendanceID", attendanceID);
+        parameters.put("comment", comment);
+        return sqlSession.update(NS+"updateAttendancecomment", parameters);
+      }
 
 }
