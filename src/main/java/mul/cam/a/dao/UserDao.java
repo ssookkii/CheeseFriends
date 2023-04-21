@@ -22,5 +22,5 @@ public interface UserDao {
 	int adduser(UserDto dto);
 	
 	int addusersubject(TestEduDto dto);
-
+ 
 }

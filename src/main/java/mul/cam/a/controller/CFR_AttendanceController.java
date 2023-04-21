@@ -45,7 +45,7 @@ public class CFR_AttendanceController {
     public CFR_AttendanceController(CFR_AttendanceService attendanceService) {
         this.attendanceService = attendanceService;
     }
-    
+
     static {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
     }
