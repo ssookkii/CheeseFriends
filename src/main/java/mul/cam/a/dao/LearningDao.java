@@ -13,7 +13,7 @@ import mul.cam.a.dto.LectureParam;
 @Repository
 public interface LearningDao {
 
-	// 수업 자료 목록
+//	// 수업 자료 목록
 	List<LearningDto> learningList(LectureParam param);
 	
 	// 수업 자료 등록
