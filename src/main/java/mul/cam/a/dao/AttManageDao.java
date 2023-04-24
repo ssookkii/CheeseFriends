@@ -88,5 +88,9 @@ public class AttManageDao {
     public String findSubName(String subCode) {
     	return sqlSession.selectOne(NS + "findSubName" , subCode);
     }
+    public Boolean findUserAbsentAlarmTrue(String studentId){
+    	return sqlSession.selectOne(NS + "findUserAbsentAlarmTrue", studentId );
+    }
+    
 
 }

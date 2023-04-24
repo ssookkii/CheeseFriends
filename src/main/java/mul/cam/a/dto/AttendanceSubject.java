@@ -7,6 +7,7 @@ public class AttendanceSubject {
     private String subCode;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
+   
     
 	public String getUserId() {
 		return userId;

@@ -104,6 +104,9 @@
           <select id="findSubName" resultType="String">
         SELECT sub_name FROM subject WHERE sub_code=#{subCode}
     </select>
-    
+        
+     <select id="findUserAbsentAlarmTrue" resultType="Boolean">
+        SELECT absentAlarm FROM userabsentalarm WHERE userId = #{studentId}
+     </select>
     
 </mapper>
