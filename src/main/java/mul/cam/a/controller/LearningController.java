@@ -3,7 +3,6 @@ package mul.cam.a.controller;
 
 import java.util.Date;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,8 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import mul.cam.a.dto.LearningDto;
-import mul.cam.a.dto.LectureDto;
-import mul.cam.a.dto.LectureParam;
+import mul.cam.a.dto.ListParam;
 import mul.cam.a.service.LearningService;
 
 @RestController
@@ -21,13 +19,15 @@ public class LearningController {
 	@Autowired
 	LearningService service;
 	
+
 	@ResponseBody
 	@GetMapping(value="learninglist")
-	public List<LearningDto> learningList(LectureParam param) {
+	public List<LearningDto> learningList(ListParam param) {
 		System.out.println("LearningController learningList " + new Date());
-		
+	
 		List<LearningDto> learninglist = service.learningList(param);
-		
+
+	
 		return learninglist;
 	}
 	

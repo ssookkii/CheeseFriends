@@ -19,6 +19,9 @@ import org.springframework.web.multipart.MultipartFile;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import mul.cam.a.dto.EducationDto;
+import mul.cam.a.dto.LearningDto;
+import mul.cam.a.dto.LectureDto;
+import mul.cam.a.dto.TaskDto;
 import mul.cam.a.dto.TestEduDto;
 import mul.cam.a.dto.UserDto;
 import mul.cam.a.dto.UserparentsDto;
@@ -121,7 +124,7 @@ public class UserController {
 	
 	@PostMapping(value = "fileUpload")
 	public String fileUpload(@RequestParam("uploadFile")MultipartFile uploadFile, 
-								HttpServletRequest req) {		
+								HttpServletRequest req, LectureDto dto, LearningDto bbs, TaskDto tto) {		
 		System.out.println("UserController fileUpload " + new Date());
 		
 		String uploadpath = req.getServletContext().getRealPath("/upload");

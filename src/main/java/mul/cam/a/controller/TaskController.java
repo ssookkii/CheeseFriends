@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import mul.cam.a.dto.LectureParam;
+import mul.cam.a.dto.ListParam;
 import mul.cam.a.dto.TaskDto;
 import mul.cam.a.service.TaskService;
 
@@ -21,7 +21,7 @@ public class TaskController {
 	
 	@ResponseBody
 	@GetMapping(value="tasklist")
-	public List<TaskDto> taskList(LectureParam param) {
+	public List<TaskDto> taskList(ListParam param) {
 		System.out.println("TaskController taskList " + new Date());
 		
 		List<TaskDto> tasklist = service.taskList(param);
