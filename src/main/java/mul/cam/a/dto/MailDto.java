@@ -13,15 +13,16 @@ public class MailDto implements Serializable{
 	int readcount;
 	String filename;
 	String newfilename;
-	int del;
+	int receivedel;
 	String groupcode;
+	int senddel;
 	
 	public MailDto() {
 		// TODO Auto-generated constructor stub
 	}
 
 	public MailDto(int seq, String sender, String receiver, String title, String content, String wdate, int readcount,
-			String filename, String newfilename, int del, String groupcode) {
+			String filename, String newfilename, int receivedel, String groupcode, int senddel) {
 		super();
 		this.seq = seq;
 		this.sender = sender;
@@ -32,8 +33,9 @@ public class MailDto implements Serializable{
 		this.readcount = readcount;
 		this.filename = filename;
 		this.newfilename = newfilename;
-		this.del = del;
+		this.receivedel = receivedel;
 		this.groupcode = groupcode;
+		this.senddel = senddel;
 	}
 
 	public int getSeq() {
@@ -108,12 +110,12 @@ public class MailDto implements Serializable{
 		this.newfilename = newfilename;
 	}
 
-	public int getDel() {
-		return del;
+	public int getReceivedel() {
+		return receivedel;
 	}
 
-	public void setDel(int del) {
-		this.del = del;
+	public void setReceivedel(int receivedel) {
+		this.receivedel = receivedel;
 	}
 
 	public String getGroupcode() {
@@ -124,12 +126,22 @@ public class MailDto implements Serializable{
 		this.groupcode = groupcode;
 	}
 
+	public int getSenddel() {
+		return senddel;
+	}
+
+	public void setSenddel(int senddel) {
+		this.senddel = senddel;
+	}
+
 	@Override
 	public String toString() {
 		return "MailDto [seq=" + seq + ", sender=" + sender + ", receiver=" + receiver + ", title=" + title
 				+ ", content=" + content + ", wdate=" + wdate + ", readcount=" + readcount + ", filename=" + filename
-				+ ", newfilename=" + newfilename + ", del=" + del + ", groupcode=" + groupcode + "]";
+				+ ", newfilename=" + newfilename + ", receivedel=" + receivedel + ", groupcode=" + groupcode
+				+ ", senddel=" + senddel + "]";
 	}
+
 	
 	
 

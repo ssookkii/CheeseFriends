@@ -3,16 +3,18 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 	
 <mapper namespace="mul.cam.a.dao.LearningDao">
-<!--  수업 자료 목록 가져오기 -->
-<select id="learningList" parameterType="mul.cam.a.dto.LectureParam" resultType="mul.cam.a.dto.LectureDto">
-	SELECT seq, subject, subjectCode, title, writer, content, regdate
-	FROM learning
-</select>
+
+<!-- 수업 자료 목록 가져오기  -->
+	<select id="learningList" parameterType="mul.cam.a.dto.ListParam" resultType="mul.cam.a.dto.LectureDto">
+		SELECT seq, subject, title, writer, content, regdate
+		FROM learning
+		
+	</select>
 
 <!--  수업 자료 글쓰기 -->
 <insert id="writeLearning" parameterType="mul.cam.a.dto.LearningDto">
-	INSERT INTO learning(subject, subjectCode, title, writer, content, regdate, filename, newfilename)
-	VALUES( #{subject}, #{subjectCode}, #{title}, #{writer}, #{content}, now(), #{filename}, #{newfilename} )
+	INSERT INTO learning(subject, title, writer, content, regdate, filename, newfilename)
+	VALUES( #{subject}, #{title}, #{writer}, #{content}, now(), #{filename}, #{newfilename} )
 </insert>
 
 <!-- 수업자료 상세 -->

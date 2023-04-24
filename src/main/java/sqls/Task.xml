@@ -4,15 +4,15 @@
 	
 <mapper namespace="mul.cam.a.dao.TaskDao">
 <!--  수업 자료 목록 가져오기 -->
-<select id="taskList" parameterType="mul.cam.a.dto.LectureParam" resultType="mul.cam.a.dto.TaskDto">
+<select id="taskList" parameterType="mul.cam.a.dto.ListParam" resultType="mul.cam.a.dto.TaskDto">
 	SELECT seq, subject, subjectCode, title, writer, content, regdate
 	FROM task
 </select>
 
 <!--  수업 자료 글쓰기 -->
 <insert id="writeTask" parameterType="mul.cam.a.dto.TaskDto">
-	INSERT INTO task(subject, subjectCode, title, writer, content, regdate, filename, newfilename)
-	VALUES( #{subject}, #{subjectCode}, #{title}, #{writer}, #{content}, now(), #{filename}, #{newfilename} )
+	INSERT INTO task(subject, title, writer, content, regdate, filename, newfilename)
+	VALUES( #{subject}, #{title}, #{writer}, #{content}, now(), #{filename}, #{newfilename} )
 </insert>
 
 </mapper>

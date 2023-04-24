@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import mul.cam.a.dao.LectureDao;
 import mul.cam.a.dto.LectureDto;
-import mul.cam.a.dto.LectureParam;
+import mul.cam.a.dto.ListParam;
 
 @Service
 @Transactional
@@ -17,9 +17,13 @@ public class LectureService {
 	@Autowired
 	LectureDao dao;
 	
-	public List<LectureDto> lectureList(LectureParam param){
+	public List<LectureDto> lectureList(ListParam param){
 		return dao.lectureList(param);
 
+	}
+	
+	public int getAllLecture(ListParam param) {
+		return dao.getAllLecture(param);
 	}
 	
 	public boolean writeLecture(LectureDto bbs) {

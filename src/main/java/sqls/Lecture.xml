@@ -5,15 +5,24 @@
 <mapper namespace="mul.cam.a.dao.LectureDao">
 
 <!-- 강의 목록 가져오기 -->
-<select id="lectureList" parameterType="mul.cam.a.dto.LectureParam" resultType="mul.cam.a.dto.LectureDto">
+<select id="lectureList" parameterType="mul.cam.a.dto.ListParam" resultType="mul.cam.a.dto.LectureDto">
 	SELECT seq, subject, subjectCode, title, writer, content, regdate
 	FROM lecture
+
 </select>
+
+<!-- 글의 총수 -->
+<select id="getAllLecture" parameterType="mul.cam.a.dto.ListParam" resultType="java.lang.Integer">
+	
+	select ifnull(count(*), 0)
+	from lecture
+</select>
+
 
 <!-- 강의 글쓰기 -->
 <insert id="writeLecture" parameterType="mul.cam.a.dto.LectureDto">
-	INSERT INTO lecture(subject, subjectCode, title, writer, content, regdate)
-	VALUES(#{subject}, #{subjectCode}, #{title}, #{writer}, #{content}, now())
+	INSERT INTO lecture(subject, title, writer, content, regdate)
+	VALUES(#{subject}, #{title}, #{writer}, #{content}, now())
 </insert>
 
 

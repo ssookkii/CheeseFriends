@@ -7,12 +7,14 @@ public class SubjectDto {
 	private String subName;
 	private String educatorName;
 	private String name;
+	private String classGrade;
 	
 	public SubjectDto() {
 	}
+	
 
-	public SubjectDto(String eduCode, String eduName, String subCode, String subName, String educatorName,
-			String name) {
+	public SubjectDto(String eduCode, String eduName, String subCode, String subName, String educatorName, String name,
+			String classGrade) {
 		super();
 		this.eduCode = eduCode;
 		this.eduName = eduName;
@@ -20,7 +22,9 @@ public class SubjectDto {
 		this.subName = subName;
 		this.educatorName = educatorName;
 		this.name = name;
+		this.classGrade = classGrade;
 	}
+	
 
 	public String getEduCode() {
 		return eduCode;
@@ -69,11 +73,25 @@ public class SubjectDto {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+
+	public String getClassGrade() {
+		return classGrade;
+	}
+
+
+	public void setClassGrade(String classGrade) {
+		this.classGrade = classGrade;
+	}
+
 
 	@Override
 	public String toString() {
 		return "SubjectDto [eduCode=" + eduCode + ", eduName=" + eduName + ", subCode=" + subCode + ", subName="
-				+ subName + ", educatorName=" + educatorName + ", name=" + name + "]";
+				+ subName + ", educatorName=" + educatorName + ", name=" + name + ", classGrade=" + classGrade + "]";
 	}
+
+
+	
 	
 }

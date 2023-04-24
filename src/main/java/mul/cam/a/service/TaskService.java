@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import mul.cam.a.dao.TaskDao;
-import mul.cam.a.dto.LectureParam;
+import mul.cam.a.dto.ListParam;
 import mul.cam.a.dto.TaskDto;
 
 @Service
@@ -17,7 +17,7 @@ public class TaskService {
 	@Autowired
 	TaskDao dao;
 	
-	public List<TaskDto> taskList(LectureParam param) {
+	public List<TaskDto> taskList(ListParam param) {
 		return dao.taskList(param);
 	}
 	
