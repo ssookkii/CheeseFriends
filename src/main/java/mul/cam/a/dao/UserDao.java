@@ -26,6 +26,7 @@ public interface UserDao {
 	
 	// 학생 가입
 	int addusersubject(TestEduDto dto);
+
 	
 	// 학부모 가입
 	UserDto idmatching(String studentid);
@@ -49,3 +50,5 @@ public interface UserDao {
 	int changeuser(UserDto dto);
 
 }
+	
+
