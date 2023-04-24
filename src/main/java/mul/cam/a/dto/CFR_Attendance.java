@@ -10,7 +10,14 @@ public class CFR_Attendance {
     private String eduCode;
     private String comment;
     private String name;
+    private String subName;
     
+	public String getSubName() {
+		return subName;
+	}
+	public void setSubName(String subName) {
+		this.subName = subName;
+	}
 	public String getName() {
 		return name;
 	}

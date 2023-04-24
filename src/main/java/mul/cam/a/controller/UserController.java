@@ -18,11 +18,16 @@ import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+<<<<<<< HEAD
 import mul.cam.a.dto.LearningDto;
 import mul.cam.a.dto.LectureDto;
 import mul.cam.a.dto.TaskDto;
+=======
+import mul.cam.a.dto.EducationDto;
+>>>>>>> 7795725b679af6cfcc77f14e6895edaa0c62783d
 import mul.cam.a.dto.TestEduDto;
 import mul.cam.a.dto.UserDto;
+import mul.cam.a.dto.UserparentsDto;
 import mul.cam.a.service.UserService;
 import mul.cam.a.util.naver2;
 
@@ -158,7 +163,7 @@ public class UserController {
 	
 	@PostMapping(value = "addusersubject")
 	public String addusersubject(TestEduDto dto) {
-		System.out.println("UserController addmember() " + new Date());
+		System.out.println("UserController addusersubject() " + new Date());
 		
 		boolean isS = service.addusersubject(dto);
 		if(isS == true) {
@@ -168,5 +173,109 @@ public class UserController {
 		return "NO";
 	}
 	
+	// 학부모 가입
+	@GetMapping(value = "idmatching")
+	public UserDto idmatching(String studentid){
+		System.out.println("UserController idmatching() " + new Date());
+		
+		UserDto dto = service.idmatching(studentid);
+		
+		if(dto != null) {
+			System.out.println(dto.getId());
+			System.out.println(dto.getName());
+		}
+		return dto;
+	}
+	
+	@PostMapping(value = "adduserparents")
+	public String adduserparents(UserparentsDto dto) {
+		System.out.println("UserController addmember() " + new Date());
+		
+		boolean isS = service.adduserparents(dto);
+		if(isS == true) {
+			return "YES";
+		}
+			
+		return "NO";
+	}
+	
+	// 교사 가입
+	@GetMapping(value = "edusearch")
+	public List<EducationDto> edusearch(String edu_name) {
+		System.out.println("UserController edusearch() " + new Date());
+		
+		List<EducationDto> list = service.edusearch(edu_name);
+		
+		if(list != null) {
+			System.out.println(list.toString());
+		}
+		return list;
+	}
+	
+	@PostMapping(value = "adduseredu")
+	public String adduseredu(TestEduDto dto) {
+		System.out.println("UserController adduseredu() " + new Date());
+		
+		boolean isS = service.adduseredu(dto);
+		if(isS == true) {
+			return "YES";
+		}
+			
+		return "NO";
+	}
+	
+	@PostMapping(value = "idsearch")
+	public UserDto idsearch(UserDto dto) {
+		System.out.println("UserController idsearch() " + new Date());
+		
+		UserDto getdto = service.idsearch(dto);
+		System.out.println("id: " + getdto.getId());
+		
+		return getdto;
+	}
+	
+	@PostMapping(value = "idchecktwo")
+	public String idchecktwo(UserDto dto) {
+		System.out.println("UserController idcheck() " + new Date());
+		
+		boolean isS = service.idchecktwo(dto);
+		if(isS == true) {
+			return "NO";
+		}
+		
+		return "YES";
+	}
+	
+	
+	@PostMapping(value = "updatepassword")
+	public String updatepassword(UserDto dto) {
+		System.out.println("UserController updatepassword() " + new Date());
+		
+		boolean isS = service.updatepassword(dto);
+		if(isS == true) {
+			return "YES";
+		}
+			
+		return "NO";
+	}
+	
+	@PostMapping(value = "login")
+	public UserDto login(UserDto dto) {
+		System.out.println("UserController login() " + new Date());
+		
+		return service.login(dto);
+	}
+	
+	@PostMapping(value = "changeuser")
+	public String changeuser(UserDto dto) {
+		System.out.println("UserController changeuser() " + new Date());
+		
+		boolean isS = service.changeuser(dto);
+		if(isS == true) {
+			return "YES";
+		}
+			
+		return "NO";
+	}
 
 }

@@ -31,7 +31,7 @@ import mul.cam.a.dao.CFR_AttendanceDao;
 import mul.cam.a.dto.AttendanceRequest;
 import mul.cam.a.dto.AttendanceTimetable;
 import mul.cam.a.dto.CFR_Attendance;
-import mul.cam.a.dto.CFR_User;
+import mul.cam.a.service.AttManageService;
 import mul.cam.a.service.CFR_AttendanceService;
 
 @Controller
@@ -41,11 +41,13 @@ public class CFR_AttendanceController {
     private CFR_AttendanceService attendanceService;
     @Autowired
     private AbsentSender AbsentSender;
+    @Autowired
+    private AttManageService attManageService;
     
     public CFR_AttendanceController(CFR_AttendanceService attendanceService) {
         this.attendanceService = attendanceService;
     }
-    
+
     static {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
     }
@@ -198,7 +200,7 @@ public class CFR_AttendanceController {
     }
     
     // 결석
-    @Scheduled(cron = "0 5 * * * *") // 매 시간 5분에 실행
+    //@Scheduled(cron = "0 5 * * * *") // 매 시간 5분에 실행
     public void checkAbsence() {
         // 요일 문자열을 숫자로 변환 (일: 1, 월: 2, ... , 토: 7)
     	System.out.println("결석 체크 실행");
@@ -238,7 +240,13 @@ public class CFR_AttendanceController {
                         attendance.setStatus("결석");
                         attendanceService.checkAttendance(attendance);
                         // 결석 문자 보내기
-                        //AbsentSender.sendSMS(studentId, subName);
+                        Boolean absentAlarm = attManageService.findUserAbsentAlarmTrue(studentId);
+                        System.out.println(absentAlarm);
+                        if (absentAlarm != null && absentAlarm) {
+                            String subName = attManageService.findSubName(subCode);
+                            AbsentSender.sendSMS(studentId, subName);
+                        }
+                        
                         System.out.println(studentId + " 학생의 결석 처리 완료");
                         
                     }

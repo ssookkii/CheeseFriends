@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import mul.cam.a.attendSMS.AbsentSender;
 import mul.cam.a.attendSMS.SmsSender;
 import mul.cam.a.dto.AttendanceSMSCheck;
 import mul.cam.a.dto.CFR_Attendance;
@@ -111,6 +110,7 @@ public class AttManageController {
     @GetMapping("/{userId}/AbsentAlarm")
     public ResponseEntity<?> getAbsentAlarm(@PathVariable String userId) {
         List<AttendanceSMSCheck> absentAlarm = attManageService.getAbsentAlarm(userId);
+        System.out.println(absentAlarm);
       return ResponseEntity.ok(absentAlarm);
     }
     

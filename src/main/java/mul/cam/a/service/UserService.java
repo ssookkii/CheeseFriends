@@ -9,8 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import mul.cam.a.dao.UserDao;
+import mul.cam.a.dto.EducationDto;
 import mul.cam.a.dto.TestEduDto;
 import mul.cam.a.dto.UserDto;
+import mul.cam.a.dto.UserparentsDto;
 import mul.cam.a.util.naver2;
 
 
@@ -64,6 +66,7 @@ public class UserService {
 	    return random;
 	}
 	
+	// 학생 가입
 	public boolean adduser(UserDto dto) {
 		int count = dao.adduser(dto);
 		return count>0?true:false;
@@ -73,4 +76,68 @@ public class UserService {
 		int count = dao.addusersubject(dto);
 		return count>0?true:false;
 	}
+	
+	// 학부모 가입
+	public UserDto idmatching(String studentid){
+		System.out.println("UserService idmatching() " + new Date());
+		
+		return dao.idmatching(studentid);
+	}
+	
+	public boolean adduserparents(UserparentsDto dto) {
+		int count = dao.adduserparents(dto);
+		return count>0?true:false;
+	}
+	
+	// 교사 가입
+	public List<EducationDto> edusearch(String edu_name) {
+		System.out.println("UserService edusearch() " + new Date());
+		
+		return dao.edusearch(edu_name);
+	}
+	
+	public boolean adduseredu(TestEduDto dto) {
+		int count = dao.adduseredu(dto);
+		return count>0?true:false;
+	}
+	
+	// 아이디 찾기
+	public UserDto idsearch(UserDto dto) {
+		System.out.println("UserService idsearch() " + new Date());
+
+		UserDto getdto = dao.idsearch(dto);
+		String userid = getdto.getId();
+	
+	
+		return getdto;
+	}
+	
+	// 아이디 찾기2
+	public boolean idchecktwo(UserDto dto) {
+		String userid = dao.idchecktwo(dto);
+		
+		if(userid != null && !userid.equals("")) {
+			return true;
+		}
+		
+		return false;
+	}
+	
+	// 비밀번호 ㅂ녀경
+	public boolean updatepassword(UserDto dto) {
+		int count = dao.updatepassword(dto);
+		return count>0?true:false;
+	}
+
+	// 로그인
+	public UserDto login(UserDto dto) {
+		return dao.login(dto);
+	}
+	
+	//개인정보 변경
+	public boolean changeuser(UserDto dto) {
+		int count = dao.changeuser(dto);
+		return count>0?true:false;
+	}
+	
 }
