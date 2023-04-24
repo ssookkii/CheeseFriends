@@ -5,7 +5,23 @@
 
 
 <mapper namespace="mul.cam.a.dao.MailDao">
+<select id="mailreceiverid" parameterType="String" resultType="mul.cam.a.dto.UserDto">
+	SELECT ID, name
+	FROM USER
+	where name like concat(#{name}, '%')
+</select>
 
+<select id="mailreceiveradd" parameterType="String" resultType="mul.cam.a.dto.UserDto">
+	SELECT ID, name
+	FROM USER
+	where id=#{id}
+</select>
+
+<insert id="mailsend" parameterType="mul.cam.a.dto.MailDto">
+	insert into mail(sender, receiver, title, content, wdate, readcount, filename, newfilename, receivedel, groupcode, senddel)
+	values(#{sender}, #{receiver}, #{title}, #{content}, now(), 0, #{filename}, #{newfilename}, 0, 0, 0)
+
+</insert>
 
 
 </mapper>
