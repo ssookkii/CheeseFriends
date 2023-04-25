@@ -30,8 +30,8 @@ public class LectureController {
 		
 		// 글의 시작과 끝 
 		int pn = param.getPageNumber(); // 0 1 2 3 4
-		int start = (pn * 15);
-		int end = (pn + 1) * 15;
+		int start = (pn * 10);
+		int end = (pn + 1) * 10;
 		
 		param.setStart(start);
 		param.setEnd(end);
@@ -60,6 +60,13 @@ public class LectureController {
 
 		return "YES";
 	}
-
+	
+	@ResponseBody
+	@GetMapping(value="getLecture")
+	public LectureDto getLecture(Integer seq) {
+		System.out.println("LectureController getLecture " + new Date());
+		
+		return service.getLecture(seq);
+	}
 
 }

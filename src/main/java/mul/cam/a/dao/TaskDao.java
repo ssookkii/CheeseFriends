@@ -19,4 +19,8 @@ public interface TaskDao {
 	
 	// 과제 등록
 	int writeTask (TaskDto bbs);
+	
+	// 과제 제출 상세
+	TaskDto getTask(Integer seq);
+
 }

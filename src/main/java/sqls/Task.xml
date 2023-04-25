@@ -29,11 +29,17 @@
 	from task
 </select>
 
-
-<!--  수업 자료 글쓰기 -->
+<!--  과제 제출 글쓰기 -->
 <insert id="writeTask" parameterType="mul.cam.a.dto.TaskDto">
 	INSERT INTO task(subject, title, writer, content, regdate, filename, newfilename)
 	VALUES( #{subject}, #{title}, #{writer}, #{content}, now(), #{filename}, #{newfilename} )
 </insert>
+
+<!-- 과제 제출 상세 -->
+<select id="getTask" parameterType="Integer" resultType="mul.cam.a.dto.TaskDto">
+	SELECT seq, subject, title, writer, content, regdate
+	FROM task
+	WHERE seq=#{seq}
+</select>
 
 </mapper>

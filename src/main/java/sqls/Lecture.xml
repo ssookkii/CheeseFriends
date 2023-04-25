@@ -38,5 +38,11 @@
 	VALUES(#{subject}, #{title}, #{writer}, #{content}, now())
 </insert>
 
+<!-- 강의 자료 상세 -->
+<select id="getLecture" parameterType="Integer" resultType="mul.cam.a.dto.LectureDto">
+	SELECT seq, subject, title, writer, content, regdate
+	FROM lecture
+	WHERE seq=#{seq}
+</select>
 
 </mapper>

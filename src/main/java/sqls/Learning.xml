@@ -38,7 +38,7 @@
 
 <!-- 수업자료 상세 -->
 <select id="getLearning" parameterType="Integer" resultType="mul.cam.a.dto.LearningDto">
-	SELECT seq, subject, subjectCode, title, writer, content, regdate
+	SELECT seq, subject, title, writer, content, regdate
 	FROM learning
 	WHERE seq=#{seq}
 </select>

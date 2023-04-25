@@ -29,4 +29,8 @@ public class TaskService {
 		int n = dao.writeTask(bbs);
 		return n>0? true:false;
 	}
+	
+	public TaskDto getTask(Integer seq) {
+		return dao.getTask(seq);
+	}
 }

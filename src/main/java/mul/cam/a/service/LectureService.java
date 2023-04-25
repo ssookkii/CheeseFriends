@@ -26,9 +26,14 @@ public class LectureService {
 		return dao.getAllLecture(param);
 	}
 	
+	
 	public boolean writeLecture(LectureDto bbs) {
 		int n = dao.writeLecture(bbs);
 		return n>0? true:false;
+	}
+	
+	public LectureDto getLecture(Integer seq) {
+		return dao.getLecture(seq);
 	}
 	
 }
