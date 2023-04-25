@@ -71,5 +71,9 @@ public class AttManageService {
 	public Boolean findUserAbsentAlarmTrue(String studentId) {
 		 return attManageDao.findUserAbsentAlarmTrue(studentId);
 	}
+	
+	public String getStudentId(String userId) {
+		return attManageDao.getStudentId(userId);
+	}
 }
 

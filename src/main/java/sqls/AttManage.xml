@@ -108,5 +108,10 @@
      <select id="findUserAbsentAlarmTrue" resultType="Boolean">
         SELECT absentAlarm FROM userabsentalarm WHERE userId = #{studentId}
      </select>
+     
+
+        <select id="getStudentId" resultType="String">
+        SELECT studentid FROM userparents WHERE parentsid=#{userId}
+    </select>
     
 </mapper>

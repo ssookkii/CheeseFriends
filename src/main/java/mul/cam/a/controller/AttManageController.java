@@ -149,6 +149,10 @@ public class AttManageController {
         return "SMS Sent Successfully!";
     }
     
-    
+    @GetMapping("/getStudentId/{userId}")
+    public String getStudentId(@PathVariable String userId) {
+    	 return attManageService.getStudentId(userId);
+    }
+      
 }
 
