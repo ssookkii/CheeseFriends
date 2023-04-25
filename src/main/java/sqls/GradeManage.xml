@@ -23,11 +23,47 @@
 			 	ON US.USER_ID = I.ID
 		WHERE S.EDUCATOR_NAME=#{educatorName} AND US.SUB_CODE=#{subCode}
 	</select>
+	<!-- 학생성적 중복검사 -->
+	<select id="gradeDuplicate" parameterType="java.util.List" resultType="Integer">
+			SELECT COUNT(*)
+			FROM GRADE
+		<where>
+			<foreach collection="list" item="item" separator=" OR ">
+				SUB_CODE=#{item.subCode} AND STUDENT_ID=#{item.userId}
+			</foreach>
+		</where>
+	</select>
 	<!-- 학생성적입력 -->
-	<insert id="gradeAdd" parameterType="mul.cam.a.dto.GradeDto">
-		INSERT INTO GRADE (SUB_CODE, EDU_CODE, SUB_NAME, CLASS_GRADE, STUDENT_ID, STUDENT_GRADE, STUDENT_RANKS, SUB_TOTAL)
-		VALUES (#{subCode}, #{eduCode}, #{subName}, #{subName}, #{classGrade}, #{userId}, #{studentGrade}, 
-		(SELECT COUNT(*) + 1 FROM GRADE WHERE SUB_CODE = #{subCode} AND STUDENT_GRADE > #{studentGrade}), 
-		(SELECT IFNULL(COUNT(*), 0) FROM USERSUBJECT WHERE SUB_CODE = #{subCode}));
+	<insert id="gradeAdd" parameterType="java.util.List">
+	    INSERT INTO GRADE (SUB_CODE, EDU_CODE, SUB_NAME, CLASS_GRADE, STUDENT_ID, STUDENT_GRADE, STUDENT_RANKS, SUB_TOTAL)
+	    VALUES
+	    <foreach collection="list" item="item" separator=",">
+	        (#{item.subCode}, #{item.eduCode}, #{item.subName}, #{item.classGrade}, #{item.userId}, #{item.studentGrade},
+	        0,
+	        (SELECT IFNULL(COUNT(*), 0) FROM USERSUBJECT WHERE SUB_CODE = #{item.subCode}))    
+	    </foreach>
 	</insert>
+	<!-- 석차집계 -->
+	<select id="gradeRanks" parameterType="mul.cam.a.dto.SubjectDto" resultType="mul.cam.a.dto.GradeDto">
+		SELECT
+		  	 G.SUB_CODE, G.EDU_CODE, G.SUB_NAME, I.NAME, G.CLASS_GRADE, G.STUDENT_ID, G.STUDENT_GRADE,
+		    (ROW_NUMBER() OVER (PARTITION BY SUB_CODE ORDER BY STUDENT_GRADE DESC))as student_ranks,
+		    G.SUB_TOTAL
+		FROM 
+		GRADE G INNER JOIN SUBJECT S
+			ON G.SUB_CODE = S.SUB_CODE
+				INNER JOIN USER I
+					ON G.STUDENT_ID = I.ID
+		WHERE G.SUB_CODE=#{subCode} AND S.EDUCATOR_NAME=#{educatorName}
+	</select>
+	
+	<!-- 성적수정 -->
+	<update id="gradeUpdate" parameterType="java.util.List">
+		<foreach collection="list" item="item" index="index" separator=";">
+		UPDATE GRADE
+		SET 
+		STUDENT_GRADE=#{item.studentRanks}
+		WHERE STUDENT_ID=#{item.studentId} AND SUB_CODE=#{item.subCode}
+		</foreach>
+	</update>
 </mapper>
