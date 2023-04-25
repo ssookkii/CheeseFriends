@@ -18,20 +18,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-<<<<<<< HEAD
-<<<<<<< HEAD
-import mul.cam.a.dto.LearningDto;
-import mul.cam.a.dto.LectureDto;
-import mul.cam.a.dto.TaskDto;
-=======
-import mul.cam.a.dto.EducationDto;
->>>>>>> 7795725b679af6cfcc77f14e6895edaa0c62783d
-=======
 import mul.cam.a.dto.EducationDto;
 import mul.cam.a.dto.LearningDto;
 import mul.cam.a.dto.LectureDto;
 import mul.cam.a.dto.TaskDto;
->>>>>>> 09cb4145afd274e5d931a2fcf7c55c1cda727cb6
+
 import mul.cam.a.dto.TestEduDto;
 import mul.cam.a.dto.UserDto;
 import mul.cam.a.dto.UserparentsDto;

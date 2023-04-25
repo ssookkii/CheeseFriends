@@ -18,11 +18,10 @@ public class LearningService {
 	public List<LearningDto> learningList(ListParam param){
 		return dao.learningList(param);
 	}
-//	
-//	public int getAllBbs(LectureParam param) {
-//		return dao.get
-//	}
-//	
+	
+	public int getAllLearning(ListParam param) {
+		return dao.getAllLearning(param);
+	}
 	
 	public boolean writeLearning(LearningDto bbs) {
 		int n = dao.writeLearning(bbs);

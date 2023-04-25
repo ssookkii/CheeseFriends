@@ -5,9 +5,30 @@
 <mapper namespace="mul.cam.a.dao.TaskDao">
 <!--  수업 자료 목록 가져오기 -->
 <select id="taskList" parameterType="mul.cam.a.dto.ListParam" resultType="mul.cam.a.dto.TaskDto">
-	SELECT seq, subject, subjectCode, title, writer, content, regdate
+	SELECT *
 	FROM task
+	WHERE 1=1
+	<if test="choice != null and choice != ''">
+		<if test="choice == 'subject'">
+ 			AND subject =#{search}
+	 	</if>
+	 	<if test="choice == 'title'">
+	 		AND title LIKE CONCAT("%", #{search}, "%")
+	 	</if>
+	 	<if test="choice == 'content'">
+	 		AND content LIKE CONCAT("%", #{search}, "%")
+	 	</if>
+	</if>
+		LIMIT #{start}, #{end}
 </select>
+
+<!-- 글의 총수 -->
+<select id="getAllTask" parameterType="mul.cam.a.dto.ListParam" resultType="java.lang.Integer">
+	
+	select ifnull(count(*), 0)
+	from task
+</select>
+
 
 <!--  수업 자료 글쓰기 -->
 <insert id="writeTask" parameterType="mul.cam.a.dto.TaskDto">

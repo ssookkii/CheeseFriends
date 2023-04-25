@@ -21,6 +21,10 @@ public class TaskService {
 		return dao.taskList(param);
 	}
 	
+	public int getAllTask(ListParam param) {
+		return dao.getAllTask(param);
+	}
+	
 	public boolean writeTask(TaskDto bbs) {
 		int n = dao.writeTask(bbs);
 		return n>0? true:false;

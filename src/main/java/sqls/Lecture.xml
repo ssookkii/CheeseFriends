@@ -6,8 +6,21 @@
 
 <!-- 강의 목록 가져오기 -->
 <select id="lectureList" parameterType="mul.cam.a.dto.ListParam" resultType="mul.cam.a.dto.LectureDto">
-	SELECT seq, subject, subjectCode, title, writer, content, regdate
+	SELECT *
 	FROM lecture
+	WHERE 1=1
+	<if test="choice != null and choice != ''">
+		<if test="choice == 'subject'">
+ 			AND subject =#{search}
+	 	</if>
+	 	<if test="choice == 'title'">
+	 		AND title LIKE CONCAT("%", #{search}, "%")
+	 	</if>
+	 	<if test="choice == 'content'">
+	 		AND content LIKE CONCAT("%", #{search}, "%")
+	 	</if>
+	</if>
+		LIMIT #{start}, #{end}
 
 </select>
 

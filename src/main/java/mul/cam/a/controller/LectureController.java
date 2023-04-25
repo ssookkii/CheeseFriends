@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import mul.cam.a.dto.AdminQuestionDto;
 import mul.cam.a.dto.LectureDto;
 import mul.cam.a.dto.ListParam;
 import mul.cam.a.service.LectureService;
@@ -23,13 +24,26 @@ public class LectureController {
 	
 	@ResponseBody
 	@GetMapping(value="lecturelist")
-	public List<LectureDto> learningList(ListParam param) {
-		System.out.println("LearningController learningList " + new Date());
 	
-		List<LectureDto> lecturelist = service.lectureList(param);
-
-	
-		return lecturelist;
+	public Map<String, Object> lecturelist(ListParam param) {
+		System.out.println("LectureController lecturelist()" + new Date());
+		
+		// 글의 시작과 끝 
+		int pn = param.getPageNumber(); // 0 1 2 3 4
+		int start = (pn * 15);
+		int end = (pn + 1) * 15;
+		
+		param.setStart(start);
+		param.setEnd(end);
+		
+		List<LectureDto> list = service.lectureList(param);
+		
+		int len = service.getAllLecture(param);
+		Map<String, Object> map = new HashMap<>();
+		map.put("list", list);
+		map.put("cnt", len);	
+		
+		return map;
 	}
 	
 	

@@ -2,7 +2,10 @@
 package mul.cam.a.controller;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,16 +22,28 @@ public class LearningController {
 	@Autowired
 	LearningService service;
 	
-
 	@ResponseBody
 	@GetMapping(value="learninglist")
-	public List<LearningDto> learningList(ListParam param) {
-		System.out.println("LearningController learningList " + new Date());
 	
-		List<LearningDto> learninglist = service.learningList(param);
-
-	
-		return learninglist;
+	public Map<String, Object> learninglist (ListParam param) {
+		System.out.println("LearningController learninglist()" + new Date());
+		
+		// 글의 시작과 끝 
+		int pn = param.getPageNumber(); // 0 1 2 3 4
+		int start = (pn * 15);
+		int end = (pn + 1) * 15;
+		
+		param.setStart(start);
+		param.setEnd(end);
+		
+		List<LearningDto> list = service.learningList(param);
+		
+		int len = service.getAllLearning(param);
+		Map<String, Object> map = new HashMap<>();
+		map.put("list", list);
+		map.put("cnt", len);	
+		
+		return map;
 	}
 	
 	@ResponseBody
