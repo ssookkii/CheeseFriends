@@ -7,9 +7,11 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import mul.cam.a.dto.LearningDto;
 import mul.cam.a.dto.ListParam;
 import mul.cam.a.dto.QnaDto;
 import mul.cam.a.service.QnaService;
@@ -42,4 +44,30 @@ public class QnaController {
 		
 		return map;
 	}
+	
+	@ResponseBody
+	@PostMapping(value="writeQna")
+	public String writeQna(QnaDto bbs) {
+		System.out.println("QnaController writeQna() " + new Date());
+		
+		boolean b = service.writeQna(bbs);
+		
+		if(b == false) {
+			return "NO";
+		}
+		
+		return "YES";
+	}
+	
+	@ResponseBody
+	@GetMapping(value = "getLearningQna")
+	public QnaDto getLearningQna(Integer seq) {
+		System.out.println("QnaController getQgetLearningQnana " + new Date());
+		
+		return service.getLearningQna(seq);
+	}
+	
+	
+
+	
 }

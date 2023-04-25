@@ -16,4 +16,10 @@ public interface QnaDao {
 	List<QnaDto> qnaLearningList(ListParam param);
 	
 	int getAllQna(ListParam param);
+	
+	// 수업 질문 등록
+	int writeQna (QnaDto bbs);
+	
+	// 수업 질문 상세
+	QnaDto getLearningQna (Integer seq);
 }

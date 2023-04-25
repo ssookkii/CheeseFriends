@@ -24,4 +24,13 @@ public class QnaService {
 	public int getAllQna(ListParam param) {
 		return dao.getAllQna(param);
 	}
+	
+	public boolean writeQna(QnaDto bbs) {
+		int n = dao.writeQna(bbs);
+		return n>0? true:false;
+	}
+	
+	public QnaDto getLearningQna(Integer seq) {
+		return dao.getLearningQna(seq);
+	}
 }

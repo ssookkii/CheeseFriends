@@ -6,25 +6,25 @@
 <select id="qnaLearningList" parameterType="mul.cam.a.dto.ListParam" resultType="mul.cam.a.dto.QnaDto">
 	SELECT *
 	FROM qna
-	WHERE 1=1
-	<if test="choice != null and choice != ''">
-		<if test="choice == 'subject'">
- 			AND subject =#{search}
-	 	</if>
-	 	<if test="choice == 'title'">
-	 		AND title LIKE CONCAT("%", #{search}, "%")
-	 	</if>
-	 	<if test="choice == 'content'">
-	 		AND content LIKE CONCAT("%", #{search}, "%")
-	 	</if>
-	</if>
-		LIMIT #{start}, #{end}
+
 </select>
 
 <!-- 글의 총수 -->
 <select id="getAllQna" parameterType="mul.cam.a.dto.ListParam" resultType="java.lang.Integer">
-	
 	select ifnull(count(*), 0)
 	from qna
+</select>
+
+<!-- 수업 질문 글쓰기 -->
+<insert id="writeQna" parameterType="mul.cam.a.dto.QnaDto">
+	INSERT INTO qna(subject, title, writer, content, regdate)
+	VALUES( #{subject}, #{title}, #{writer}, #{content}, now() )
+</insert>
+
+<!-- 수업 질문 상세 -->
+<select id="getLearningQna" parameterType="Integer" resultType="mul.cam.a.dto.QnaDto">
+	SELECT seq, subject, title, writer, content, regdate
+	FROM qna
+	WHERE seq=#{seq}
 </select>
 </mapper>
