@@ -223,7 +223,11 @@ public class UserController {
 		System.out.println("UserController idsearch() " + new Date());
 		
 		UserDto getdto = service.idsearch(dto);
-		System.out.println("id: " + getdto.getId());
+		System.out.println(getdto);
+		
+		if(getdto == null) {
+			return null;
+		}
 		
 		return getdto;
 	}

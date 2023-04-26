@@ -106,8 +106,6 @@ public class UserService {
 		System.out.println("UserService idsearch() " + new Date());
 
 		UserDto getdto = dao.idsearch(dto);
-		String userid = getdto.getId();
-	
 	
 		return getdto;
 	}

@@ -14,15 +14,16 @@ public class MailDto implements Serializable{
 	String filename;
 	String newfilename;
 	int receivedel;
-	String groupcode;
+	String educode;
 	int senddel;
+	String subcode;
 	
 	public MailDto() {
 		// TODO Auto-generated constructor stub
 	}
 
 	public MailDto(int seq, String sender, String receiver, String title, String content, String wdate, int readcount,
-			String filename, String newfilename, int receivedel, String groupcode, int senddel) {
+			String filename, String newfilename, int receivedel, String educode, int senddel, String subcode) {
 		super();
 		this.seq = seq;
 		this.sender = sender;
@@ -34,8 +35,9 @@ public class MailDto implements Serializable{
 		this.filename = filename;
 		this.newfilename = newfilename;
 		this.receivedel = receivedel;
-		this.groupcode = groupcode;
+		this.educode = educode;
 		this.senddel = senddel;
+		this.subcode = subcode;
 	}
 
 	public int getSeq() {
@@ -118,12 +120,12 @@ public class MailDto implements Serializable{
 		this.receivedel = receivedel;
 	}
 
-	public String getGroupcode() {
-		return groupcode;
+	public String getEducode() {
+		return educode;
 	}
 
-	public void setGroupcode(String groupcode) {
-		this.groupcode = groupcode;
+	public void setEducode(String educode) {
+		this.educode = educode;
 	}
 
 	public int getSenddel() {
@@ -134,14 +136,23 @@ public class MailDto implements Serializable{
 		this.senddel = senddel;
 	}
 
+	public String getSubcode() {
+		return subcode;
+	}
+
+	public void setSubcode(String subcode) {
+		this.subcode = subcode;
+	}
+
 	@Override
 	public String toString() {
 		return "MailDto [seq=" + seq + ", sender=" + sender + ", receiver=" + receiver + ", title=" + title
 				+ ", content=" + content + ", wdate=" + wdate + ", readcount=" + readcount + ", filename=" + filename
-				+ ", newfilename=" + newfilename + ", receivedel=" + receivedel + ", groupcode=" + groupcode
-				+ ", senddel=" + senddel + "]";
+				+ ", newfilename=" + newfilename + ", receivedel=" + receivedel + ", educode=" + educode + ", senddel="
+				+ senddel + ", subcode=" + subcode + "]";
 	}
 
+	
 	
 	
 
