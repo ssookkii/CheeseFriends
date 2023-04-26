@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 import mul.cam.a.dto.GradeDto;
+import mul.cam.a.dto.SortParam;
 import mul.cam.a.dto.SubjectDto;
 
 @Mapper
@@ -17,7 +18,7 @@ public interface GradeManageDao {
 	List<SubjectDto> subTeacherlist(String teacher);
 	
 	// 과목 학생 성적리스트
-	List<GradeDto> subStudentList(SubjectDto dto);
+	List<GradeDto> subStudentList(SortParam param);
 	
 	// 과목 학생 성적입력
 	int gradeAdd(List<GradeDto> data);
@@ -26,7 +27,7 @@ public interface GradeManageDao {
 	int gradeDuplicate(List<GradeDto> data);
 	
 	// 과목 석차 집계
-	List<GradeDto> gradeRanks(SubjectDto dto);
+	List<GradeDto> gradeRanks(SortParam param);
 	
 	// 학생성적수정
 	int gradeUpdate(List<GradeDto> data);

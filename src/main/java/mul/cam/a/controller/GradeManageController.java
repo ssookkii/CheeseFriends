@@ -16,6 +16,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import mul.cam.a.dto.GradeDto;
+import mul.cam.a.dto.SortParam;
 import mul.cam.a.dto.SubjectDto;
 import mul.cam.a.service.GradeManageService;
 
@@ -33,10 +34,10 @@ public class GradeManageController {
 	}
 	
 	@GetMapping(value="subStudentList")
-	public List<GradeDto> subStudentList(SubjectDto dto) {
+	public List<GradeDto> subStudentList(SortParam param) {
 		System.out.println("GradeManageController subStudentList()" + new Date());
 //		System.out.println(dto);
-		List<GradeDto> student = service.subStudentList(dto);
+		List<GradeDto> student = service.subStudentList(param);
 //		System.out.println(student);
 		return student;
 				
@@ -72,10 +73,10 @@ public class GradeManageController {
 		}
 	}
 	@GetMapping(value="gradeRanks")
-	public List<GradeDto> gradeRanks(SubjectDto dto){
+	public List<GradeDto> gradeRanks(SortParam param){
 		System.out.println("GradeManageController gradeRanks()" + new Date());
 		
-		return service.gradeRanks(dto);
+		return service.gradeRanks(param);
 	}
 	@PostMapping(value="gradeUpdate")
 	public String gradeUpdate(@RequestParam(value="data", required=false)String data) throws Exception{

@@ -31,4 +31,19 @@ public interface SubjectDao {
 	// 교사아이디리스트
 	List<UserDto> getIdList(String auth);
 	
+	// 과목추가
+	int subAdd(SubjectDto sub);
+	
+	// 선생님 과목 리스트
+	List<SubjectDto> getTSubList(String teacher);
+	
+	// 선생님 과목 데이터
+	SubjectDto getTSub(String subCode);
+	
+	// 과목 중복코드 확인
+	int subCodeCheck(String subCode);
+	
+	// 등록된 과목인지 확인
+	int subDuplicateCheck(SubjectDto sub);
+	
 }

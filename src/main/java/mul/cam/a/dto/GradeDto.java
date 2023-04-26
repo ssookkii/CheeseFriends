@@ -1,7 +1,6 @@
 package mul.cam.a.dto;
 
 public class GradeDto {
-	private int seq;
 	private String subCode;
 	private String eduCode;
 	private String subName;
@@ -17,10 +16,9 @@ public class GradeDto {
 	public GradeDto() {
 		
 	}
-	public GradeDto(int seq, String subCode, String eduCode, String subName, String classGrade, String studentId,
+	public GradeDto(String subCode, String eduCode, String subName, String classGrade, String studentId,
 			String userId, String name, int studentGrade, int studentRanks, int subTotal) {
 		super();
-		this.seq = seq;
 		this.subCode = subCode;
 		this.eduCode = eduCode;
 		this.subName = subName;
@@ -32,10 +30,9 @@ public class GradeDto {
 		this.studentRanks = studentRanks;
 		this.subTotal = subTotal;
 	}
-	public GradeDto(int seq, String subCode, String eduCode, String subName, String classGrade, String studentId,
+	public GradeDto(String subCode, String eduCode, String subName, String classGrade, String studentId,
 			String userId, String name) {
 		super();
-		this.seq = seq;
 		this.subCode = subCode;
 		this.eduCode = eduCode;
 		this.subName = subName;
@@ -46,20 +43,14 @@ public class GradeDto {
 	}
 		
 	
-	public GradeDto(int seq, String subCode, String studentId, int studentGrade, int studentRanks) {
+	public GradeDto(String subCode, String studentId, int studentGrade, int studentRanks) {
 		super();
-		this.seq = seq;
 		this.subCode = subCode;
 		this.studentId = studentId;
 		this.studentGrade = studentGrade;
 		this.studentRanks = studentRanks;
 	}
-	public int getSeq() {
-		return seq;
-	}
-	public void setSeq(int seq) {
-		this.seq = seq;
-	}
+	
 	public String getSubCode() {
 		return subCode;
 	}
@@ -122,7 +113,7 @@ public class GradeDto {
 	}
 	@Override
 	public String toString() {
-		return "GradeDto [seq=" + seq + ", subCode=" + subCode + ", eduCode=" + eduCode + ", subName=" + subName
+		return "subCode=" + subCode + ", eduCode=" + eduCode + ", subName=" + subName
 				+ ", classGrade=" + classGrade + ", studentId=" + studentId + ", userId=" + userId + ", name=" + name
 				+ ", studentGrade=" + studentGrade + ", studentRanks=" + studentRanks + ", subTotal=" + subTotal + "]";
 	}

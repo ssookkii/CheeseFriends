@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import mul.cam.a.dao.GradeManageDao;
 import mul.cam.a.dto.GradeDto;
+import mul.cam.a.dto.SortParam;
 import mul.cam.a.dto.SubjectDto;
 
 @Service
@@ -22,8 +23,8 @@ public class GradeManageService {
 		return dao.subTeacherlist(teacher);
 	}
 	
-	public List<GradeDto> subStudentList(SubjectDto dto) {
-		return dao.subStudentList(dto);
+	public List<GradeDto> subStudentList(SortParam param) {
+		return dao.subStudentList(param);
 	}
 	public boolean gradeAdd(List<GradeDto> data) {
 		int n = dao.gradeAdd(data);
@@ -33,8 +34,8 @@ public class GradeManageService {
 		int n = dao.gradeDuplicate(data);
 		return n>0?true:false;
 	}
-	public List<GradeDto> gradeRanks(SubjectDto dto) {
-		return dao.gradeRanks(dto);
+	public List<GradeDto> gradeRanks(SortParam param) {
+		return dao.gradeRanks(param);
 	}
 	public boolean gradeUpdate(List<GradeDto> data) {
 		int n = dao.gradeUpdate(data);
