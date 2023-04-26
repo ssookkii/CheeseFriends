@@ -1,40 +1,30 @@
 package mul.cam.a.dto;
 
-public class QnaDto {
+public class EduInfoDto {
 	private int seq;
 	private String subject;
 	private String subjectCode;
-	
-	private int ref;
-	private int step;
-	private int depth;
-	
 	private String title;
 	private String writer;
 	private String content;
 	private String regdate;
-	private String admin;
 	
-	public QnaDto() {
+	public EduInfoDto() {
 		
-	}
-
-	public QnaDto(int seq, String subject, String subjectCode, int ref, int step, int depth, String title,
-			String writer, String content, String regdate, String admin) {
+	}	
+	
+	public EduInfoDto(int seq, String subject, String subjectCode, String title, String writer, String content,
+			String regdate) {
 		super();
 		this.seq = seq;
 		this.subject = subject;
 		this.subjectCode = subjectCode;
-		this.ref = ref;
-		this.step = step;
-		this.depth = depth;
 		this.title = title;
 		this.writer = writer;
 		this.content = content;
 		this.regdate = regdate;
-		this.admin = admin;
 	}
-
+	
 	public int getSeq() {
 		return seq;
 	}
@@ -57,30 +47,6 @@ public class QnaDto {
 
 	public void setSubjectCode(String subjectCode) {
 		this.subjectCode = subjectCode;
-	}
-
-	public int getRef() {
-		return ref;
-	}
-
-	public void setRef(int ref) {
-		this.ref = ref;
-	}
-
-	public int getStep() {
-		return step;
-	}
-
-	public void setStep(int step) {
-		this.step = step;
-	}
-
-	public int getDepth() {
-		return depth;
-	}
-
-	public void setDepth(int depth) {
-		this.depth = depth;
 	}
 
 	public String getTitle() {
@@ -115,19 +81,10 @@ public class QnaDto {
 		this.regdate = regdate;
 	}
 
-	public String getAdmin() {
-		return admin;
-	}
-
-	public void setAdmin(String admin) {
-		this.admin = admin;
-	}
-
 	@Override
 	public String toString() {
-		return "QnaDto [seq=" + seq + ", subject=" + subject + ", subjectCode=" + subjectCode + ", ref=" + ref
-				+ ", step=" + step + ", depth=" + depth + ", title=" + title + ", writer=" + writer + ", content="
-				+ content + ", regdate=" + regdate + ", admin=" + admin + "]";
+		return "EduInfoDto [seq=" + seq + ", subject=" + subject + ", subjectCode=" + subjectCode + ", title=" + title
+				+ ", writer=" + writer + ", content=" + content + ", regdate=" + regdate + "]";
 	}
 	
 	

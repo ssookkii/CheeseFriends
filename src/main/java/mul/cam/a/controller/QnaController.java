@@ -62,11 +62,22 @@ public class QnaController {
 	@ResponseBody
 	@GetMapping(value = "getLearningQna")
 	public QnaDto getLearningQna(Integer seq) {
-		System.out.println("QnaController getQgetLearningQnana " + new Date());
+		System.out.println("QnaController getLearningQna " + new Date());
 		
 		return service.getLearningQna(seq);
 	}
 	
+	@ResponseBody
+	@PostMapping (value="answerQna")
+	public String answerQna(QnaDto bbs) {
+		System.out.println("QnaController answerQna " + new Date());
+		
+		boolean b = service.answerQna(bbs);
+		if(b == false) {
+			return "NO";
+		}
+		return "YES";
+	}
 	
 
 	

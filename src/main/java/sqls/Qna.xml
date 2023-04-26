@@ -27,4 +27,22 @@
 	FROM qna
 	WHERE seq=#{seq}
 </select>
+
+
+<!-- 답글 수정 -->
+<update id="answerUpdate" parameterType="mul.cam.a.dto.QnaDto">
+	update qna 
+	set step=step+1
+	where ref=(select ref from (select ref from qna a where seq=#{seq}) A)
+		and step>(select step from (select step from qna b where seq=#{seq}) B)
+</update>
+
+<!-- 답글 추가 -->
+<insert id="answerInsert" parameterType="mul.cam.a.dto.QnaDto">
+	insert into qna(subject, writer, ref, step, depth, title, content, regdate)
+	values(#{subject}, #{writer}, (select ref from qna a where seq=#{seq}),
+				  (select step from qna b where seq=#{seq})+1,
+				  (select depth from qna c where seq=#{seq})+1,
+			#{title}, #{content}, now())
+</insert>
 </mapper>

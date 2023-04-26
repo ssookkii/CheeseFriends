@@ -22,4 +22,7 @@ public interface QnaDao {
 	
 	// 수업 질문 상세
 	QnaDto getLearningQna (Integer seq);
+	
+	int answerUpdate(QnaDto bbs);
+	int answerInsert (QnaDto bbs);
 }

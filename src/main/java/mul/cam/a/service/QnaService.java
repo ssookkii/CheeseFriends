@@ -33,4 +33,10 @@ public class QnaService {
 	public QnaDto getLearningQna(Integer seq) {
 		return dao.getLearningQna(seq);
 	}
+	
+	public boolean answerQna(QnaDto bbs) {
+		dao.answerUpdate(bbs);
+		int n = dao.answerInsert(bbs);
+		return n>0?true:false;
+	}
 }
