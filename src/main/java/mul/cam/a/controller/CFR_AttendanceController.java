@@ -17,7 +17,6 @@ import org.opencv.core.Core;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -135,6 +134,7 @@ public class CFR_AttendanceController {
   //출석
     @PostMapping(value = "/attendance")
     public ResponseEntity<?> postAttendance(@RequestBody AttendanceRequest request, Model model) {
+    	System.out.println("출석 실행");
         String userId = request.getUserId();
         String eduCode = request.getEduCode();
         String subCode = request.getSubCode();
@@ -194,7 +194,6 @@ public class CFR_AttendanceController {
     
     @GetMapping("/user/{userId}")
     public ResponseEntity<String> getNameById(@PathVariable String userId) {
-    	System.out.println(userId);
         String name = attendanceuserDAO.getNameById(userId);
         return ResponseEntity.ok(name);
     }

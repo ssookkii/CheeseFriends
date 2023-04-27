@@ -92,5 +92,8 @@ public class AttManageDao {
     	return sqlSession.selectOne(NS + "findUserAbsentAlarmTrue", studentId );
     }
     
+    public String getStudentId(String userId) {
+    	return sqlSession.selectOne(NS + "getStudentId" , userId);
+    }
 
 }
