@@ -20,6 +20,7 @@ import android.util.Base64;
 
 public class Chatbot {
 
+	
 	public static String stt(String filepath) {
 		
 		String clientId = "anls63hiqa";             // Application Client ID";
