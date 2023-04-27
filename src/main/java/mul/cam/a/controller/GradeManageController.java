@@ -78,6 +78,7 @@ public class GradeManageController {
 		
 		return service.gradeRanks(param);
 	}
+	
 	@PostMapping(value="gradeUpdate")
 	public String gradeUpdate(@RequestParam(value="data", required=false)String data) throws Exception{
 		System.out.println("GradeManageController gradeUpdate()" + new Date());
