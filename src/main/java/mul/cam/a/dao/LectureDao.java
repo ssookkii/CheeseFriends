@@ -20,5 +20,7 @@ public interface LectureDao {
 	// 강의 자료 등록
 	int writeLecture(LectureDto bbs);
 	
+	// 강의 자료 상세
+	LectureDto getLecture(Integer seq);
 
 }

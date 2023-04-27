@@ -3,11 +3,16 @@ package mul.cam.a.service;
 import java.time.LocalTime;
 import java.util.List;
 
+
+import org.springframework.stereotype.Service;
+
 import mul.cam.a.dto.AttendanceSubject;
 import mul.cam.a.dto.AttendanceTimetable;
 import mul.cam.a.dto.CFR_Attendance;
 import mul.cam.a.dto.CFR_User;
 
+
+@Service
 public interface CFR_AttendanceService {
 	// attendance ID로 출석 정보 조회
     CFR_Attendance getAttendanceById(int attendanceID); 

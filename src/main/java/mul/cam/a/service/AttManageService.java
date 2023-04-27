@@ -68,6 +68,8 @@ public class AttManageService {
 	public String findSubName(String subCode) {
 		return attManageDao.findSubName(subCode);
 	}
-
+	public Boolean findUserAbsentAlarmTrue(String studentId) {
+		 return attManageDao.findUserAbsentAlarmTrue(studentId);
+	}
 }
 

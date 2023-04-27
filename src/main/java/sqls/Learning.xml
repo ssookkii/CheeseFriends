@@ -5,11 +5,30 @@
 <mapper namespace="mul.cam.a.dao.LearningDao">
 
 <!-- 수업 자료 목록 가져오기  -->
-	<select id="learningList" parameterType="mul.cam.a.dto.ListParam" resultType="mul.cam.a.dto.LectureDto">
-		SELECT seq, subject, title, writer, content, regdate
-		FROM learning
-		
-	</select>
+<select id="learningList" parameterType="mul.cam.a.dto.ListParam" resultType="mul.cam.a.dto.LearningDto">
+	SELECT *
+	FROM learning
+	WHERE 1=1
+	<if test="choice != null and choice != ''">
+		<if test="choice == 'subject'">
+ 			AND subject =#{search}
+	 	</if>
+	 	<if test="choice == 'title'">
+	 		AND title LIKE CONCAT("%", #{search}, "%")
+	 	</if>
+	 	<if test="choice == 'content'">
+	 		AND content LIKE CONCAT("%", #{search}, "%")
+	 	</if>
+	</if>
+		LIMIT #{start}, #{end}
+</select>
+
+<!-- 글의 총수 -->
+<select id="getAllLearning" parameterType="mul.cam.a.dto.ListParam" resultType="java.lang.Integer">
+	
+	select ifnull(count(*), 0)
+	from learning
+</select>
 
 <!--  수업 자료 글쓰기 -->
 <insert id="writeLearning" parameterType="mul.cam.a.dto.LearningDto">
@@ -19,7 +38,7 @@
 
 <!-- 수업자료 상세 -->
 <select id="getLearning" parameterType="Integer" resultType="mul.cam.a.dto.LearningDto">
-	SELECT seq, subject, subjectCode, title, writer, content, regdate
+	SELECT seq, subject, title, writer, content, regdate
 	FROM learning
 	WHERE seq=#{seq}
 </select>

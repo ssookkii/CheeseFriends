@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="DA">
+
+
+    <select id="getGradesByStudentId" parameterType="string" resultType="mul.cam.a.dto.DataAnalysisDto">
+        SELECT *
+        FROM grade
+        WHERE student_id = #{studentId} and edu_code=#{eduCode}
+    </select>
+    
+    <resultMap id="AttendanceResultMap" type="mul.cam.a.dto.CFR_Attendance">
+    <result property="attendanceID" column="attendanceID" />
+    <result property="studentID" column="studentID" />
+    <result property="subCode" column="sub_code" />
+    <result property="attendanceTime" column="attendanceTime" />
+    <result property="status" column="status" />
+    <result property="eduCode" column="edu_code" />
+    <result property="comment" column="comment" />
+    <result property="subName" column="sub_name" />
+</resultMap>
+    
+<select id="getAttendanceList" parameterType="string" resultMap="AttendanceResultMap">
+    SELECT att.*, sub.sub_name
+    FROM attendance AS att
+    JOIN subject AS sub ON att.sub_code = sub.sub_code
+    WHERE att.studentID = #{studentId} AND att.edu_code = #{eduCode}
+</select>
+
+<select id="getGradesBySubCode" parameterType="string" resultMap="gradeResultMap">
+        SELECT
+            s.student_id,
+            sb.sub_name,
+            s.student_grade,
+            s.student_ranks,
+            s.sub_total,
+            u.name
+        FROM
+            grade s
+        JOIN
+            subject sb
+        ON
+            s.sub_code = sb.sub_code
+        JOIN
+        user u
+   	    ON
+        s.student_id = u.id
+        WHERE
+            sb.sub_code = #{subCode}
+    </select>
+    
+    <resultMap id="gradeResultMap" type="mul.cam.a.dto.DataAnalysisDto">
+    <result property="studentId" column="student_id" />
+    <result property="subName" column="sub_name" />
+    <result property="studentGrade" column="student_grade" />
+    <result property="studentRanks" column="student_ranks" />
+    <result property="subTotal" column="sub_total" />
+    <result property="studentName" column="name"/>
+</resultMap>
+
+</mapper>

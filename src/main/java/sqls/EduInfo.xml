@@ -2,12 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="mul.cam.a.dao.LectureDao">
+<mapper namespace="mul.cam.a.dao.EduInfoDao">
 
-<!-- 강의 목록 가져오기 -->
-<select id="lectureList" parameterType="mul.cam.a.dto.ListParam" resultType="mul.cam.a.dto.LectureDto">
+<!-- 교육정보 목록 가져오기 -->
+<select id="eduInfoList" parameterType="mul.cam.a.dto.ListParam" resultType="mul.cam.a.dto.EduInfoDto">
 	SELECT *
-	FROM lecture
+	FROM eduInfo
 	WHERE 1=1
 	<if test="choice != null and choice != ''">
 		<if test="choice == 'subject'">
@@ -25,24 +25,22 @@
 </select>
 
 <!-- 글의 총수 -->
-<select id="getAllLecture" parameterType="mul.cam.a.dto.ListParam" resultType="java.lang.Integer">
+<select id="getAllEduInfo" parameterType="mul.cam.a.dto.ListParam" resultType="java.lang.Integer">
 	
 	select ifnull(count(*), 0)
-	from lecture
+	from eduInfo
 </select>
 
-
-<!-- 강의 글쓰기 -->
-<insert id="writeLecture" parameterType="mul.cam.a.dto.LectureDto">
-	INSERT INTO lecture(subject, title, writer, content, regdate)
-	VALUES(#{subject}, #{title}, #{writer}, #{content}, now())
+<!-- 교육 정보 글쓰기 -->
+<insert id="writeEduInfo" parameterType="mul.cam.a.dto.EduInfoDto">
+	INSERT INTO eduInfo(subject, title, writer, content, regdate)
+	VALUES( #{subject}, #{title}, #{writer}, #{content}, now() )
 </insert>
 
-<!-- 강의 자료 상세 -->
-<select id="getLecture" parameterType="Integer" resultType="mul.cam.a.dto.LectureDto">
+<!-- 교육 정보 상세 -->
+<select id="getEduInfo" parameterType="Integer" resultType="mul.cam.a.dto.EduInfoDto">
 	SELECT seq, subject, title, writer, content, regdate
-	FROM lecture
+	FROM eduInfo
 	WHERE seq=#{seq}
 </select>
-
 </mapper>
