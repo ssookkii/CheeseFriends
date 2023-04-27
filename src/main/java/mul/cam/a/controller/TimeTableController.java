@@ -20,14 +20,14 @@ public class TimeTableController {
 	@GetMapping(value="subTimeList")
 	public List<TimeTableDto> subTimeList(String teacher) {
 		System.out.println("TimeTableController subTimeList()" + new Date());
-		System.out.println(teacher);
+//		System.out.println(teacher);
 		List<TimeTableDto> dto = service.subTimeList(teacher);
-		System.out.println(dto);
+//		System.out.println(dto);
 		return dto;
 	}
 	@PostMapping(value="timeTableAdd")
 	public String timeTableAdd(TimeTableDto dto) {
-		System.out.println("TimeTableController TimeTableDto()" + new Date());
+		System.out.println("TimeTableController timeTableAdd()" + new Date());
 		
 		// 강의시간 중복입력 확인
 		boolean duplicate = service.timeDuplicateCheck(dto);
@@ -41,6 +41,29 @@ public class TimeTableController {
 		}else {
 			return "fail";
 		}
+	}
+	@PostMapping(value="timeTableUpdate")
+	public String timeTableUpdate(TimeTableDto dto) {
+		System.out.println("TimeTableController timeTableUpdate()" + new Date());
+		System.out.println(dto);
+		boolean isS = service.timeTableUpdate(dto);
+		if(isS) {
+			return "success";
+		}else {
+			return "fail";
+		}
+	}
+	@PostMapping(value="timeTableDelete")
+	public String timeTableDelete(int seq) {
+		System.out.println("TimeTableController timeTableDelete()" + new Date());
+		
+		boolean isS = service.timeTableDelete(seq);
+		if(isS) {
+			return "success";
+		}else {
+			return "fail";
+		}
+		
 	}
 
 }

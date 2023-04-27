@@ -19,4 +19,10 @@ public interface TimeTableDao {
 	
 	// 강의시간 중복입력 확인
 	int timeDuplicateCheck(TimeTableDto dto);
+	
+	// 강의시간 업데이트
+	int timeTableUpdate(TimeTableDto dto);
+	
+	// 강의시간 삭제
+	int timeTableDelete(int seq);
 }

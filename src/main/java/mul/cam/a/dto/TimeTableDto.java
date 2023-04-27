@@ -1,6 +1,7 @@
 package mul.cam.a.dto;
 
 public class TimeTableDto {
+	private int seq;
 	private String eduCode;
 	private String subCode;
 	private String subName;
@@ -16,10 +17,10 @@ public class TimeTableDto {
 		
 	}
 
-
-	public TimeTableDto(String eduCode, String subCode, String subName, String classGrade, String subStart,
+	public TimeTableDto(int seq, String eduCode, String subCode, String subName, String classGrade, String subStart,
 			String subDay, String subStartTime, String subEndTime, String educatorName, String name) {
 		super();
+		this.seq = seq;
 		this.eduCode = eduCode;
 		this.subCode = subCode;
 		this.subName = subName;
@@ -32,6 +33,13 @@ public class TimeTableDto {
 		this.name = name;
 	}
 
+	public int getSeq() {
+		return seq;
+	}
+
+	public void setSeq(int seq) {
+		this.seq = seq;
+	}
 
 	public String getEduCode() {
 		return eduCode;
@@ -105,24 +113,24 @@ public class TimeTableDto {
 		this.educatorName = educatorName;
 	}
 
-
 	public String getName() {
 		return name;
 	}
-
 
 	public void setName(String name) {
 		this.name = name;
 	}
 
-
 	@Override
 	public String toString() {
-		return "TimeTableDto [eduCode=" + eduCode + ", subCode=" + subCode + ", subName=" + subName + ", classGrade="
-				+ classGrade + ", subStart=" + subStart + ", subDay=" + subDay + ", subStartTime=" + subStartTime
-				+ ", subEndTime=" + subEndTime + ", educatorName=" + educatorName + ", name="
-				+ name + "]";
+		return "TimeTableDto [seq=" + seq + ", eduCode=" + eduCode + ", subCode=" + subCode + ", subName=" + subName
+				+ ", classGrade=" + classGrade + ", subStart=" + subStart + ", subDay=" + subDay + ", subStartTime="
+				+ subStartTime + ", subEndTime=" + subEndTime + ", educatorName=" + educatorName + ", name=" + name
+				+ "]";
 	}
+
+
+	
 
 
 

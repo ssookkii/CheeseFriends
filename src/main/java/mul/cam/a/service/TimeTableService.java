@@ -27,5 +27,13 @@ public class TimeTableService {
 		int n = dao.timeDuplicateCheck(dto);
 		return n>0?true:false;
 	}
+	public boolean timeTableUpdate(TimeTableDto dto) {
+		int n = dao.timeTableUpdate(dto);
+		return n>0?true:false;
+	}
+	public boolean timeTableDelete(int seq) {
+		int n = dao.timeTableDelete(seq);
+		return n>0?true:false;
+	}
 	
 }
