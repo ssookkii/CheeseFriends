@@ -19,8 +19,10 @@ import org.springframework.web.multipart.MultipartFile;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import mul.cam.a.dto.EducationDto;
+import mul.cam.a.dto.GradeDto;
 import mul.cam.a.dto.LearningDto;
 import mul.cam.a.dto.LectureDto;
+import mul.cam.a.dto.SortParam;
 import mul.cam.a.dto.TaskDto;
 
 import mul.cam.a.dto.TestEduDto;
@@ -277,6 +279,33 @@ public class UserController {
 			return "YES";
 		}
 			
+		return "NO";
+	}
+	
+	// 마이 페이지 - 성적표 확인
+	@PostMapping(value = "gradecheck")
+	public String gradecheck(String id) {
+		System.out.println("UserController gradecheck() " + new Date());
+		
+		// 학생 가입한 교육기관정보
+		List<GradeDto> dto = service.gradecheck(id);
+		
+		// 학생 가입한 과목
+		List<String> subjectlist = service.idsubjectlist(id);
+		
+		for (int i = 0; i < subjectlist.size(); i++) {
+			String subCode = subjectlist.get(i);
+			System.out.println(subjectlist.get(i));
+			int rank = service.gradeRanks(id, subCode);
+			System.out.println("rank : " + rank );
+		}
+	
+		
+//		boolean isS = service.changeuser(dto);
+//		if(isS == true) {
+//			return "YES";
+//		}
+//			
 		return "NO";
 	}
 

@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import mul.cam.a.dao.UserDao;
 import mul.cam.a.dto.EducationDto;
+import mul.cam.a.dto.GradeDto;
+import mul.cam.a.dto.SortParam;
 import mul.cam.a.dto.TestEduDto;
 import mul.cam.a.dto.UserDto;
 import mul.cam.a.dto.UserparentsDto;
@@ -121,7 +123,7 @@ public class UserService {
 		return false;
 	}
 	
-	// 비밀번호 ㅂ녀경
+	// 비밀번호 변경
 	public boolean updatepassword(UserDto dto) {
 		int count = dao.updatepassword(dto);
 		return count>0?true:false;
@@ -136,6 +138,20 @@ public class UserService {
 	public boolean changeuser(UserDto dto) {
 		int count = dao.changeuser(dto);
 		return count>0?true:false;
+	}
+	
+	
+	// 마이 페이지 - 성적표 확인
+	public List<GradeDto> gradecheck(String id) {
+		return dao.gradecheck(id);
+	}
+	
+	public List<String> idsubjectlist(String id) {
+		return dao.idsubjectlist(id);
+	}
+	
+	public int gradeRanks(String id, String subCode) {
+		return dao.gradeRanks(id, subCode);
 	}
 	
 }
