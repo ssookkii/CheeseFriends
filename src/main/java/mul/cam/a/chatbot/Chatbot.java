@@ -1,14 +1,15 @@
 package mul.cam.a.chatbot;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
-
-// 네이버 음성합성 Open API 예제
-import java.net.URLEncoder;
 import java.util.Date;
-import java.util.UUID;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -72,7 +73,7 @@ public class Chatbot {
                 br.close();
                 
                 // 결과출력
-                System.out.println(response.toString());                
+                //System.out.println(response.toString());                
             }
             
         } catch (Exception e) {
@@ -169,7 +170,7 @@ public static String chatBot(String voiceMessage) {
         System.out.println(e);
     }
 
-    System.out.println(chatbotMessage);
+    //System.out.println(chatbotMessage);
     
     return chatbotMessage;
 }
