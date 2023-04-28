@@ -7,9 +7,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import mul.cam.a.dao.EducationDao;
+import mul.cam.a.dto.AttendanceEdu;
 import mul.cam.a.dto.CFR_User;
 import mul.cam.a.dto.EducationDto;
 import mul.cam.a.dto.ListParam;
+import mul.cam.a.dto.MailDto;
+import mul.cam.a.dto.MailParam;
+import mul.cam.a.dto.TeacherUserDto;
 import mul.cam.a.dto.UserDto;
 
 @Service
@@ -25,6 +29,10 @@ public class EducationService {
 	}
 	public boolean eduAddAdmain(UserDto admin) {
 		int n = dao.eduAddAdmain(admin);
+		return n>0?true:false;
+	}
+	public boolean userEduAdd(EducationDto edu) {
+		int n = dao.userEduAdd(edu);
 		return n>0?true:false;
 	}
 	public boolean eduCodeCheck(String eduCode) {
@@ -55,6 +63,24 @@ public class EducationService {
 	public boolean eduDelete(EducationDto edu) {
 		int n = dao.eduDelete(edu);
 		return n>0?true:false;
+	}
+	public List<EducationDto> getEduMailList(ListParam param) {
+		return dao.getEduMailList(param);
+	}
+	public List<TeacherUserDto> getIdMailList(String id) {
+		return dao.getIdMailList(id);
+	}
+	public List<TeacherUserDto> getEduIdMailList(String eduCode) {
+		return dao.getEduIdMailList(eduCode);
+	}
+	public List<MailDto> sendMaillist(MailParam param) {
+		return dao.sendMaillist(param);
+	}
+	public int getsendAllMail(MailParam param) {
+		return dao.getsendAllMail(param);
+	}
+	public MailDto getSendMailDetail(String wdate) {
+		return dao.getSendMailDetail(wdate);
 	}
 }
 
