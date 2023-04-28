@@ -7,6 +7,9 @@ import org.springframework.stereotype.Repository;
 
 import mul.cam.a.dto.EducationDto;
 import mul.cam.a.dto.GradeDto;
+import mul.cam.a.dto.MailParam;
+import mul.cam.a.dto.MysubjectDto;
+import mul.cam.a.dto.SearchGradeDto;
 import mul.cam.a.dto.SortParam;
 import mul.cam.a.dto.TestEduDto;
 import mul.cam.a.dto.UserDto;
@@ -28,6 +31,7 @@ public interface UserDao {
 	
 	// 학생 가입
 	int addusersubject(TestEduDto dto);
+	String educodematching(String sub_code);
 
 	
 	// 학부모 가입
@@ -48,13 +52,15 @@ public interface UserDao {
 	// 로그인
 	UserDto login(UserDto dto);
 	
+		// 학생 마이페이지
 	// 개인정보 변경
 	int changeuser(UserDto dto);
 	
 	// 마이 페이지 - 성적표 확인
-	List<GradeDto> gradecheck(String id);
-	List<String> idsubjectlist(String id);
-	int gradeRanks(String id, String subCode);
+	List<SearchGradeDto> gradecheck(MailParam param);
+
+	// 마이 페이지 = 수강중인 학습
+	List<MysubjectDto> subjectcheck(MailParam param);
 
 }
 	

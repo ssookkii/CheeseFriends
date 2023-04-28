@@ -58,6 +58,7 @@
 			inner join education e 
 			on e.edu_code = s.edu_code 
 	where e.edu_code=#{educode}
+	and us.id != #{id}
 	and s.sub_code=#{subcode}
 </select>
 
@@ -71,6 +72,7 @@
 			inner join education e 
 			on e.edu_code = s.edu_code 
 	where e.edu_code=#{educode}
+	and us.id != #{id}
 </select>
 
 <!-- 받은 메일 -->
