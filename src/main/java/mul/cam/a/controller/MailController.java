@@ -184,7 +184,7 @@ public class MailController {
 		List<MailDto> list = service.receivemaillist(param)
 				.stream()
 				.skip(param.getStart())
-				.limit(param.getEnd())
+				.limit(10)
 				.collect(Collectors.toList());
 		
 		System.out.println(param.toString());
@@ -220,7 +220,7 @@ public class MailController {
 		System.out.println("MailController download " + new Date());
 		
 		// 경로
-		String path = req.getServletContext().getRealPath("/upload");
+		String path = req.getServletContext().getRealPath("/mailfile");
 		// String path = "c:\temp";
 		
 		MediaType mediaType = MediaTypeUtiles.getMediaTypeForFileName(this.servletContext, filename);

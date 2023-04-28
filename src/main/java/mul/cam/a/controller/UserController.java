@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +23,9 @@ import mul.cam.a.dto.EducationDto;
 import mul.cam.a.dto.GradeDto;
 import mul.cam.a.dto.LearningDto;
 import mul.cam.a.dto.LectureDto;
+import mul.cam.a.dto.MailParam;
+import mul.cam.a.dto.MysubjectDto;
+import mul.cam.a.dto.SearchGradeDto;
 import mul.cam.a.dto.SortParam;
 import mul.cam.a.dto.TaskDto;
 
@@ -173,6 +177,16 @@ public class UserController {
 		return "NO";
 	}
 	
+	@PostMapping(value = "educodematching")
+	public String educodematching(String sub_code) {
+		System.out.println("UserController educodematching() " + new Date());
+		
+		String s = service.educodematching(sub_code);
+		System.out.println("Educode : " + s);
+	
+		return s;
+	}
+	
 	// 학부모 가입
 	@GetMapping(value = "idmatching")
 	public UserDto idmatching(String studentid){
@@ -281,32 +295,75 @@ public class UserController {
 			
 		return "NO";
 	}
-	
+		// 학생 마이페이지
 	// 마이 페이지 - 성적표 확인
-	@PostMapping(value = "gradecheck")
-	public String gradecheck(String id) {
+	@GetMapping(value = "gradecheck")
+	public Map<String, Object> gradecheck(MailParam param) {
 		System.out.println("UserController gradecheck() " + new Date());
 		
-		// 학생 가입한 교육기관정보
-		List<GradeDto> dto = service.gradecheck(id);
+		// 글의 시작과 끝
+		int pn = param.getPageNumber();  // 0 1 2 3 4
+		int start = pn * 10;	// 1  11
+		int end = (pn + 1) * 10;	// 10 20 
 		
-		// 학생 가입한 과목
-		List<String> subjectlist = service.idsubjectlist(id);
+		param.setStart(start);
+		param.setEnd(end);
 		
-		for (int i = 0; i < subjectlist.size(); i++) {
-			String subCode = subjectlist.get(i);
-			System.out.println(subjectlist.get(i));
-			int rank = service.gradeRanks(id, subCode);
-			System.out.println("rank : " + rank );
-		}
-	
+		// 성적표 뽑기
+		List<SearchGradeDto> listcheck = service.gradecheck(param);
+				
+		int cnt = listcheck.size();
+		System.out.println(cnt);
 		
-//		boolean isS = service.changeuser(dto);
-//		if(isS == true) {
-//			return "YES";
-//		}
-//			
-		return "NO";
+		List<SearchGradeDto> list = service.gradecheck(param)
+							.stream()
+							.skip(param.getStart())
+							.limit(10)
+							.collect(Collectors.toList());
+		System.out.println(list);
+		
+		Map<String, Object> map = new HashMap<>();
+		
+		map.put("list", list);
+		map.put("cnt", cnt);
+		
+		return map;
 	}
-
+	
+	// 마이 페이지 - 수강중인 학습
+	@GetMapping(value = "subjectcheck")
+	public Map<String, Object> subjectcheck(MailParam param) {
+		System.out.println("UserController subjectcheck() " + new Date());
+		
+		// 글의 시작과 끝
+		int pn = param.getPageNumber();  // 0 1 2 3 4
+		int start = pn * 10;	// 1  11
+		int end = (pn + 1) * 10;	// 10 20 
+		
+		param.setStart(start);
+		param.setEnd(end);
+		
+		// 성적표 뽑기
+		List<MysubjectDto> listcheck = service.subjectcheck(param);
+				
+		int cnt = listcheck.size();
+		System.out.println(cnt);
+		
+		List<MysubjectDto> list = service.subjectcheck(param)
+							.stream()
+							.skip(param.getStart())
+							.limit(10)
+							.collect(Collectors.toList());
+		System.out.println(list);
+		
+		Map<String, Object> map = new HashMap<>();
+		
+		map.put("list", list);
+		map.put("cnt", cnt);
+		
+		return map;
+	}
+	
+	
+	
 }

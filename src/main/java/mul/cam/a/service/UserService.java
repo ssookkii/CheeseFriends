@@ -11,6 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 import mul.cam.a.dao.UserDao;
 import mul.cam.a.dto.EducationDto;
 import mul.cam.a.dto.GradeDto;
+import mul.cam.a.dto.MailParam;
+import mul.cam.a.dto.MysubjectDto;
+import mul.cam.a.dto.SearchGradeDto;
 import mul.cam.a.dto.SortParam;
 import mul.cam.a.dto.TestEduDto;
 import mul.cam.a.dto.UserDto;
@@ -79,6 +82,13 @@ public class UserService {
 		return count>0?true:false;
 	}
 	
+	public String educodematching(String sub_code) {
+		System.out.println("UserService educodematching() " + new Date());
+		
+		String s = dao.educodematching(sub_code);
+		return s;
+	}
+	
 	// 학부모 가입
 	public UserDto idmatching(String studentid){
 		System.out.println("UserService idmatching() " + new Date());
@@ -99,6 +109,8 @@ public class UserService {
 	}
 	
 	public boolean adduseredu(TestEduDto dto) {
+		System.out.println("UserService adduseredu() " + new Date());
+		
 		int count = dao.adduseredu(dto);
 		return count>0?true:false;
 	}
@@ -134,24 +146,24 @@ public class UserService {
 		return dao.login(dto);
 	}
 	
+		// 학생 마이페이지
 	//개인정보 변경
 	public boolean changeuser(UserDto dto) {
 		int count = dao.changeuser(dto);
 		return count>0?true:false;
 	}
 	
-	
 	// 마이 페이지 - 성적표 확인
-	public List<GradeDto> gradecheck(String id) {
-		return dao.gradecheck(id);
+	public List<SearchGradeDto> gradecheck(MailParam param) {
+		return dao.gradecheck(param);
 	}
 	
-	public List<String> idsubjectlist(String id) {
-		return dao.idsubjectlist(id);
+	// 마이 페이지 - 수강중인 학습
+	public List<MysubjectDto> subjectcheck(MailParam param){
+		return dao.subjectcheck(param);
 	}
 	
-	public int gradeRanks(String id, String subCode) {
-		return dao.gradeRanks(id, subCode);
-	}
+	
+
 	
 }

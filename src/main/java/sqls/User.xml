@@ -2,6 +2,8 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+
 
 
 <mapper namespace="mul.cam.a.dao.UserDao">
@@ -39,6 +41,12 @@
 	insert into usersubject(user_id, sub_code, start_date, end_date)
 	values(#{id}, #{subcode}, now(), now())
 </insert> 
+
+<select id="educodematching" parameterType="String" resultType="String">
+	select edu_code
+	from subject
+	where sub_code=#{sub_code}
+</select>
 
 <select id="idmatching" parameterType="String" resultType="mul.cam.a.dto.UserDto">
 	select id, name, auth
@@ -95,44 +103,68 @@
 	where id=#{id}
 </update>
 
+	<!-- 학생 마이페이지 -->
 <!-- 마이 페이지 성적표 확인 -->
-<select id="gradecheck" parameterType="String" resultType="mul.cam.a.dto.GradeDto">
-	select g.student_id, e.edu_name, g.sub_name, g.student_grade
+<select id="gradecheck" parameterType="String" resultType="mul.cam.a.dto.SearchGradeDto">
+<!-- 	select g.student_id, e.edu_name, g.sub_code, g.sub_name, g.student_grade
 	from grade g inner join education e 
 		on g.edu_code = e.edu_code 
-	where student_id=#{id};
-</select>
-
-<!-- 유저가 듣고있는 과목만 필터링 -->
-<select id="idsubjectlist" parameterType="String" resultType="String">
-	select distinct sub_code 
-	from usersubject 
-	where user_id=#{id};
-</select>
-
-<!-- 석차만 뽑아오기 -->
-<select id="gradeRanks" parameterType="String" resultType="Integer">
-	select student_ranks
+	where student_id=#{studentid}; -->
+			
+	select sub_code, edu_code, edu_name, sub_name, class_grade, student_id, student_grade, student_ranks, sub_total
 	from
-	(SELECT
-	  	 G.SUB_CODE, G.EDU_CODE, G.SUB_NAME, I.NAME, G.CLASS_GRADE, G.STUDENT_ID, G.STUDENT_GRADE,
-	    (ROW_NUMBER() OVER (PARTITION BY SUB_CODE ORDER BY STUDENT_GRADE DESC))as student_ranks,
-	    G.SUB_TOTAL
-	FROM 
-	GRADE G INNER JOIN SUBJECT S
+	(
+		select
+		  	 G.SUB_CODE, G.EDU_CODE, G.SUB_NAME, I.NAME, G.CLASS_GRADE, G.STUDENT_ID, G.STUDENT_GRADE, e.edu_name,
+		    (ROW_NUMBER() OVER (PARTITION BY SUB_CODE ORDER BY STUDENT_GRADE DESC))as student_ranks	,  
+		    K.sub_total
+		FROM GRADE G 
+		INNER JOIN SUBJECT S
 		ON G.SUB_CODE = S.SUB_CODE
-			INNER JOIN USER I
-				ON G.STUDENT_ID = I.ID
-	WHERE G.SUB_CODE=#{subCode}) as a
-	where STUDENT_ID=#{id};
-		<!-- <if test="choice != null and choice != '' ">
-			<if test="choice == 'name'">
-				ORDER BY I.NAME ASC;
-			</if>
-			<if test="choice == 'rank'">
-				ORDER BY student_ranks ASC;
-			</if>
-		</if> -->
+		inner join education e 
+		on s.edu_code = e.edu_code
+		INNER JOIN USER I
+		ON G.STUDENT_ID = I.ID 
+		inner join ( 
+			select 
+				SUB_CODE,
+				COUNT( SUB_CODE ) as sub_total 
+			FROM GRADE
+		group by SUB_CODE 
+		) K 
+		on G.SUB_CODE = K.SUB_CODE
+	) as A
+	where 1=1 
+	and STUDENT_ID=#{receiver}
+	<if test="choice != null and choice != '' and search != null and search != '' ">
+	 	<if test="choice == 'eduname'">
+	 		and edu_name like concat('%', #{search}, '%')
+	 	</if>
+	 	<if test="choice == 'subject'">
+	 		and sub_name like concat('%', #{search}, '%')
+	 	</if>
+	</if>
+</select>
+
+<!-- 마이 페이지 수강중인학습 확인 -->
+<select id="subjectcheck" parameterType="String" resultType="mul.cam.a.dto.MysubjectDto">
+	select e.edu_name, s.sub_name, s.educator_name, u.start_date, u.end_date, t.state 
+	from usersubject u inner join subject s
+		on u.sub_code = s.sub_code
+		inner join education e 
+		on e.edu_code = s.edu_code 
+		inner join tempusersubject t 
+		on t.subcode = s.sub_code 
+	where 1=1
+	and u.user_id=#{receiver};
+	<!-- <if test="choice != null and choice != '' and search != null and search != '' ">
+	 	<if test="choice == 'eduname'">
+	 		and edu_name like concat('%', #{search}, '%')
+	 	</if>
+	 	<if test="choice == 'subject'">
+	 		and sub_name like concat('%', #{search}, '%')
+	 	</if>
+	</if> -->
 </select>
 
 
