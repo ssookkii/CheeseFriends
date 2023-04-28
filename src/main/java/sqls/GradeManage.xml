@@ -47,7 +47,7 @@
 	<select id="gradeRanks" parameterType="mul.cam.a.dto.SortParam" resultType="mul.cam.a.dto.GradeDto">
 		SELECT
 		  	 G.SUB_CODE, G.EDU_CODE, G.SUB_NAME, I.NAME, G.CLASS_GRADE, G.STUDENT_ID, G.STUDENT_GRADE,
-		    (ROW_NUMBER() OVER (PARTITION BY SUB_CODE ORDER BY STUDENT_GRADE DESC))as student_ranks,
+		    (DENSE_RANK() OVER (PARTITION BY SUB_CODE ORDER BY STUDENT_GRADE DESC))as student_ranks,
 		    G.SUB_TOTAL
 		FROM 
 		GRADE G INNER JOIN SUBJECT S
