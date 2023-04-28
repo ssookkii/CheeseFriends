@@ -114,4 +114,15 @@
         SELECT studentid FROM userparents WHERE parentsid=#{userId}
     </select>
     
+     <resultMap id="TeachersubjectResultMap" type="mul.cam.a.dto.SubjectDto">
+        <result property="subCode" column="sub_code"/>
+        <result property="subName" column="sub_name"/>
+    </resultMap>
+
+    <select id="getTeacherSubjectsByUserId" resultMap="TeachersubjectResultMap" parameterType="string">
+		SELECT sub_code, sub_name, edu_code
+        FROM subject
+        WHERE educator_name = #{userId}
+    </select>
+    
 </mapper>

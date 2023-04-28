@@ -110,13 +110,12 @@ public class AttManageController {
     @GetMapping("/{userId}/AbsentAlarm")
     public ResponseEntity<?> getAbsentAlarm(@PathVariable String userId) {
         List<AttendanceSMSCheck> absentAlarm = attManageService.getAbsentAlarm(userId);
-        System.out.println(absentAlarm);
       return ResponseEntity.ok(absentAlarm);
     }
     
     
     //@Scheduled(cron = "0 30 * * * *") // 매 시간 30분에 실행 -> 30분 이전 알림 체크라서
-    @Scheduled(cron = "0 0 0 * * *") // 매일 자정에 실행
+   // @Scheduled(cron = "0 0 0 * * *") // 매일 자정에 실행
     public String sendSms() {
         List<String> userIds = attManageService.findUserMinCheckTrue();
         for (String userId : userIds) {
@@ -152,6 +151,12 @@ public class AttManageController {
     @GetMapping("/getStudentId/{userId}")
     public String getStudentId(@PathVariable String userId) {
     	 return attManageService.getStudentId(userId);
+    }
+    
+    @GetMapping("/teacher/subjects/{userId}")
+    public ResponseEntity<List<SubjectDto>> getTeacherSubjectsByUserId(@PathVariable String userId) {
+        List<SubjectDto> subjects = attManageService.getTeacherSubjectsByUserId(userId);
+        return ResponseEntity.ok(subjects);
     }
       
 }

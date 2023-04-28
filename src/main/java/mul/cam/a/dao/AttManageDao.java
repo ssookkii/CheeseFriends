@@ -95,5 +95,8 @@ public class AttManageDao {
     public String getStudentId(String userId) {
     	return sqlSession.selectOne(NS + "getStudentId" , userId);
     }
+    public List<SubjectDto> getTeacherSubjectsByUserId(String userId) {
+        return sqlSession.selectList(NS+ "getTeacherSubjectsByUserId", userId);
+    }
 
 }

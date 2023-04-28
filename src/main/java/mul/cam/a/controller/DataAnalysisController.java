@@ -30,6 +30,7 @@ public class DataAnalysisController {
     public List<CFR_Attendance> getAttendanceList(@PathVariable String eduCode, @PathVariable String studentId) {
         return dataAnalysisService.getAttendanceList(eduCode, studentId);
     }
+    
  // 교사용   
     @GetMapping("/grades/{subCode}")
     public ResponseEntity<List<DataAnalysisDto>> getGradesBySubCode(@PathVariable String subCode) {

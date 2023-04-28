@@ -75,5 +75,9 @@ public class AttManageService {
 	public String getStudentId(String userId) {
 		return attManageDao.getStudentId(userId);
 	}
+	
+    public List<SubjectDto> getTeacherSubjectsByUserId(String userId) {
+        return attManageDao.getTeacherSubjectsByUserId(userId);
+    }
 }
 
