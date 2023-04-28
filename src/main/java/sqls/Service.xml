@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mul.cam.a.dao.ServiceDao">
+<!-- 교육정보 목록 가져오기 -->
+<select id="serviceList" parameterType="mul.cam.a.dto.ListParam" resultType="mul.cam.a.dto.ServiceDto">
+	SELECT *
+	FROM service
+	WHERE 1=1
+	<if test="choice != null and choice != ''">
+		<if test="choice == 'topic'">
+ 			AND subject =#{search}
+	 	</if>
+	 	<if test="choice == 'title'">
+	 		AND title LIKE CONCAT("%", #{search}, "%")
+	 	</if>
+	 	<if test="choice == 'content'">
+	 		AND content LIKE CONCAT("%", #{search}, "%")
+	 	</if>
+	</if>
+		LIMIT #{start}, #{end}
+
+</select>
+
+<!-- 글의 총수 -->
+<select id="getAllService" parameterType="mul.cam.a.dto.ListParam" resultType="java.lang.Integer">
+	
+	select ifnull(count(*), 0)
+	from service
+</select>
+
+<!-- 교육 정보 글쓰기 -->
+<insert id="writeService" parameterType="mul.cam.a.dto.ServiceDto">
+	INSERT INTO service (topic, title, writer, content, regdate)
+	VALUES( #{topic}, #{title}, #{writer}, #{content}, now() )
+</insert>
+
+<!-- 교육 정보 상세 -->
+<select id="getService" parameterType="Integer" resultType="mul.cam.a.dto.ServiceDto">
+	SELECT seq, topic, title, writer, content, regdate
+	FROM service
+	WHERE seq=#{seq}
+</select>
+
+</mapper>

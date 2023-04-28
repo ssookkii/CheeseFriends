@@ -13,17 +13,23 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
+
 // 네이버 기계번역 (Papago SMT) API 예제
+@CrossOrigin(origins="http://localhost:3000")
 public class PapagoTranslator {
 
-    public static void main(String[] args) {
+    public static String papago(String msg) {
         String clientId = "9sPIM4UprmN3lUd6ddie";//애플리케이션 클라이언트 아이디값";
         String clientSecret = "nU9WPRg33w";//애플리케이션 클라이언트 시크릿값";
 
         String apiURL = "https://openapi.naver.com/v1/papago/n2mt";
-        String text;
+
+        String text = "오늘 점심은 뭐먹었니";
+
         try {
-            text = URLEncoder.encode("안녕하세요. 오늘 기분은 어떻습니까?", "UTF-8");
+        	String encodedText = URLEncoder.encode(text , "UTF-8");
+            String postParams = "source=ko&target=en&text=" + encodedText;
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException("인코딩 실패", e);
         }
@@ -35,6 +41,8 @@ public class PapagoTranslator {
         String responseBody = post(apiURL, requestHeaders, text);
 
         System.out.println(responseBody);
+        
+		return responseBody;
     }
 
     private static String post(String apiUrl, Map<String, String> requestHeaders, String text){
@@ -48,7 +56,7 @@ public class PapagoTranslator {
 
             con.setDoOutput(true);
             try (DataOutputStream wr = new DataOutputStream(con.getOutputStream())) {
-                wr.write(postParams.getBytes());
+            	postParams.getBytes("UTF-8");
                 wr.flush();
             }
 
