@@ -135,64 +135,12 @@ public class EducationController {
 		}
 		return "fail";
 	}
-	@GetMapping(value="getEduMailList")
-	public List<EducationDto> getEduMailList(ListParam param) {
-		System.out.println("EducationController getEduMailList()" + new Date());
+	@GetMapping(value="homeEduCode")
+	public List<EducationDto> homeEduCode(String id) {
+		System.out.println("EducationController homeEduCode()" + new Date());
 		
-		return service.getEduMailList(param);
+		return service.homeEduCode(id);
 	}
-	@GetMapping(value="getIdMailList")
-	public List<TeacherUserDto> getIdMailList(String id) {
-		System.out.println("EducationController getIdMailList()" + new Date());
-		
-		return service.getIdMailList(id);
-	}
-	@GetMapping(value="getEduIdMailList")
-	public List<TeacherUserDto> getEduIdMailList(String eduCode) {
-		System.out.println("EducationController getEduIdMailList()" + new Date());
-		System.out.println(eduCode);
-		List<TeacherUserDto> id = service.getEduIdMailList(eduCode);
-		System.out.println(id.toString());
-		return id;
-	}
-	@GetMapping(value="sendMaillist")
-	public Map<String, Object> sendMaillist(MailParam param) {
-		System.out.println("EducationController sendMaillist()" + new Date());
-		// 글의 시작과 끝
-				int pn = param.getPageNumber();  // 0 1 2 3 4
-				int start = pn * 10;	// 1  11
-				int end = (pn + 1) * 10;	// 10 20 
-				
-				param.setStart(start);
-				param.setEnd(end);
-				
-				List<MailDto> list = service.sendMaillist(param)
-						.stream()
-						.skip(param.getStart())
-						.limit(param.getEnd())
-						.collect(Collectors.toList());
-				
-				System.out.println(param.toString());
-				System.out.println(list.toString());
-				
-				int len = service.getsendAllMail(param);
-				
-				System.out.println("len :" + len);
-				
-				Map<String, Object> map = new HashMap<>();
-				map.put("list", list);
-				map.put("cnt", len);
-
-				return map;
-
-	}
-	@GetMapping(value="getSendMailDetail")
-	public MailDto getSendMailDetail(String wdate) {
-		System.out.println("EducationController sendMaillist()" + new Date());
-		System.out.println(wdate);
-		MailDto mail = service.getSendMailDetail(wdate);
-		System.out.println(mail.toString());
-		return mail;
-	}
+	
 }
 
