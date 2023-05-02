@@ -33,4 +33,18 @@ public class ServiceService {
 	public ServiceDto getService(Integer seq) {
 		return dao.getService(seq);
 	}
+	
+	public boolean answerUpService(ServiceDto bbs) {
+		dao.answerUpService(bbs);
+		int n = dao.answerInService(bbs);
+		return n>0?true:false;
+	}
+	
+	public List<ServiceDto> getCategoryServiceList(ListParam param) {
+		return dao.getCategoryServiceList(param);
+	}
+	
+	public int getAllCategoryService(ListParam param) {
+		return dao.getAllCategoryService(param);
+	}
 }

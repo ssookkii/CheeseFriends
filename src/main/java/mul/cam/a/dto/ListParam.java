@@ -7,19 +7,22 @@ public class ListParam {
 	
 	private int start;
 	private int end;
+	private String category;
 	
 	public ListParam() {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public ListParam(String choice, String search, int pageNumber, int start, int end) {
+	public ListParam(String choice, String search, int pageNumber, int start, int end, String category) {
 		super();
 		this.choice = choice;
 		this.search = search;
 		this.pageNumber = pageNumber;
 		this.start = start;
 		this.end = end;
+		this.category = category;
 	}
+
 
 	public String getChoice() {
 		return choice;
@@ -61,10 +64,18 @@ public class ListParam {
 		this.end = end;
 	}
 
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
+
 	@Override
 	public String toString() {
-		return "ListParams [choice=" + choice + ", search=" + search + ", pageNumber=" + pageNumber + ", start=" + start
-				+ ", end=" + end + "]";
+		return "ListParam [choice=" + choice + ", search=" + search + ", pageNumber=" + pageNumber + ", start=" + start
+				+ ", end=" + end + ", category=" + category + "]";
 	}
 	
 	
