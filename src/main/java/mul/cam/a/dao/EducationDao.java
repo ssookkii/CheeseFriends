@@ -50,23 +50,9 @@ public interface EducationDao {
 	// 교육기관 삭제
 	int eduDelete(EducationDto edu);
 	
-	// 메일용 교육기관 리스트
-	List<EducationDto> getEduMailList(ListParam param);
+	// 메인페이지 유저 eduCode 가져오기
+	List<EducationDto> homeEduCode(String id);
 	
-	// 메일용 아이디 리스트
-	List<TeacherUserDto> getIdMailList(String id);
-	
-	// 메일용 교육기관 아이디 리스트
-	List<TeacherUserDto> getEduIdMailList(String eduCode);
-	
-	// 보낸메일 시간별로 묶은 리스트
-	List<MailDto> sendMaillist(MailParam param);
-	
-	// 보낸메일 총 수
-	int getsendAllMail(MailParam param);
-	
-	// 보낸메일 디테일
-	MailDto getSendMailDetail(String wdate);
 }
 
 

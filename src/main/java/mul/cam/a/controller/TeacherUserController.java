@@ -27,12 +27,15 @@ public class TeacherUserController {
 		
 		// 글의 시작과 끝 
 		int pn = param.getPageNumber(); // 0 1 2 3 4
+		System.out.println(pn);
 		int start = (pn * 15);
 		int end = (pn + 1) * 15;
 		
 		param.setStart(start);
 		param.setEnd(end);
 		
+		System.out.println(start);
+		System.out.println(end);
 		List<TeacherUserDto> list = service.getTeacherList(param);
 		
 		int len = service.getAllTeacher(param);

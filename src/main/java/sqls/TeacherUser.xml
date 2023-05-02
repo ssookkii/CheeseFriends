@@ -14,7 +14,7 @@
 			ON I.ID = UE.USER_ID
 				INNER JOIN EDUCATION E
 					ON UE.EDU_CODE = E.EDU_CODE
-		WHERE 1=1 AND I.AUTH="teacher"
+		WHERE 1=1 AND I.AUTH IN ("teacher", "main")
 		<if test="choice != null and choice != '' and search != null and search != '' ">
 			<if test="choice == 'eduCode'">
 	 			AND E.EDU_CODE =#{search}

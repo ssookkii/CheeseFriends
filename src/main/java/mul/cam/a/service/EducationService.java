@@ -64,24 +64,10 @@ public class EducationService {
 		int n = dao.eduDelete(edu);
 		return n>0?true:false;
 	}
-	public List<EducationDto> getEduMailList(ListParam param) {
-		return dao.getEduMailList(param);
+	public List<EducationDto> homeEduCode(String id) {
+		return dao.homeEduCode(id);
 	}
-	public List<TeacherUserDto> getIdMailList(String id) {
-		return dao.getIdMailList(id);
-	}
-	public List<TeacherUserDto> getEduIdMailList(String eduCode) {
-		return dao.getEduIdMailList(eduCode);
-	}
-	public List<MailDto> sendMaillist(MailParam param) {
-		return dao.sendMaillist(param);
-	}
-	public int getsendAllMail(MailParam param) {
-		return dao.getsendAllMail(param);
-	}
-	public MailDto getSendMailDetail(String wdate) {
-		return dao.getSendMailDetail(wdate);
-	}
+	
 }
 
 
