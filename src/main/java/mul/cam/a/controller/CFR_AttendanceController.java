@@ -17,6 +17,7 @@ import org.opencv.core.Core;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -110,7 +111,7 @@ public class CFR_AttendanceController {
         try {
             // 이미지를 자르는 기능
             User_Face_Crop faceCrop = new User_Face_Crop();
-            String imagePath = "./src/MemberFace/" + userId + ".jpg";
+            String imagePath = "./src/main/webapp/upload/" + userId + ".jpg";
             System.out.println(imagePath);
             String croppedImagePath = "./src/AttendanceFace/"+userId+".jpg";
             boolean cropSuccess = faceCrop.cropUserFace(imagePath, croppedImagePath);
@@ -160,7 +161,7 @@ public class CFR_AttendanceController {
     
 
             if (checkattendanceIds == false) {
-            	attendanceStatus = "이미 출석을 완료";
+            	attendanceStatus = "이미 출석";
                 System.out.println(userId + "이미 출석했습니다");
             } else {
                 CFR_Attendance attendance = new CFR_Attendance();
@@ -171,15 +172,15 @@ public class CFR_AttendanceController {
 
                 // 현재 시간이 출석 시작 시간보다 빠르면 출석으로 처리, 아니면 지각으로 처리
                 if (nowTime.toLocalTime().isBefore(startTime)) {
-                	attendanceStatus = "출석";
+                	attendanceStatus = "출석 처리";
                     attendance.setStatus("출석");
                     System.out.println(userId + " 출석했습니다.");
                 } else if(nowTime.toLocalTime().isAfter(endTime)) {
-                	attendanceStatus = "결석";
+                	attendanceStatus = "결석 처리";
                     attendance.setStatus("결석");
                     System.out.println(userId + " 결석했습니다.");
                 }else {
-                	attendanceStatus = "지각";
+                	attendanceStatus = "지각 처리";
                     attendance.setStatus("지각");
                     System.out.println(userId + " 지각했습니다.");
                 }

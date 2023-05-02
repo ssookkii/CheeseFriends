@@ -1,6 +1,5 @@
 package mul.cam.a.service;
 
-import java.time.DayOfWeek;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import mul.cam.a.dao.AttManageDao;
+import mul.cam.a.dto.AttendanceEdu;
 import mul.cam.a.dto.AttendanceSMSCheck;
 import mul.cam.a.dto.CFR_Attendance;
 import mul.cam.a.dto.SubjectDto;
@@ -24,6 +24,9 @@ public class AttManageService {
     
     public List<SubjectDto> getSubjectsByUserId(String userId) {
         return attManageDao.getSubjectsByUserId(userId);
+    }
+    public List<AttendanceEdu> getEduByUserId(String userId) {
+        return attManageDao.getEduByUserId(userId);
     }
     
     public List<CFR_Attendance> getAttendanceBySubjectCode(String subCode) {

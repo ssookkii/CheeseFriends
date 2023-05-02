@@ -10,6 +10,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import mul.cam.a.dto.AttendanceEdu;
 import mul.cam.a.dto.AttendanceSMSCheck;
 import mul.cam.a.dto.CFR_Attendance;
 import mul.cam.a.dto.SubjectDto;
@@ -98,5 +99,10 @@ public class AttManageDao {
     public List<SubjectDto> getTeacherSubjectsByUserId(String userId) {
         return sqlSession.selectList(NS+ "getTeacherSubjectsByUserId", userId);
     }
+
+	public List<AttendanceEdu> getEduByUserId(String userId) {
+		return sqlSession.selectList(NS+"getEduByUserId", userId);
+				
+	}
 
 }

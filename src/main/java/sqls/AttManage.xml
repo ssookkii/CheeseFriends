@@ -26,6 +26,19 @@
         WHERE us.user_id = #{userId}
     </select>
     
+     <resultMap id="eduResultMap" type="mul.cam.a.dto.AttendanceEdu">
+        <result property="userId" column="user_id"/>
+        <result property="eduCode" column="edu_code"/>
+                <result property="eduName" column="edu_name"/>
+    </resultMap>
+
+    <select id="getEduByUserId" resultMap="eduResultMap" parameterType="string">
+		SELECT us.user_id, s.edu_code, s.edu_name
+        FROM useredu us
+        JOIN education s ON us.edu_code = s.edu_code
+        WHERE us.user_id = #{userId};
+    </select>
+    
 <resultMap id="attendanceMap" type="mul.cam.a.dto.CFR_Attendance">
   <id column="attendanceID" property="attendanceID"/>
   <result column="studentID" property="studentID"/>

@@ -14,7 +14,6 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import mul.cam.a.attendSMS.SmsSender;
+import mul.cam.a.dto.AttendanceEdu;
 import mul.cam.a.dto.AttendanceSMSCheck;
 import mul.cam.a.dto.CFR_Attendance;
 import mul.cam.a.dto.SubjectDto;
@@ -59,6 +59,12 @@ public class AttManageController {
     public ResponseEntity<List<SubjectDto>> getSubjectsByUserId(@PathVariable String userId) {
         List<SubjectDto> subjects = attManageService.getSubjectsByUserId(userId);
         return ResponseEntity.ok(subjects);
+    }
+    
+    @GetMapping("/edu/{userId}")
+    public ResponseEntity<List<AttendanceEdu>> getEduByUserId(@PathVariable String userId) {
+        List<AttendanceEdu> edu = attManageService.getEduByUserId(userId);
+        return ResponseEntity.ok(edu);
     }
     
     @GetMapping("/{subCode}")
@@ -115,7 +121,6 @@ public class AttManageController {
     
     
     //@Scheduled(cron = "0 30 * * * *") // 매 시간 30분에 실행 -> 30분 이전 알림 체크라서
-   // @Scheduled(cron = "0 0 0 * * *") // 매일 자정에 실행
     public String sendSms() {
         List<String> userIds = attManageService.findUserMinCheckTrue();
         for (String userId : userIds) {

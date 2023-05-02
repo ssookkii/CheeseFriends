@@ -15,6 +15,11 @@ import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 import javax.swing.WindowConstants;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.SwingUtilities;
+
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
@@ -24,7 +29,6 @@ import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
-import org.opencv.ml.SVM;
 import org.opencv.objdetect.CascadeClassifier;
 import org.opencv.videoio.VideoCapture;
 import org.opencv.videoio.Videoio;
@@ -79,7 +83,10 @@ public class Compare {
         }
         
         private void detectAndDrawFaces(Mat frame) throws FontFormatException, IOException {
+        	
+
             Mat grayFrame = new Mat();
+
             Imgproc.cvtColor(frame, grayFrame, Imgproc.COLOR_BGR2GRAY);
 
             MatOfRect faceDetections = new MatOfRect();
@@ -103,7 +110,7 @@ public class Compare {
                 for (File file : files) {
                     if (file.isFile()) {
                         double similarity = FaceComparison.compareFaces(file.getAbsolutePath(), detectedFacePath);
-                        if (similarity > maxSimilarity && similarity > 0.4) {
+                        if (similarity > maxSimilarity && similarity > 0.3) {
                             maxSimilarity = similarity;
                             // 파일 이름에서 확장자 제거 후 UserID 추출
                             String filename = file.getName();
@@ -125,7 +132,7 @@ public class Compare {
 
                 // 얼굴에 박스 표시
                 Scalar color;
-                if (maxSimilarity > 0.4) {
+                if (maxSimilarity > 0.3) {
                     color = new Scalar(80, 194, 49); // 유사함
                 } else {
                     color = new Scalar(58, 58, 234); // 유사하지 않음
@@ -133,6 +140,10 @@ public class Compare {
                 Imgproc.putText(frame, personName, rect.tl(), Imgproc.FONT_HERSHEY_SIMPLEX, 1, color, 2);
                 Imgproc.rectangle(frame, rect.tl(), rect.br(), color, 2);
             }
+            
+        	if (grayFrame.empty()) {
+        	    return;
+        	}
         }
 
 
@@ -168,6 +179,12 @@ public class Compare {
 
 
             frame = new Mat();
+            
+            JButton closeButton = new JButton("Attendance System Close");
+            closeButton.setBounds(950, 10, 80, 30);
+            closeButton.addActionListener(new CloseButtonListener());
+            this.add(closeButton);
+            
         }
 
 
@@ -183,7 +200,7 @@ public class Compare {
                 // 사이즈 
                 Imgproc.resize(frame, resizedFrame, new Size(1000, 700));
 
-               
+                // gray 변환
                 Imgproc.cvtColor(resizedFrame, grayFrame, Imgproc.COLOR_BGR2GRAY);
 
    
@@ -233,6 +250,22 @@ public class Compare {
             final byte[] targetPixels = ((DataBufferByte) img.getRaster().getDataBuffer()).getData();
             System.arraycopy(bytes, 0, targetPixels, 0, bytes.length);
             return img;
+        }
+        
+        // 닫기 버튼의 이벤트 리스너
+        private class CloseButtonListener implements ActionListener {
+            public void actionPerformed(ActionEvent e) {
+                // 비디오 캡처 종료
+                capture.release();
+                // JFrame 창 닫기
+                SwingUtilities.getWindowAncestor(VideoPanel.this).dispose();
+                // userId.txt 파일 비우기
+                try (PrintWriter writer = new PrintWriter("C:\\springboot2\\CheeseFriends\\STS\\cheesefriends_back\\userId.txt")) {
+                    writer.print("");
+                } catch (FileNotFoundException fileNotFoundException) {
+                    fileNotFoundException.printStackTrace();
+                }
+            }
         }
     }
     
