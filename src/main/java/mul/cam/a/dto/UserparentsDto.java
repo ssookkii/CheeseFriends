@@ -6,15 +6,17 @@ public class UserparentsDto implements Serializable {
 	
 	String studentid;
 	String parentsid;
+	String name;
 	
 	public UserparentsDto() {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public UserparentsDto(String studentid, String parentsid) {
+	public UserparentsDto(String studentid, String parentsid, String name) {
 		super();
 		this.studentid = studentid;
 		this.parentsid = parentsid;
+		this.name = name;
 	}
 
 	public String getStudentid() {
@@ -33,10 +35,20 @@ public class UserparentsDto implements Serializable {
 		this.parentsid = parentsid;
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	@Override
 	public String toString() {
-		return "UserparentsDto [studentid=" + studentid + ", parentsid=" + parentsid + "]";
+		return "UserparentsDto [studentid=" + studentid + ", parentsid=" + parentsid + ", name=" + name + "]";
 	}
+	
+	
 	
 	
 

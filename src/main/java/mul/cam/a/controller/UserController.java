@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +25,7 @@ import mul.cam.a.dto.GradeDto;
 import mul.cam.a.dto.LearningDto;
 import mul.cam.a.dto.LectureDto;
 import mul.cam.a.dto.MailParam;
+import mul.cam.a.dto.MypageStudentDto;
 import mul.cam.a.dto.MysubjectDto;
 import mul.cam.a.dto.SearchGradeDto;
 import mul.cam.a.dto.SortParam;
@@ -201,6 +203,18 @@ public class UserController {
 		return dto;
 	}
 	
+	@PostMapping(value = "studentidmatching")
+	public String studentidmatching(String studentid){
+		System.out.println("UserController studentidmatching() " + new Date());
+		
+		boolean isS = service.studentidmatching(studentid);
+		if(isS == true) {
+			return "NO";
+		}
+		
+		return "YES";
+	}
+	
 	@PostMapping(value = "adduserparents")
 	public String adduserparents(UserparentsDto dto) {
 		System.out.println("UserController addmember() " + new Date());
@@ -364,6 +378,201 @@ public class UserController {
 		return map;
 	}
 	
+	// 마이 페이지 - 학습 탈퇴 신청 및 취소
+	@GetMapping(value = "quitsubject")
+	public String quitsubject(MysubjectDto dto) {
+		System.out.println("UserController quitsubject() " + new Date());
+		
+		boolean isS = service.quitsubject(dto);
+		if(isS == true) {
+			return "YES";
+		}
+			
+		return "NO";
+	}
+	
+	@GetMapping(value = "quitcancel")
+	public String quitcancel(MysubjectDto dto) {
+		System.out.println("UserController quitcancel() " + new Date());
+		
+		boolean isS = service.quitcancel(dto);
+		if(isS == true) {
+			return "YES";
+		}
+			
+		return "NO";
+	}
+	
+	@GetMapping(value = "approvedcheck")
+	public String approvedcheck(MysubjectDto dto) {
+		System.out.println("UserController approvedcheck() " + new Date());
+		
+		String state = service.approvedcheck(dto);
+	
+		return state;
+	}
+	
+	@GetMapping(value = "approving")
+	public String approving(MysubjectDto dto) {
+		System.out.println("UserController approving() " + new Date());
+		
+		boolean isS = service.approving(dto);
+		if(isS == true) {
+			return "YES";
+		}
+			
+		return "NO";
+	}
+	
+	@GetMapping(value = "changeapproving")
+	public String changeapproving(MysubjectDto dto) {
+		System.out.println("UserController changeapproving() " + new Date());
+		
+		boolean isS = service.changeapproving(dto);
+		if(isS == true) {
+			return "YES";
+		}
+			
+		return "NO";
+	}
+	
+	// 마이 페이지 - 학부모 auth 조건
+	@PostMapping(value = "parentsidmatching")
+	public List<UserparentsDto> parentsidmatching(String parentsid) {
+		System.out.println("UserController parentsidmatching() " + new Date());
+		
+		List<UserparentsDto> dto = service.parentsidmatching(parentsid);
+			
+		return dto;
+	}
+	
+	// 교사 마이 페이지 - 학교 select 
+	@PostMapping(value = "eduselect")
+	public MysubjectDto eduselect(String id){
+		System.out.println("UserController eduselect() " + new Date());
+		
+		System.out.println("id: " + id);
+		
+		MysubjectDto dto = service.eduselect(id);
+			
+		return dto;
+	}
+	
+	// 교사 마이 페이지 - 과목 select 
+	@PostMapping(value = "subselect")
+	public List<MysubjectDto> subselect(MysubjectDto dto){
+		System.out.println("UserController subselect() " + new Date());
+		
+		System.out.println(dto.toString());
+		
+		List<MysubjectDto> list = service.subselect(dto);
+		System.out.println(list.toString());
+			
+		return list;
+	}
+	
+	// 교사 마이 페이지 - 수강생 리스트
+	@GetMapping(value = "studentlist")
+	public Map<String, Object> studentlist(MailParam param) {
+		System.out.println("UserController studentlist() " + new Date());
+		
+		// 글의 시작과 끝
+		int pn = param.getPageNumber();  // 0 1 2 3 4
+		int start = pn * 10;	// 1  11
+		int end = (pn + 1) * 10;	// 10 20 
+		
+		param.setStart(start);
+		param.setEnd(end);
+		
+		// 성적표 뽑기
+		List<MypageStudentDto> listcheck = service.studentlist(param);
+				
+		int cnt = listcheck.size();
+		System.out.println(cnt);
+		
+		List<MypageStudentDto> list = service.studentlist(param)
+							.stream()
+							.skip(param.getStart())
+							.limit(10)
+							.collect(Collectors.toList());
+		System.out.println(list);
+		
+		Map<String, Object> map = new HashMap<>();
+		
+		map.put("list", list);
+		map.put("cnt", cnt);
+		
+		return map;
+	}
+	
+	// 교사 마이페이지 - 수강 신청 승인
+	@GetMapping(value = "makeapproved")
+	public String makeapproved(MysubjectDto dto) {
+		System.out.println("UserController makeapproved() " + new Date());
+		
+		System.out.println(dto.toString());
+		
+		boolean is = service.changeapproved(dto);
+		boolean isS = service.makeapproved(dto);
+		if(isS == true) {
+			return "YES";
+		}
+			
+		return "NO";
+	}
+	
+	
+	// 교사 마이페이지 - 수강생 탈퇴 신청 승인 
+	@GetMapping(value = "deletestudent")
+	public String deletestudent(MysubjectDto dto) {
+		System.out.println("UserController deletestudent() " + new Date());
+		
+		System.out.println(dto.toString());
+		
+		boolean is = service.changequited(dto);
+		boolean isS = service.deletestudent(dto);
+		if(isS == true) {
+			return "YES";
+		}
+			
+		return "NO";
+	}
+	
+	
+	// 카카오 로그인
+	@GetMapping(value = "kakaoLogin")
+	public String kakaoLogin(String code){
+		System.out.println("UserController kakaoLogin() " + new Date());
+		
+		// 1번
+		System.out.println("code:" + code);
+		
+		// 2번
+		String access_Token = null;
+		try {
+			access_Token = service.getKaKaoAccessToken(code);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("###access_Token#### : " + access_Token);
+		// 위의 access_Token 받는 걸 확인한 후에 밑에 진행
+		
+		// 3번
+		HashMap<String, Object> userInfo = new HashMap<>();
+		try {
+			userInfo = service.getUserInfo(access_Token);
+		} catch (Throwable e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("###nickname#### : " + userInfo.get("nickname"));
+		System.out.println("###email#### : " + userInfo.get("email"));
+//			
+		return null;	
+		// return에 페이지를 해도 되고, 여기서는 코드가 넘어오는지만 확인할거기 때문에 따로 return 값을 두지는 않았음
+
+	}
 	
 	
 }
