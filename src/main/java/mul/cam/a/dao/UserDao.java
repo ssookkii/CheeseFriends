@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import mul.cam.a.dto.EducationDto;
 import mul.cam.a.dto.GradeDto;
 import mul.cam.a.dto.MailParam;
+import mul.cam.a.dto.MypageStudentDto;
 import mul.cam.a.dto.MysubjectDto;
 import mul.cam.a.dto.SearchGradeDto;
 import mul.cam.a.dto.SortParam;
@@ -37,6 +38,7 @@ public interface UserDao {
 	// 학부모 가입
 	UserDto idmatching(String studentid);
 	int adduserparents(UserparentsDto dto);
+	String studentidmatching(String studentid);
 	
 	// 교사 가입
 	List<EducationDto> edusearch(String edu_name);
@@ -59,9 +61,41 @@ public interface UserDao {
 	// 마이 페이지 - 성적표 확인
 	List<SearchGradeDto> gradecheck(MailParam param);
 
-	// 마이 페이지 = 수강중인 학습
+	// 마이 페이지 - 수강중인 학습
 	List<MysubjectDto> subjectcheck(MailParam param);
-
+	
+	// 마이 페이지 - 학습 탈퇴 신청 및 취소
+	int quitsubject(MysubjectDto dto);
+	int quitcancel(MysubjectDto dto);
+	
+	// 마이 페이지 - 학습 추가 신청
+	// 학습 진행중 체크
+	String approvedcheck(MysubjectDto dto);
+	
+	// 학습 추가 신청
+	int approving(MysubjectDto dto);
+	int changeapproving(MysubjectDto dto);
+	
+	// 마이 페이지 - 학부모 auth 조건
+	List<UserparentsDto> parentsidmatching(String parentsid);
+	
+	// 교사 마이 페이지 - 학교 select 
+	MysubjectDto eduselect(String id);
+	
+	// 교사 마이 페이지 - 과목 select 
+	List<MysubjectDto> subselect(MysubjectDto dto);
+	
+	// 교사 마이 페이지 - 수강생 리스트
+	List<MypageStudentDto> studentlist(MailParam param);
+	
+	// 교사 마이페이지 - 수강 신청 승인
+	int makeapproved(MysubjectDto dto);
+	int changeapproved(MysubjectDto dto);
+	
+	// 교사 마이페이지 - 수강생 탈퇴 신청 승인 
+	int deletestudent(MysubjectDto dto);
+	int changequited(MysubjectDto dto);
+	
 }
 	
 
