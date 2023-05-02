@@ -21,4 +21,12 @@ public interface ServiceDao {
 	int writeService(ServiceDto dto);
 	
 	ServiceDto getService(Integer seq);
+	
+	int answerUpService(ServiceDto bbs);
+	int answerInService(ServiceDto bbs);
+	
+	List<ServiceDto> getCategoryServiceList(ListParam param);
+	
+	int getAllCategoryService(ListParam param);
+		
 }
