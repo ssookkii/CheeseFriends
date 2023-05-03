@@ -85,13 +85,18 @@ public class MailService {
 		return dao.getmail(seq);
 	}
 	
+	// 받은 메일 오픈시 리드 카운트 상승
+	public int readcountup(int seq) {
+		return dao.readcountup(seq);
+	}
+	
 	// 메일 삭제
 	public boolean receivedeleteMail(int seq) {
 		int count = dao.receivedeleteMail(seq);
 		return count>0?true:false;
 	}
 	
-		// 받은 메일
+		// 보낸 메일
 	// 메일 리스트
 	public List<MailDto> sendmaillist(MailParam param){
 		return dao.sendmaillist(param);

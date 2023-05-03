@@ -96,6 +96,10 @@ public interface UserDao {
 	int deletestudent(MysubjectDto dto);
 	int changequited(MysubjectDto dto);
 	
+		// 소셜 로그인
+	// 해당 social로 가입된 아이디가 있는지 체크해서 있으면 로그인 없으면 회원가입
+	UserDto socialLogincheck(String joinid);
+	
 }
 	
 

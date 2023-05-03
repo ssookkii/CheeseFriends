@@ -106,6 +106,12 @@
 	where seq = #{seq}
 </select>
 
+<update id="readcountup"  parameterType="Integer">
+	update mail
+	set readcount = 1
+	where seq=#{seq}
+</update>
+
 <!-- 받은 메일의 총수 -->
 <select id="getallmail" parameterType="mul.cam.a.dto.MailParam" resultType="Integer">
 	select ifnull(count(*), 0)

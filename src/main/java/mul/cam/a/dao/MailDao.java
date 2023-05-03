@@ -46,6 +46,9 @@ public interface MailDao {
 	// 받은 메일 디테일
 	MailDto getmail(int seq);
 	
+	// 받은 메일 오픈시 리드 카운트 상승
+	int readcountup(int seq);
+	
 	// 받은 메일 삭제
 	int receivedeleteMail(int seq);
 	
