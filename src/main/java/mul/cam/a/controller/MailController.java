@@ -201,10 +201,11 @@ public class MailController {
 		return map;
 	}
 	
-	// 쪽지 디테일
+	// 받은 쪽지 디테일
 	@GetMapping(value = "getmail")
 	public MailDto getmail(int seq) {
 		MailDto dto = service.getmail(seq);
+		int count = service.readcountup(seq);
 		
 		System.out.println(dto.toString());
 		
@@ -301,6 +302,16 @@ public class MailController {
 		}else {
 			return "NO";
 		}
+	}
+	
+	// 보낸 쪽지 디테일
+	@GetMapping(value = "getsendmail")
+	public MailDto getsendmail(int seq) {
+		MailDto dto = service.getmail(seq);
+		
+		System.out.println(dto.toString());
+		
+		return dto;
 	}
 	
 	

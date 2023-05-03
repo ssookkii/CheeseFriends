@@ -538,10 +538,10 @@ public class UserController {
 		return "NO";
 	}
 	
-	
+		// 소셜 로그인
 	// 카카오 로그인
 	@GetMapping(value = "kakaoLogin")
-	public String kakaoLogin(String code){
+	public HashMap<String, Object> kakaoLogin(String code){
 		System.out.println("UserController kakaoLogin() " + new Date());
 		
 		// 1번
@@ -566,12 +566,23 @@ public class UserController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("###nickname#### : " + userInfo.get("nickname"));
-		System.out.println("###email#### : " + userInfo.get("email"));
-//			
-		return null;	
+			
+		return userInfo;	
 		// return에 페이지를 해도 되고, 여기서는 코드가 넘어오는지만 확인할거기 때문에 따로 return 값을 두지는 않았음
 
+	}
+	
+	// 해당 social로 가입된 아이디가 있는지 체크해서 있으면 로그인 없으면 회원가입
+	@PostMapping(value = "socialLogincheck")
+	public UserDto socialLogincheck(String joinid){
+		System.out.println("UserController socialLogincheck() " + new Date());
+		
+		System.out.println("joinid: " + joinid);
+		
+		UserDto dto = service.socialLogincheck(joinid);
+		System.out.println(dto);
+			
+		return dto;
 	}
 	
 	

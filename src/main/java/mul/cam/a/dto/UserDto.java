@@ -19,6 +19,7 @@ public class UserDto implements Serializable {
 	String auth;
 	int breakaway;
 	String regidate;
+	String joinid;
 	
 	public UserDto() {
 		// TODO Auto-generated constructor stub
@@ -32,7 +33,7 @@ public class UserDto implements Serializable {
 
 	public UserDto(String id, String password, String name, String gender, String email, String birth, String address,
 			String facename, String newfacename, String phone, String phone_public, String jointype, String auth,
-			int breakaway, String regidate) {
+			int breakaway, String regidate, String joinid) {
 		super();
 		this.id = id;
 		this.password = password;
@@ -49,6 +50,7 @@ public class UserDto implements Serializable {
 		this.auth = auth;
 		this.breakaway = breakaway;
 		this.regidate = regidate;
+		this.joinid = joinid;
 	}
 
 	public String getId() {
@@ -171,18 +173,21 @@ public class UserDto implements Serializable {
 		this.regidate = regidate;
 	}
 
+	public String getJoinid() {
+		return joinid;
+	}
+
+	public void setJoinid(String joinid) {
+		this.joinid = joinid;
+	}
+
 	@Override
 	public String toString() {
 		return "UserDto [id=" + id + ", password=" + password + ", name=" + name + ", gender=" + gender + ", email="
 				+ email + ", birth=" + birth + ", address=" + address + ", facename=" + facename + ", newfacename="
 				+ newfacename + ", phone=" + phone + ", phone_public=" + phone_public + ", jointype=" + jointype
-				+ ", auth=" + auth + ", breakaway=" + breakaway + ", regidate=" + regidate + "]";
+				+ ", auth=" + auth + ", breakaway=" + breakaway + ", regidate=" + regidate + ", joinid=" + joinid + "]";
 	}
-
-	
-
-	
-
 	
 	
 	

@@ -266,6 +266,7 @@ public class UserService {
 		return count>0?true:false;
 	}
 	
+		// 소셜 로그인
 	// 카카오 로그인
 	public String getKaKaoAccessToken(String code) {
 
@@ -373,18 +374,35 @@ public class UserService {
 				Map<String, Object> jsonMap = objectMapper.readValue(result, new TypeReference<Map<String, Object>>() {
 				});
 
+				System.out.println("jsonMap : " + jsonMap);
+				
 				System.out.println(jsonMap.get("kakao_account"));
-
 				Map<String, Object> kakao_account = (Map<String, Object>) jsonMap.get("kakao_account");
-
-				System.out.println(kakao_account.get("email"));
-
-//				 
-//				String email = kakao_account.get("has_email").toString();
+				System.out.println("kakao_account : " + kakao_account);
+				
+				System.out.println("email : " + kakao_account.get("email"));
+				String email = (String)kakao_account.get("email");
+				
+				// System.out.println(jsonMap.get("properties"));
+				Map<String, Object> properties = (Map<String, Object>) jsonMap.get("properties");
+				System.out.println("nickname : " + properties.get("nickname"));
+	            String nickname = (String)properties.get("nickname");
+	            
+				System.out.println("gender : " + kakao_account.get("gender"));
+				String gender = (String)kakao_account.get("gender");
+				
+				System.out.println("id : " + jsonMap.get("id"));
+				String id = jsonMap.get("id").toString();
+				System.out.println("id : " + id);
+			 
+				// String properties = kakao_account.get("properties").toString();
 
 				// String email = kakao_account.get("email").toString();
 
-				// userInfo.put("email", email);
+				userInfo.put("email", email);
+				userInfo.put("gender", gender);
+				userInfo.put("nickname", nickname);
+				userInfo.put("id", id);
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -395,5 +413,14 @@ public class UserService {
 		}
 		return userInfo;
 	}
+	
+	// 해당 social로 가입된 아이디가 있는지 체크해서 있으면 로그인 없으면 회원가입
+	public UserDto socialLogincheck(String joinid) {
+		return dao.socialLogincheck(joinid);
+	}
+	
+	
+	
+	
 	
 }
