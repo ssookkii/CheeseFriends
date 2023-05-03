@@ -110,5 +110,10 @@
 			ON UE.EDU_CODE = E.EDU_CODE
 		WHERE USER_ID=#{id}
 	</select>
-	
+	<!-- 메인화면에서 안읽은 쪽지 표시 -->
+	<select id="unreducedMail" parameterType="String" resultType="Integer">
+		SELECT IFNULL(COUNT(*), 0)
+		FROM MAIL
+		WHERE RECEIVER=#{id} AND READCOUNT=0
+	</select>
 </mapper>

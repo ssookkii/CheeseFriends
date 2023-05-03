@@ -141,6 +141,12 @@ public class EducationController {
 		
 		return service.homeEduCode(id);
 	}
+	@GetMapping(value="unreducedMail")
+	public int unreducedMail(String id) {
+		System.out.println("EducationController unreducedMail()" + new Date());
+		
+		return service.unreducedMail(id);
+	}
 	
 }
 

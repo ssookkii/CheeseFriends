@@ -67,7 +67,9 @@ public class EducationService {
 	public List<EducationDto> homeEduCode(String id) {
 		return dao.homeEduCode(id);
 	}
-	
+	public int unreducedMail(String id) {
+		return dao.unreducedMail(id);
+	}
 }
 
 

@@ -53,6 +53,9 @@ public interface EducationDao {
 	// 메인페이지 유저 eduCode 가져오기
 	List<EducationDto> homeEduCode(String id);
 	
+	// 메인페이지 안읽은 쪽지 가져오기
+	int unreducedMail(String id);
+	
 }
 
 
