@@ -19,10 +19,16 @@ public class ChatbotController {
 		String json = Chatbot.chatBot(msg);
 		return json;
 	}
-	@CrossOrigin(origins="http://localhost:3000")
-	@PostMapping("value = papago")
+	
+	@CrossOrigin(origins="http://localhost:3000")	
+	@PostMapping(value = "papago")
 	public String papago(String msg) {
+		
+	//	System.out.println(msg + "+++~~~~~~~~~~~");
+		
+		System.out.println("NaverCloudController papago " +  new Date());
 		String json = PapagoTranslator.papago(msg);
+		
 		return json;
 	}
 }
