@@ -9,7 +9,7 @@
 	FROM service
 	WHERE 1=1
 	<if test="choice != null and choice != ''">
-		<if test="choice == 'topic'">
+		<if test="choice == 'category'">
  			AND subject =#{search}
 	 	</if>
 	 	<if test="choice == 'title'">
