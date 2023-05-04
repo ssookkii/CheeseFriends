@@ -34,7 +34,7 @@
 
 <insert id="adduser" parameterType="mul.cam.a.dto.UserDto">
 	insert into user(id, password, name, gender, email, birth, address, facename, newfacename, phone, phone_public, jointype, auth, breakaway, regidate, joinid)
-	values(#{id}, #{password}, #{name}, #{gender}, #{email}, #{birth}, #{address}, #{facename}, '0', #{phone}, '0', 'cheesefriends', #{auth}, '0', now(), #{joinid})
+	values(#{id}, #{password}, #{name}, #{gender}, #{email}, #{birth}, #{address}, #{facename}, '0', #{phone}, '0', #{jointype}, #{auth}, '0', now(), #{joinid})
 </insert>
 
 <insert id="addusersubject" parameterType="mul.cam.a.dto.MysubjectDto">
@@ -284,10 +284,11 @@
 </update>
 
 <!-- 해당 social로 가입된 아이디가 있는지 체크해서 있으면 로그인 없으면 회원가입 -->
-<select id="socialLogincheck" parameterType="String" resultType="mul.cam.a.dto.UserDto">
+<select id="socialLogincheck" parameterType="mul.cam.a.dto.UserDto" resultType="mul.cam.a.dto.UserDto">
 	select *
 	from user
 	where joinid=#{joinid}
+	and jointype=#{jointype}
 </select>
 
 </mapper>

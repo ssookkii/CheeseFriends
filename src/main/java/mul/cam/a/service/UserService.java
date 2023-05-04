@@ -415,8 +415,8 @@ public class UserService {
 	}
 	
 	// 해당 social로 가입된 아이디가 있는지 체크해서 있으면 로그인 없으면 회원가입
-	public UserDto socialLogincheck(String joinid) {
-		return dao.socialLogincheck(joinid);
+	public UserDto socialLogincheck(UserDto dto) {
+		return dao.socialLogincheck(dto);
 	}
 	
 	

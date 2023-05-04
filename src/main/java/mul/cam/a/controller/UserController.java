@@ -574,15 +574,15 @@ public class UserController {
 	
 	// 해당 social로 가입된 아이디가 있는지 체크해서 있으면 로그인 없으면 회원가입
 	@PostMapping(value = "socialLogincheck")
-	public UserDto socialLogincheck(String joinid){
+	public UserDto socialLogincheck(UserDto dto){
 		System.out.println("UserController socialLogincheck() " + new Date());
 		
-		System.out.println("joinid: " + joinid);
+		System.out.println("joinid: " + dto);
 		
-		UserDto dto = service.socialLogincheck(joinid);
-		System.out.println(dto);
+		UserDto result = service.socialLogincheck(dto);
+		System.out.println(result);
 			
-		return dto;
+		return result;
 	}
 	
 	
