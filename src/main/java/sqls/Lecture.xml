@@ -20,13 +20,12 @@
 	 		AND content LIKE CONCAT("%", #{search}, "%")
 	 	</if>
 	</if>
-		LIMIT #{start}, #{end}
+		LIMIT #{start}, 10
 
 </select>
 
 <!-- 글의 총수 -->
 <select id="getAllLecture" parameterType="mul.cam.a.dto.ListParam" resultType="java.lang.Integer">
-	
 	select ifnull(count(*), 0)
 	from lecture
 </select>

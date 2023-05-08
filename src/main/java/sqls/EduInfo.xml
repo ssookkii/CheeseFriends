@@ -20,7 +20,7 @@
 	 		AND content LIKE CONCAT("%", #{search}, "%")
 	 	</if>
 	</if>
-		LIMIT #{start}, #{end}
+		LIMIT #{start}, 6
 
 </select>
 

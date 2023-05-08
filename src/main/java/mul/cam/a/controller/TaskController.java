@@ -62,7 +62,7 @@ public class TaskController {
 	@ResponseBody
 	@GetMapping(value="getTask")
 	public TaskDto getTask(Integer seq) {
-		System.out.println("TaskController getTask" + new Date());
+		System.out.println("TaskController getTask " + new Date());
 		
 		return service.getTask(seq);
 	}

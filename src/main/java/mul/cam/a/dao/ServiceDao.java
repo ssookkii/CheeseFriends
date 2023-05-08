@@ -24,9 +24,9 @@ public interface ServiceDao {
 	
 	int answerUpService(ServiceDto bbs);
 	int answerInService(ServiceDto bbs);
-	
-	List<ServiceDto> getCategoryServiceList(ListParam param);
+		
 	
 	int getAllCategoryService(ListParam param);
+	List<ServiceDto> getCategorylist(String category);
 		
 }
