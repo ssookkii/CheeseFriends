@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.TextStyle;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -17,7 +18,6 @@ import org.opencv.core.Core;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -131,7 +131,10 @@ public class CFR_AttendanceController {
     }
     
 
-    
+    public static LocalTime convertStringToLocalTime(String timeString) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        return LocalTime.parse(timeString, formatter);
+    }
   //출석
     @PostMapping(value = "/attendance")
     public ResponseEntity<?> postAttendance(@RequestBody AttendanceRequest request, Model model) {
@@ -146,7 +149,6 @@ public class CFR_AttendanceController {
         String AttendanceID = userId + subCode + month + date;
 
         List<AttendanceTimetable> timetableList = attendanceService.getSubjectByUserIdAndEduCode(userId, eduCode, subCode);
-        System.out.println(timetableList);
 
         // Attendance ID 중복 체크
         boolean checkattendanceIds = attendanceService.checkAttendanceId(userId, subCode, eduCode, AttendanceID);
@@ -154,10 +156,12 @@ public class CFR_AttendanceController {
         LocalDateTime nowTime = now.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
         String attendanceStatus = "";
         String attendanceMessage = "";
+        
 
         for (AttendanceTimetable timetable : timetableList) {
-            LocalTime startTime = timetable.getSubStartTime();
-            LocalTime endTime = timetable.getSubEndTime();
+        	LocalTime startTime = convertStringToLocalTime(timetable.getSubStartTime());
+        	LocalTime endTime = convertStringToLocalTime(timetable.getSubEndTime());
+
     
 
             if (checkattendanceIds == false) {
@@ -227,7 +231,7 @@ public class CFR_AttendanceController {
               
                 if (!getId.contains(attendanceId)) {
                     // endtime 비교하고 결석처리 하기
-                	LocalTime endTime = timetable.getSubEndTime();
+                	LocalTime endTime = convertStringToLocalTime(timetable.getSubEndTime());
                 	LocalTime now = LocalTime.now();
                 	System.out.println(endTime);
                 	System.out.println(now);

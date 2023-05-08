@@ -6,8 +6,8 @@ import java.time.LocalTime;
 public class AttendanceTimetable {
     private String subCode;
     private String eduCode;
-    private LocalTime subStartTime;
-    private LocalTime subEndTime;
+    private String subStartTime;
+    private String subEndTime;
     private String subDay;        // 강의 요일
     
 	public String getSubDay() {
@@ -16,10 +16,10 @@ public class AttendanceTimetable {
 	public void setSubDay(String subDay) {
 		this.subDay = subDay;
 	}
-	public LocalTime getSubEndTime() {
+	public String getSubEndTime() {
 		return subEndTime;
 	}
-	public void setSubEndTime(LocalTime subEndTime) {
+	public void setSubEndTime(String subEndTime) {
 		this.subEndTime = subEndTime;
 	}
 	public String getSubCode() {
@@ -34,10 +34,10 @@ public class AttendanceTimetable {
 	public void setEduCode(String eduCode) {
 		this.eduCode = eduCode;
 	}
-	public LocalTime getSubStartTime() {
+	public String getSubStartTime() {
 		return subStartTime;
 	}
-	public void setSubStartTime(LocalTime subStartTime) {
+	public void setSubStartTime(String subStartTime) {
 		this.subStartTime = subStartTime;
 	}
 
