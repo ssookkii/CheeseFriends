@@ -86,31 +86,28 @@ public class AdminMailController {
 	public Map<String, Object> sendMaillist(MailParam param) {
 		System.out.println("AdminMailController sendMaillist()" + new Date());
 		// 글의 시작과 끝
-				int pn = param.getPageNumber();  // 0 1 2 3 4
-				int start = pn * 10;	// 1  11
-				int end = (pn + 1) * 10;	// 10 20 
-				
-				param.setStart(start);
-				param.setEnd(end);
-				
-				List<MailDto> list = service.sendMaillist(param)
-						.stream()
-						.skip(param.getStart())
-						.limit(param.getEnd())
-						.collect(Collectors.toList());
-				
-				System.out.println(param.toString());
-				System.out.println(list.toString());
-				
-				int len = service.getsendAllMail(param);
-				
-				System.out.println("len :" + len);
-				
-				Map<String, Object> map = new HashMap<>();
-				map.put("list", list);
-				map.put("cnt", len);
+		int pn = param.getPageNumber();  // 0 1 2 3 4
+		System.out.println(pn);
+		int start = pn * 12;	// 1  11
+		int end = (pn + 1) * 12;	// 10 20 
+		
+		param.setStart(start);
+		param.setEnd(end);
 
-				return map;
+		List<MailDto> list = service.sendMaillist(param);
+		
+		System.out.println(param.toString());
+		System.out.println(list.toString());
+		
+		int len = service.getsendAllMail(param);
+		
+		System.out.println("len :" + len);
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("list", list);
+		map.put("cnt", len);
+
+		return map;
 
 	}
 	@GetMapping(value="getSendMailDetail")
