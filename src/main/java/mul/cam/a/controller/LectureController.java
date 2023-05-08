@@ -30,7 +30,7 @@ public class LectureController {
 		
 		// 글의 시작과 끝 
 		int pn = param.getPageNumber(); // 0 1 2 3 4
-		int start = (pn * 10);
+		int start = pn * 10;
 		int end = (pn + 1) * 10;
 		
 		param.setStart(start);

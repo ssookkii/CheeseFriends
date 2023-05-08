@@ -40,8 +40,8 @@ public class ServiceService {
 		return n>0?true:false;
 	}
 	
-	public List<ServiceDto> getCategoryServiceList(ListParam param) {
-		return dao.getCategoryServiceList(param);
+	public List<ServiceDto> getCategorylist(String category) {
+		return dao.getCategorylist(category);
 	}
 	
 	public int getAllCategoryService(ListParam param) {

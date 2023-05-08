@@ -19,7 +19,7 @@
 	 		AND content LIKE CONCAT("%", #{search}, "%")
 	 	</if>
 	</if>
-		LIMIT #{start}, #{end}
+		LIMIT #{start}, 15
 
 </select>
 
@@ -30,34 +30,25 @@
 	from service
 </select>
 
-<!-- 카테고리서치 -->
-	<select id="getCategoryServiceList"
-		parameterType="mul.cam.a.dto.ListParam"
-		resultType="mul.cam.a.dto.ServiceDto">
-		select *
-		from 
-			( select row_number()over(order by regdate desc) as rnum,
-				seq, topic, title, writer, content, regdate
-			  from recipe
-			  where topic=#{topic}
-			  order by regdate desc
-			) a
-		where rnum between ${start} and ${end}
-	
-	</select>
 
 	
-	<!-- 카테고리별 글의 총수 -->
-	<select id="getAllCategoryService"
-		parameterType="mul.cam.a.dto.ListParam"
-		resultType="java.lang.Integer">
-		select ifnull(count(*),0)
-		from service
-		<if
-			test="pageNumber != null  and pageNumber != null ">
-			where topic = #{topic}
-		</if>
-	</select>
+<!-- 카테고리별 글의 총수 -->
+<select id="getAllCategoryService" parameterType="mul.cam.a.dto.ListParam" resultType="java.lang.Integer">
+	select count(*)
+	from service
+	where category = #{category}
+</select>
+
+<!-- 카테고리 별 목록 가져오는 문 -->
+<select id="getCategorylist" parameterType="String" resultType="mul.cam.a.dto.ServiceDto">
+	select *
+	from service
+	where topic = #{category}	
+</select>
+
+
+
+
 
 <!-- 고객센터 글쓰기 -->
 <insert id="writeService" parameterType="mul.cam.a.dto.ServiceDto">
