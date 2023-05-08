@@ -82,7 +82,7 @@
 	<!-- 관리자 보낸 메일 리스트 -->
 	<select id="sendMaillist" parameterType="mul.cam.a.dto.MailParam"
 		resultType="mul.cam.a.dto.MailDto">
-		select sender, GROUP_CONCAT(receiver SEPARATOR ',') AS receiver, title, content, wdate, readcount, filename, newfilename, receivedel, educode, senddel, subcode
+		select sender, GROUP_CONCAT(receiver SEPARATOR ',') AS receiver, title, content, wdate, filename, newfilename, educode, senddel, subcode
 		from mail
 		where 1=1 
 		and sender = #{sender}
@@ -98,38 +98,41 @@
 		 		and receiver=#{search}
 		 	</if>
 		</if>
-		GROUP BY wdate, sender,title, content, wdate, readcount, filename, newfilename, receivedel, educode, senddel, subcode
+		GROUP BY wdate, sender,title, content, wdate, filename, newfilename, educode, senddel, subcode
 		order by wdate desc
+		LIMIT #{start}, #{end}
 	<!-- 	where rnum between ${start} and ${end} -->
 	</select>
 	<!-- 관리자보낸 메일의 총수 -->
 	<select id="getsendAllMail" parameterType="mul.cam.a.dto.MailParam" resultType="Integer">
-		select ifnull(count(*), 0)
-		from mail
-		where 1=1
-		and sender = #{sender}
-		and senddel = 0
-		<if test="choice != null and choice != '' and search != null and search != '' ">
-		 	<if test="choice == 'title'">
-		 		and title like concat('%', #{search}, '%')
-		 	</if>
-		 	<if test="choice == 'content'">
-		 		and content like concat('%', #{search}, '%')
-		 	</if>
-	 		<if test="choice == 'receiver'">
-		 		and receiver=#{search}
-		 	</if>
-		</if>
+		SELECT ifnull(count(*), 0) AS row_count
+		FROM (
+		  SELECT COUNT(*) AS group_count
+		  FROM mail
+		  WHERE sender = "admin" AND senddel = 0
+			<if test="choice != null and choice != '' and search != null and search != '' ">
+			 	<if test="choice == 'title'">
+			 		and title like concat('%', #{search}, '%')
+			 	</if>
+			 	<if test="choice == 'content'">
+			 		and content like concat('%', #{search}, '%')
+			 	</if>
+		 		<if test="choice == 'receiver'">
+			 		and receiver=#{search}
+			 	</if>
+			</if>
+		  GROUP BY wdate
+		) AS group_counts;
 	</select>
 	<!-- 관리자 보낸 메일 디테일 -->
 	<select id="getSendMailDetail" parameterType="String"
 		resultType="mul.cam.a.dto.MailDto">
-		select sender, GROUP_CONCAT(receiver SEPARATOR ',') AS receiver, title, content, wdate, readcount, filename, newfilename, receivedel, educode, senddel, subcode
+		select sender, GROUP_CONCAT(receiver SEPARATOR ',') AS receiver, title, content, wdate, filename, newfilename, receivedel, educode, senddel, subcode
 		from mail
 		where 1=1 
 		and wdate = #{wdate}
 		and senddel = 0
-		GROUP BY wdate, sender,title, content, wdate, readcount, filename, newfilename, receivedel, educode, senddel, subcode
+		GROUP BY wdate, sender,title, content, wdate, filename, newfilename, receivedel, educode, senddel, subcode
 		order by wdate desc
 	<!-- 	where rnum between ${start} and ${end} -->
 	</select>
