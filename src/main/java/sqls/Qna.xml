@@ -6,6 +6,19 @@
 <select id="qnaLearningList" parameterType="mul.cam.a.dto.ListParam" resultType="mul.cam.a.dto.QnaDto">
 	SELECT *
 	FROM qna
+	WHERE 1=1
+	<if test="choice != null and choice != ''">
+		<if test="choice == 'subject'">
+ 			AND subject =#{search}
+	 	</if>
+	 	<if test="choice == 'title'">
+	 		AND title LIKE CONCAT("%", #{search}, "%")
+	 	</if>
+	 	<if test="choice == 'content'">
+	 		AND content LIKE CONCAT("%", #{search}, "%")
+	 	</if>
+	</if>
+		LIMIT #{start}, 10
 
 </select>
 

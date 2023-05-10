@@ -47,9 +47,6 @@
 </select>
 
 
-
-
-
 <!-- 고객센터 글쓰기 -->
 <insert id="writeService" parameterType="mul.cam.a.dto.ServiceDto">
 	INSERT INTO service (topic, title, writer, content, regdate)

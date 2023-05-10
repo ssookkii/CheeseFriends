@@ -22,7 +22,6 @@ public class EduInfoController {
 	@Autowired
 	EduInfoService service;
 
-	@ResponseBody
 	@GetMapping(value="eduInfoList")
 	public Map<String, Object> eduInfoList(ListParam param) {
 		// System.out.println("EduInfoController eduInfoList " + new Date());
@@ -45,7 +44,6 @@ public class EduInfoController {
 				return map;
 		}
 	
-	@ResponseBody
 	@PostMapping(value="writeEduInfo")
 	public String writeEduInfo(EduInfoDto dto) {
 		System.out.println("EduInfoController writeEduInfo " + new Date());
@@ -59,7 +57,6 @@ public class EduInfoController {
 		return "YES";
 	}
 	
-	@ResponseBody
 	@GetMapping(value="getEduInfo")
 	public EduInfoDto getEduInfo(Integer seq) {
 		System.out.println("EduInfoController getEduInfo "  + new Date());
