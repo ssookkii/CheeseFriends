@@ -106,12 +106,14 @@ public class SubjectController {
 			return "fail";
 		}
 	}
+	
 	@GetMapping(value="getTSubList")
 	public List<SubjectDto> getTSubList(String teacher) {
 		System.out.println("SubjectController getTSubList()" + new Date());
 		List<SubjectDto> sublist = service.getTSubList(teacher);
 		return sublist;
 	}
+	
 	@GetMapping(value="getTSub")
 	public SubjectDto getTSub(String subCode) {
 		System.out.println("SubjectController getTSub()" + new Date());
