@@ -83,7 +83,8 @@
 			S.SUB_NAME=#{subName},
 			S.EDUCATOR_NAME=#{educatorName},
 			S.CLASS_GRADE=#{classGrade},
-			T.EDUCATOR_NAME=#{educatorName}
+			T.EDUCATOR_NAME=#{educatorName},
+			T.CLASS_GRADE=#{classGrade}
 		WHERE S.SUB_CODE=#{subCode} AND T.SUB_CODE=#{subCode}
 	</update>
 	
