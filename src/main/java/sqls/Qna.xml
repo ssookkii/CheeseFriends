@@ -4,22 +4,30 @@
 <mapper namespace="mul.cam.a.dao.QnaDao">
 <!--  수업 자료 목록 가져오기 -->
 <select id="qnaLearningList" parameterType="mul.cam.a.dto.ListParam" resultType="mul.cam.a.dto.QnaDto">
-	SELECT *
-	FROM qna
-	WHERE 1=1
-	<if test="choice != null and choice != ''">
-		<if test="choice == 'subject'">
- 			AND subject =#{search}
-	 	</if>
-	 	<if test="choice == 'title'">
-	 		AND title LIKE CONCAT("%", #{search}, "%")
-	 	</if>
-	 	<if test="choice == 'content'">
-	 		AND content LIKE CONCAT("%", #{search}, "%")
-	 	</if>
-	</if>
-		LIMIT #{start}, 10
-
+SELECT *
+FROM qna
+WHERE 1=1
+  <if test="choice != null and choice != ''">
+    <if test="choice == 'subject'">
+      AND subject = #{search}
+    </if>
+    <if test="choice == 'title'">
+      AND title LIKE CONCAT('%', #{search}, '%')
+    </if>
+    <if test="choice == 'content'">
+      AND content LIKE CONCAT('%', #{search}, '%')
+    </if>
+  </if>
+ORDER BY
+  CASE
+    WHEN step = 0 THEN STR_TO_DATE(regdate, '%Y-%m-%d')
+  END DESC,
+  CASE
+    WHEN step != 0 THEN ref
+    WHEN depth = 1 THEN regdate
+  END ASC,
+  step ASC
+LIMIT #{start}, 10
 </select>
 
 <!-- 글의 총수 -->
@@ -52,10 +60,11 @@
 
 <!-- 답글 추가 -->
 <insert id="answerInsert" parameterType="mul.cam.a.dto.QnaDto">
-	insert into qna(subject, writer, ref, step, depth, title, content, regdate)
-	values(#{subject}, #{writer}, (select ref from qna a where seq=#{seq}),
-				  (select step from qna b where seq=#{seq})+1,
-				  (select depth from qna c where seq=#{seq})+1,
-			#{title}, #{content}, now())
+    insert into qna(subject, writer, ref, step, depth, title, content, regdate)
+    values(#{subject}, #{writer},
+        (select ref from qna a where seq=#{seq}),
+        (select coalesce(max(step), 0) from qna b where ref = (select ref from qna a where seq=#{seq})) + 1,
+        (select coalesce(max(depth), 0) from qna c where ref = (select ref from qna a where seq=#{seq})) + 1,
+        #{title}, #{content}, now())
 </insert>
 </mapper>

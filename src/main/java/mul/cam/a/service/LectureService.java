@@ -36,4 +36,5 @@ public class LectureService {
 		return dao.getLecture(seq);
 	}
 	
+	
 }

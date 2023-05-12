@@ -19,6 +19,7 @@
 	 		AND content LIKE CONCAT("%", #{search}, "%")
 	 	</if>
 	</if>
+		ORDER BY regdate DESC
 		LIMIT #{start}, 10
 </select>
 
