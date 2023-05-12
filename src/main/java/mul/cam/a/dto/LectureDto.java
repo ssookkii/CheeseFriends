@@ -8,13 +8,15 @@ public class LectureDto {
 	private String writer;
 	private String content;
 	private String regdate;
+	private String filename;
+	private String newfilename;
 	
 	public LectureDto() {
 		
 	}
-	
+
 	public LectureDto(int seq, String subject, String subjectCode, String title, String writer, String content,
-			String regdate) {
+			String regdate, String filename, String newfilename) {
 		super();
 		this.seq = seq;
 		this.subject = subject;
@@ -23,6 +25,8 @@ public class LectureDto {
 		this.writer = writer;
 		this.content = content;
 		this.regdate = regdate;
+		this.filename = filename;
+		this.newfilename = newfilename;
 	}
 
 	public int getSeq() {
@@ -81,11 +85,28 @@ public class LectureDto {
 		this.regdate = regdate;
 	}
 
+	public String getFilename() {
+		return filename;
+	}
+
+	public void setFilename(String filename) {
+		this.filename = filename;
+	}
+
+	public String getNewfilename() {
+		return newfilename;
+	}
+
+	public void setNewfilename(String newfilename) {
+		this.newfilename = newfilename;
+	}
+
 	@Override
 	public String toString() {
-		return "Lecture [seq=" + seq + ", subject=" + subject + ", subjectCode=" + subjectCode + ", title=" + title
-				+ ", writer=" + writer + ", content=" + content + ", regdate=" + regdate + "]";
+		return "LectureDto [seq=" + seq + ", subject=" + subject + ", subjectCode=" + subjectCode + ", title=" + title
+				+ ", writer=" + writer + ", content=" + content + ", regdate=" + regdate + ", filename=" + filename
+				+ ", newfilename=" + newfilename + "]";
 	}
-	
-	
+
+
 }

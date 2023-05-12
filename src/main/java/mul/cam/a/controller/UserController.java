@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.json.JSONObject;
@@ -34,6 +35,7 @@ import mul.cam.a.dto.TaskDto;
 import mul.cam.a.dto.TestEduDto;
 import mul.cam.a.dto.UserDto;
 import mul.cam.a.dto.UserparentsDto;
+import mul.cam.a.service.LectureService;
 import mul.cam.a.service.UserService;
 import mul.cam.a.util.naver2;
 
@@ -42,6 +44,8 @@ public class UserController {
 
 	@Autowired
 	UserService service;
+	@Autowired
+	LectureService lecservice;
 	
 	@PostMapping(value = "idcheck")
 	public String idcheck(String id) {
@@ -147,6 +151,13 @@ public class UserController {
 			os.write(uploadFile.getBytes());
 			os.close();
 			
+			
+			 dto.setFilename(filename);
+			 System.out.println(dto.toString());
+			 lecservice.writeLecture(dto);
+		
+			    
+		
 		} catch (Exception e) {			
 			e.printStackTrace();
 			return "fail";

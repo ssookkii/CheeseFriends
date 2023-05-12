@@ -3,7 +3,7 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="mul.cam.a.dao.ServiceDao">
-<!-- 교육정보 목록 가져오기 -->
+<!-- 고객센터 목록 가져오기 -->
 <select id="serviceList" parameterType="mul.cam.a.dto.ListParam" resultType="mul.cam.a.dto.ServiceDto">
 	SELECT *
 	FROM service
@@ -19,6 +19,7 @@
 	 		AND content LIKE CONCAT("%", #{search}, "%")
 	 	</if>
 	</if>
+		ORDER BY regdate DESC
 		LIMIT #{start}, 15
 
 </select>
