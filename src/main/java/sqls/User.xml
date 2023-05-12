@@ -332,5 +332,11 @@
 	where educator_name=#{id}
 </select>
 
+<!-- 해당 번호로 가입된 계정이 있는지 체크 -->
+<select id="phonecheck" parameterType="String" resultType="String">
+	SELECT ID
+	FROM USER
+	WHERE phone=#{phone}
+</select>
 
 </mapper>

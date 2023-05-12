@@ -460,6 +460,17 @@ public class UserService {
 		return dao.breakchecksubject(id);
 	}
 	
+	// 해당 번호로 가입된 계정이 있는지 체크
+	public boolean phonecheck(String phone) {
+		String userid = dao.phonecheck(phone);
+		
+		if(userid != null && !userid.equals("")) {
+			return true;
+		}
+		
+		return false;
+	}
+	
 	
 	
 	
