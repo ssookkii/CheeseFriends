@@ -640,6 +640,21 @@ public class UserController {
 		
 	}
 	
+	// 해당 번호로 가입된 계정이 있는지 체크
+	@PostMapping(value = "phonecheck")
+	public String phonecheck(String phone) {
+		System.out.println("UserController phonecheck() " + new Date());
+		
+		System.out.println("phone: " + phone);
+		
+		boolean isS = service.phonecheck(phone);
+		if(isS == true) {
+			return "NO";
+		}
+		
+		return "YES";
+	}
+	
 	
 	
 }
