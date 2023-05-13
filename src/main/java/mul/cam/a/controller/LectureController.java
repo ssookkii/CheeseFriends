@@ -119,34 +119,34 @@ public class LectureController {
 //		    return "file upload success";
 //		}
 		
-		// download
-		@Autowired
-		ServletContext servletContext;
-		
-		@RequestMapping(value = "download")
-		public ResponseEntity<InputStreamResource> download(String filename, HttpServletRequest req) throws Exception {
-			System.out.println("LectureController download " + new Date());
-			
-			// 경로
-			String path = req.getServletContext().getRealPath("/upload");
-			// String path = "c:\temp";
-			
-			MediaType mediaType = MediaTypeUtiles.getMediaTypeForFileName(this.servletContext, filename);
-			System.out.println("filename:" + filename);
-			System.out.println("mediaType:" + mediaType);
-			
-			File file = new File(path + File.separator + filename);		// newfilename
-			
-			InputStreamResource isr = new InputStreamResource(new FileInputStream(file));
-			
-			// db 다운로드 카운트
-			
-			return ResponseEntity.ok()
-						.header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + file.getName()) // 원본파일명
-						.contentType(mediaType)
-						.contentLength(file.length())
-						.body(isr);					
-		}
-		
+//		// download
+//		@Autowired
+//		ServletContext servletContext;
+//		
+//		@RequestMapping(value = "download")
+//		public ResponseEntity<InputStreamResource> download(String filename, HttpServletRequest req) throws Exception {
+//			System.out.println("LectureController download " + new Date());
+//			
+//			// 경로
+//			String path = req.getServletContext().getRealPath("/upload");
+//			// String path = "c:\temp";
+//			
+//			MediaType mediaType = MediaTypeUtiles.getMediaTypeForFileName(this.servletContext, filename);
+//			System.out.println("filename:" + filename);
+//			System.out.println("mediaType:" + mediaType);
+//			
+//			File file = new File(path + File.separator + filename);		// newfilename
+//			
+//			InputStreamResource isr = new InputStreamResource(new FileInputStream(file));
+//			
+//			// db 다운로드 카운트
+//			
+//			return ResponseEntity.ok()
+//						.header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + file.getName()) // 원본파일명
+//						.contentType(mediaType)
+//						.contentLength(file.length())
+//						.body(isr);					
+//		}
+//		
 
 }

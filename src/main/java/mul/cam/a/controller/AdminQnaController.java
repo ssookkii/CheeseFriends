@@ -44,13 +44,13 @@ public class AdminQnaController {
 		return map;
 	}
 	@GetMapping(value="getQna")
-	public AdminQuestionDto getQna(int seq) {
+	public AdminQuestionDto getQna(Integer seq) {
 		System.out.println("AdminQnaController getQna()" + new Date());
 		
 		return service.getQna(seq);
 	}
 	@GetMapping(value="getAnswer")
-	public AdminAnswerDto getAnswer(int getQnaSeq) {
+	public AdminAnswerDto getAnswer(Integer getQnaSeq) {
 		System.out.println("AdminQnaController getAnswer()" + new Date());
 		
 		return service.getAnswer(getQnaSeq);

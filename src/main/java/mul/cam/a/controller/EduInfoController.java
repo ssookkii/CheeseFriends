@@ -24,12 +24,12 @@ public class EduInfoController {
 
 	@GetMapping(value="eduInfoList")
 	public Map<String, Object> eduInfoList(ListParam param) {
-		// System.out.println("EduInfoController eduInfoList " + new Date());
+		 System.out.println("EduInfoController eduInfoList " + new Date());
 		
 		// 글의 시작과 끝 
 				int pn = param.getPageNumber(); // 0 1 2 3 4
-				int start = (pn * 10);
-				int end = (pn + 1) * 10;
+				int start = (pn * 6);
+				int end = (pn + 1) * 6;
 				
 				param.setStart(start);
 				param.setEnd(end);

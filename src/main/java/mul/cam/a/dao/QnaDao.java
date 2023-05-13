@@ -24,5 +24,6 @@ public interface QnaDao {
 	QnaDto getLearningQna (Integer seq);
 	
 	int answerUpdate(QnaDto bbs);
+	
 	int answerInsert (QnaDto bbs);
 }

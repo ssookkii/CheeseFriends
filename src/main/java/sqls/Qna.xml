@@ -4,30 +4,25 @@
 <mapper namespace="mul.cam.a.dao.QnaDao">
 <!--  수업 자료 목록 가져오기 -->
 <select id="qnaLearningList" parameterType="mul.cam.a.dto.ListParam" resultType="mul.cam.a.dto.QnaDto">
-SELECT *
-FROM qna
-WHERE 1=1
-  <if test="choice != null and choice != ''">
-    <if test="choice == 'subject'">
-      AND subject = #{search}
-    </if>
-    <if test="choice == 'title'">
-      AND title LIKE CONCAT('%', #{search}, '%')
-    </if>
-    <if test="choice == 'content'">
-      AND content LIKE CONCAT('%', #{search}, '%')
-    </if>
-  </if>
-ORDER BY
-  CASE
-    WHEN step = 0 THEN STR_TO_DATE(regdate, '%Y-%m-%d')
-  END DESC,
-  CASE
-    WHEN step != 0 THEN ref
-    WHEN depth = 1 THEN regdate
-  END ASC,
-  step ASC
-LIMIT #{start}, 10
+	select *
+	from
+		(select row_number()over(order by ref desc, step asc) as rnum,
+			seq, subject, ref, step, depth, title, writer, content, regdate
+		 from qna
+		 where 1=1 
+		 <if test="choice != null and choice != '' and search != null and search != '' ">
+		 	<if test="choice == 'title'">
+		 		and title like concat('%', #{search}, '%') and del=0
+		 	</if>
+		 	<if test="choice == 'content'">
+		 		and content like concat('%', #{search}, '%') and del=0
+		 	</if>
+		 	<if test="choice == 'writer'">
+		 		and id=#{search} and del=0
+		 	</if>
+		 </if>		 
+		 order by ref desc, step asc) a
+	where rnum between ${start} and 10
 </select>
 
 <!-- 글의 총수 -->
@@ -36,10 +31,12 @@ LIMIT #{start}, 10
 	from qna
 </select>
 
-<!-- 수업 질문 글쓰기 -->
+<!-- 수업 질문 글쓰기 (원글 글쓰기 )-->
 <insert id="writeQna" parameterType="mul.cam.a.dto.QnaDto">
-	INSERT INTO qna(subject, title, writer, content, regdate)
-	VALUES( #{subject}, #{title}, #{writer}, #{content}, now() )
+INSERT INTO qna(subject, title, ref, step, depth, writer, content, regdate)
+VALUES(#{subject}, #{title},
+(SELECT ifnull(max(ref), 0) +1 from qna q),
+#{step} + 1, #{depth}, #{writer}, #{content}, now())
 </insert>
 
 <!-- 수업 질문 상세 -->
@@ -50,21 +47,20 @@ LIMIT #{start}, 10
 </select>
 
 
-<!-- 답글 수정 -->
+<!-- 답글 작성 -->
 <update id="answerUpdate" parameterType="mul.cam.a.dto.QnaDto">
-	update qna 
-	set step=step+1
-	where ref=(select ref from (select ref from qna a where seq=#{seq}) A)
-		and step>(select step from (select step from qna b where seq=#{seq}) B)
+UPDATE qna
+SET step = step + 1
+WHERE ref = (SELECT ref FROM (select ref from qna a where seq=#{seq}) A)
+  AND step > (SELECT step FROM (select step from qna b where seq=#{seq}) B)
 </update>
 
 <!-- 답글 추가 -->
 <insert id="answerInsert" parameterType="mul.cam.a.dto.QnaDto">
-    insert into qna(subject, writer, ref, step, depth, title, content, regdate)
-    values(#{subject}, #{writer},
-        (select ref from qna a where seq=#{seq}),
-        (select coalesce(max(step), 0) from qna b where ref = (select ref from qna a where seq=#{seq})) + 1,
-        (select coalesce(max(depth), 0) from qna c where ref = (select ref from qna a where seq=#{seq})) + 1,
-        #{title}, #{content}, now())
+	INSERT INTO qna (subject, ref, step, depth, title, writer, content, regdate)
+	values(#{subject}, (select ref from qna a where seq=#{seq}),
+				  (select step from qna b where seq=#{seq})+1,
+				  (select depth from qna c where seq=#{seq})+1,
+			#{title}, #{writer}, #{content}, now())
 </insert>
 </mapper>
