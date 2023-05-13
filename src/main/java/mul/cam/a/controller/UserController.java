@@ -596,5 +596,76 @@ public class UserController {
 		return result;
 	}
 	
+	// 회원탈퇴
+	@GetMapping(value = "breakoutuser")
+	public String breakoutuser(String id, String auth){
+		System.out.println("UserController breakoutuser() " + new Date());
+		
+		System.out.println("auth : " + auth);
+		
+		// 학생
+		if(auth.equals("student")) {
+			List<MysubjectDto> list = service.breakcheck(id);
+			System.out.println(list.size());
+			System.out.println(list.toString());
+			
+			if(list.size() <= 0) {
+				
+				service.breakoutuser(id);
+				service.breakoutuseredu(id);
+				service.breakouttempusersubject(id);
+				service.breakoutstudentuserparents(id);
+			
+				return "YES";
+			
+			}else {
+				return "수강학습남음";
+			}
+			
+		// 학부모
+		}else if(auth.equals("parents")) {
+			service.breakoutuser(id);
+			service.breakoutparentsuserparents(id);
+			
+			return "YES";
+		
+		// 교사
+		}else if(auth.equals("teacher")) {
+			List<MysubjectDto> list = service.breakchecksubject(id);
+			System.out.println(list.size());
+			System.out.println(list.toString());
+			
+			if(list.size() <= 0) {
+				
+				service.breakoutuser(id);
+				service.breakoutuseredu(id);
+			
+				return "YES";
+			
+			}else {
+				return "수업학습남음";
+			}
+		}
+		
+		return "NO";
+		
+	}
+	
+	// 해당 번호로 가입된 계정이 있는지 체크
+	@PostMapping(value = "phonecheck")
+	public String phonecheck(String phone) {
+		System.out.println("UserController phonecheck() " + new Date());
+		
+		System.out.println("phone: " + phone);
+		
+		boolean isS = service.phonecheck(phone);
+		if(isS == true) {
+			return "NO";
+		}
+		
+		return "YES";
+	}
+	
+	
 	
 }

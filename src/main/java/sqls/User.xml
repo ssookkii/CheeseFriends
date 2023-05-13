@@ -291,4 +291,52 @@
 	and jointype=#{jointype}
 </select>
 
+<!-- 회원탈퇴 학생 -->
+<select id="breakcheck" parameterType="String" resultType="mul.cam.a.dto.MysubjectDto">
+	select *
+	from usersubject
+	where user_id=#{id}
+</select>
+
+<delete id="breakoutuser" parameterType="String">
+	delete from user
+	where id=#{id}
+</delete>
+
+<delete id="breakoutuseredu" parameterType="String">
+	delete from useredu
+	where user_id=#{id}
+</delete>
+
+<delete id="breakouttempusersubject" parameterType="String">
+	delete from tempusersubject
+	where id=#{id}
+</delete>
+
+<delete id="breakoutstudentuserparents" parameterType="String">
+	delete from userparents
+	where studentid=#{id}
+</delete>
+
+<!-- 학부모 -->
+<delete id="breakoutparentsuserparents" parameterType="String">
+	delete from userparents
+	where parentsid=#{id}
+</delete>
+
+<!-- 교사 -->
+<!-- 담당과목 잔여 체크 -->
+<select id="breakchecksubject" parameterType="String" resultType="mul.cam.a.dto.MysubjectDto">
+	select *
+	from subject
+	where educator_name=#{id}
+</select>
+
+<!-- 해당 번호로 가입된 계정이 있는지 체크 -->
+<select id="phonecheck" parameterType="String" resultType="String">
+	SELECT ID
+	FROM USER
+	WHERE phone=#{phone}
+</select>
+
 </mapper>

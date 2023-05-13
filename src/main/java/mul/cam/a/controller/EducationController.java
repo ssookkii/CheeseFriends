@@ -55,6 +55,8 @@ public class EducationController {
 		admin.setName(edu.getEduName());
 		admin.setAddress(edu.getEduAddress());
 		admin.setPhone(edu.getEduPhone());
+		admin.setEmail(edu.getEduCode() + "@naver.com");
+		admin.setBirth("000101");
 		// useredu에 넣기
 		EducationDto useredu = new EducationDto();
 		useredu.setEduCode(eduCode);

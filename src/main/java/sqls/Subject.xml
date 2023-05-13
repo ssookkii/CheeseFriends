@@ -77,9 +77,15 @@
 	
 	<!-- 과목 수정 -->
 	<update id="subUpdate" parameterType="mul.cam.a.dto.SubjectDto">
-		UPDATE SUBJECT
-		SET SUB_NAME=#{subName}, EDUCATOR_NAME=#{educatorName}, CLASS_GRADE=#{classGrade}
-		WHERE SUB_CODE=#{subCode}
+		UPDATE SUBJECT S
+		INNER JOIN TIMETABLE T ON S.EDUCATOR_NAME = T.EDUCATOR_NAME
+			SET
+			S.SUB_NAME=#{subName},
+			S.EDUCATOR_NAME=#{educatorName},
+			S.CLASS_GRADE=#{classGrade},
+			T.EDUCATOR_NAME=#{educatorName},
+			T.CLASS_GRADE=#{classGrade}
+		WHERE S.SUB_CODE=#{subCode} AND T.SUB_CODE=#{subCode}
 	</update>
 	
 	<!-- 과목 삭제 -->

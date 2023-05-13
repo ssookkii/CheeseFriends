@@ -419,6 +419,57 @@ public class UserService {
 		return dao.socialLogincheck(dto);
 	}
 	
+	// 회원탈퇴 학생
+	public List<MysubjectDto> breakcheck(String id) {
+		return dao.breakcheck(id);
+	}
+	
+	public boolean breakoutuser(String id) {
+		System.out.println("UserService breakoutuser() " + new Date());
+		int count = dao.breakoutuser(id);
+		return count>0?true:false;
+	}
+	
+	public boolean breakoutuseredu(String id) {
+		System.out.println("UserService breakoutuseredu() " + new Date());
+		int count = dao.breakoutuseredu(id);
+		return count>0?true:false;
+	}
+	
+	public boolean breakouttempusersubject(String id) {
+		System.out.println("UserService breakouttempusersubject() " + new Date());
+		int count = dao.breakouttempusersubject(id);
+		return count>0?true:false;
+	}
+	
+	public boolean breakoutstudentuserparents(String id) {
+		System.out.println("UserService breakoutstudentuserparents() " + new Date());
+		int count = dao.breakoutstudentuserparents(id);
+		return count>0?true:false;
+	}
+	
+	// 학부모
+	public boolean breakoutparentsuserparents(String id) {
+		System.out.println("UserService breakoutparentsuserparents() " + new Date());
+		int count = dao.breakoutparentsuserparents(id);
+		return count>0?true:false;
+	}
+	
+	// 교사
+	public List<MysubjectDto> breakchecksubject(String id) {
+		return dao.breakchecksubject(id);
+	}
+	
+	// 해당 번호로 가입된 계정이 있는지 체크
+	public boolean phonecheck(String phone) {
+		String userid = dao.phonecheck(phone);
+		
+		if(userid != null && !userid.equals("")) {
+			return true;
+		}
+		
+		return false;
+	}
 	
 	
 	

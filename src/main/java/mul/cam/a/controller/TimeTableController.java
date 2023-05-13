@@ -20,9 +20,9 @@ public class TimeTableController {
 	@GetMapping(value="subTimeList")
 	public List<TimeTableDto> subTimeList(String teacher) {
 		System.out.println("TimeTableController subTimeList()" + new Date());
-//		System.out.println(teacher);
+		System.out.println(teacher);
 		List<TimeTableDto> dto = service.subTimeList(teacher);
-//		System.out.println(dto);
+		System.out.println(dto);
 		return dto;
 	}
 	@PostMapping(value="timeTableAdd")
