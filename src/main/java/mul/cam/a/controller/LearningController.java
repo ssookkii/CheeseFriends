@@ -75,39 +75,9 @@ public class LearningController {
 	@GetMapping(value = "getLearning")
 	public LearningDto getLearning(Integer seq) {
 		System.out.println("LearningController getLearning " + new Date());
+		System.out.println("~~~~~" + service.getLearning(seq));
 		
 		return service.getLearning(seq);
 	}
 	
-//	// download
-//		@Autowired
-//		ServletContext servletContext;
-//		
-//		@RequestMapping(value = "/fileDownload")
-//		public ResponseEntity<InputStreamResource> download(String filename, 
-//					HttpServletRequest req, LearningDto bbs, TaskDto tto) throws Exception {
-//			System.out.println("HelloController download " + new Date());
-//			
-//			// 경로
-//			String path = req.getServletContext().getRealPath("/upload");
-//			// String path = "c:\temp";
-//			
-//			MediaType mediaType = MediaTypeUtiles.getMediaTypeForFileName(this.servletContext, filename);
-//			System.out.println("filename:" + filename);
-//			System.out.println("mediaType:" + mediaType);
-//			
-//			File file = new File(path + File.separator + filename);		// newfilename
-//			
-//			InputStreamResource isr = new InputStreamResource(new FileInputStream(file));
-//			
-//			// db 다운로드 카운트
-//			
-//			return ResponseEntity.ok()
-//						.header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + file.getName()) // 원본파일명
-//						.contentType(mediaType)
-//						.contentLength(file.length())
-//						.body(isr);					
-//		}
-//		
 }
-

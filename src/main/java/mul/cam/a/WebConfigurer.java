@@ -10,6 +10,7 @@ public class WebConfigurer implements WebMvcConfigurer{
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {		
 		 registry.addMapping("/**")
+		 
      	.allowedOrigins("http://localhost:9100", "https://openapi.naver.com/v1/papago/n2mt") // 허용할 출처
          .allowedMethods("GET", "POST") // 허용할 HTTP method
          .allowCredentials(true) // 쿠키 인증 요청 허용

@@ -339,4 +339,13 @@
 	WHERE phone=#{phone}
 </select>
 
+<!-- 학생 마이 페이지 - 과목 select -->
+<select id="stuselect" parameterType="mul.cam.a.dto.MysubjectDto" resultType="mul.cam.a.dto.MysubjectDto">
+	select sub_code, sub_name 
+	from subject s 
+	where educator_name = #{id}
+	and edu_code = #{educode};
+</select>
+
+
 </mapper>

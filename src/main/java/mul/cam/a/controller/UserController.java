@@ -16,11 +16,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import mul.cam.a.dto.EduInfoDto;
 import mul.cam.a.dto.EducationDto;
 import mul.cam.a.dto.GradeDto;
 import mul.cam.a.dto.LearningDto;
@@ -35,7 +37,10 @@ import mul.cam.a.dto.TaskDto;
 import mul.cam.a.dto.TestEduDto;
 import mul.cam.a.dto.UserDto;
 import mul.cam.a.dto.UserparentsDto;
+import mul.cam.a.service.EduInfoService;
+import mul.cam.a.service.LearningService;
 import mul.cam.a.service.LectureService;
+import mul.cam.a.service.TaskService;
 import mul.cam.a.service.UserService;
 import mul.cam.a.util.naver2;
 
@@ -46,6 +51,12 @@ public class UserController {
 	UserService service;
 	@Autowired
 	LectureService lecservice;
+	@Autowired
+	TaskService taskservice;
+	@Autowired
+	EduInfoService eduservice;
+	@Autowired
+	LearningService learnservice;
 	
 	@PostMapping(value = "idcheck")
 	public String idcheck(String id) {
@@ -135,28 +146,39 @@ public class UserController {
 	}
 	
 	
-	@PostMapping(value = "fileUpload")
-	public String fileUpload(@RequestParam("uploadFile")MultipartFile uploadFile, 
-								HttpServletRequest req, LectureDto dto, LearningDto bbs, TaskDto tto) {		
+	@PostMapping(value = "fileUpload")	
+	public String fileUpload(@RequestParam("uploadFile")MultipartFile uploadFile, LectureDto dto, LearningDto bbs, HttpServletRequest req,
+			TaskDto tts, EduInfoDto edu) {	
 		System.out.println("UserController fileUpload " + new Date());
+		System.out.println(bbs.toString());
+		System.out.println(dto.toString());
 		
-		String uploadpath = req.getServletContext().getRealPath("/upload");
+		String uploadpath = req.getServletContext().getRealPath("/mailfile");
 		
 		String filename = uploadFile.getOriginalFilename();
 		String filepath = uploadpath + "/" + filename;		
 		System.out.println(filepath);
-		
+				
 		try {
+			
 			BufferedOutputStream os = new BufferedOutputStream(new FileOutputStream(new File(filepath)));
 			os.write(uploadFile.getBytes());
 			os.close();
 			
-			
+			 bbs.setFilename(filename);
+
 			 dto.setFilename(filename);
+			 
+			 tts.setFilename(filename);
+			 
+			 
+			 
+			 
 			 System.out.println(dto.toString());
 			 lecservice.writeLecture(dto);
-		
-			    
+			 taskservice.writeTask(tts);
+			 eduservice.writeEduInfo(edu);
+			 learnservice.writeLearning(bbs);			
 		
 		} catch (Exception e) {			
 			e.printStackTrace();
@@ -665,7 +687,6 @@ public class UserController {
 		
 		return "YES";
 	}
-	
 	
 	
 }

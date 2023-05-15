@@ -32,13 +32,13 @@
 
 <!--  과제 제출 글쓰기 -->
 <insert id="writeTask" parameterType="mul.cam.a.dto.TaskDto">
-	INSERT INTO task(subject, title, writer, content, regdate, filename, newfilename)
-	VALUES( #{subject}, #{title}, #{writer}, #{content}, now(), #{filename}, #{newfilename} )
+	INSERT INTO task(subject, title, writer, content, regdate, filename)
+	VALUES( #{subject}, #{title}, #{writer}, #{content}, now(), #{filename} )
 </insert>
 
 <!-- 과제 제출 상세 -->
 <select id="getTask" parameterType="Integer" resultType="mul.cam.a.dto.TaskDto">
-	SELECT seq, subject, title, writer, content, regdate
+	SELECT seq, subject, title, writer, content, regdate, filename
 	FROM task
 	WHERE seq=#{seq}
 </select>

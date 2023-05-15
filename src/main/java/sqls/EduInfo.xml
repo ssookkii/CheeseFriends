@@ -40,7 +40,7 @@
 
 <!-- 교육 정보 상세 -->
 <select id="getEduInfo" parameterType="Integer" resultType="mul.cam.a.dto.EduInfoDto">
-	SELECT seq, subject, title, writer, content, regdate
+	SELECT seq, subject, title, writer, content, regdate, filename
 	FROM eduInfo
 	WHERE seq=#{seq}
 </select>
