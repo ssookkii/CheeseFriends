@@ -43,12 +43,14 @@ public class AdminQnaController {
 		
 		return map;
 	}
+	
 	@GetMapping(value="getQna")
 	public AdminQuestionDto getQna(Integer seq) {
 		System.out.println("AdminQnaController getQna()" + new Date());
 		
 		return service.getQna(seq);
 	}
+	
 	@GetMapping(value="getAnswer")
 	public AdminAnswerDto getAnswer(Integer getQnaSeq) {
 		System.out.println("AdminQnaController getAnswer()" + new Date());
@@ -62,8 +64,10 @@ public class AdminQnaController {
 		boolean isS = service.answerWrite(dto);
 		if(isS) {
 			boolean ss = service.answerStatus(dto.getGetQnaSeq());
+			System.out.println("여기는 넘어오나?");
 			if(ss) {
 				return "success";
+				
 			}
 			return "fail";
 			

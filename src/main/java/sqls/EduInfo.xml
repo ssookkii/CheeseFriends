@@ -34,8 +34,8 @@
 
 <!-- 교육 정보 글쓰기 -->
 <insert id="writeEduInfo" parameterType="mul.cam.a.dto.EduInfoDto">
-	INSERT INTO eduInfo(subject, title, writer, content, regdate)
-	VALUES( #{subject}, #{title}, #{writer}, #{content}, now() )
+	INSERT INTO eduInfo(subject, title, writer, content, regdate, filename)
+	VALUES( #{subject}, #{title}, #{writer}, #{content}, now(), #{filename} )
 </insert>
 
 <!-- 교육 정보 상세 -->

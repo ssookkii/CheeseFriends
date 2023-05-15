@@ -242,6 +242,7 @@ public class UserService {
 		return dao.studentlist(param);
 	}
 	
+
 	// 교사 마이페이지 - 수강 신청 승인
 	public boolean makeapproved(MysubjectDto dto) {
 		int count = dao.makeapproved(dto);
@@ -471,7 +472,8 @@ public class UserService {
 		return false;
 	}
 	
-	
-	
+	public MysubjectDto stuselect(String id){
+		return dao.eduselect(id);
+	}
 	
 }

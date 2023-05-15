@@ -117,6 +117,8 @@ public interface UserDao {
 	// 해당 번호로 가입된 계정이 있는지 체크
 	String phonecheck(String phone);
 	
+	String stuselect(MysubjectDto dto);
+
 }
 	
 
