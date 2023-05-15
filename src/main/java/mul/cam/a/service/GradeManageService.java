@@ -23,17 +23,14 @@ public class GradeManageService {
 		return dao.subTeacherlist(teacher);
 	}
 	
-	public List<GradeDto> subStudentList(SortParam param) {
-		return dao.subStudentList(param);
-	}
 	public boolean gradeAdd(List<GradeDto> data) {
 		int n = dao.gradeAdd(data);
 		return n>0?true:false;
 	}
-	public boolean gradeDuplicate(List<GradeDto> data) {
-		int n = dao.gradeDuplicate(data);
-		return n>0?true:false;
-	}
+//	public boolean gradeDuplicate(List<GradeDto> data) {
+//		int n = dao.gradeDuplicate(data);
+//		return n>0?true:false;
+//	}
 	public List<GradeDto> gradeRanks(SortParam param) {
 		return dao.gradeRanks(param);
 	}

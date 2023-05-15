@@ -33,15 +33,6 @@ public class GradeManageController {
 		return service.subTeacherlist(teacher);
 	}
 	
-	@GetMapping(value="subStudentList")
-	public List<GradeDto> subStudentList(SortParam param) {
-		System.out.println("GradeManageController subStudentList()" + new Date());
-//		System.out.println(dto);
-		List<GradeDto> student = service.subStudentList(param);
-//		System.out.println(student);
-		return student;
-				
-	}
 	@PostMapping(value="gradeAdd")
 	public String gradeAdd(@RequestParam(value="data", required=false)String data) throws Exception{
 		System.out.println("GradeManageController subStudentList()" + new Date());
@@ -58,10 +49,10 @@ public class GradeManageController {
 		
 		System.out.println(list.get(0).getSubCode());
 		// 성적 이미입력되었는지 확인
-		boolean duplicate = service.gradeDuplicate(list);
-		if(duplicate) {
-			return "duplicate";
-		}
+//		boolean duplicate = service.gradeDuplicate(list);
+//		if(duplicate) {
+//			return "duplicate";
+//		}
 		
 		boolean isS = service.gradeAdd(list);
 		if(isS) {
