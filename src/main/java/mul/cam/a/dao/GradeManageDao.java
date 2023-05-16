@@ -17,14 +17,11 @@ public interface GradeManageDao {
 	// 교사담당과목 리스트
 	List<SubjectDto> subTeacherlist(String teacher);
 	
-	// 과목 학생 성적리스트
-	List<GradeDto> subStudentList(SortParam param);
-	
 	// 과목 학생 성적입력
 	int gradeAdd(List<GradeDto> data);
 	
 	// 성적중복등록확인
-	int gradeDuplicate(List<GradeDto> data);
+//	int gradeDuplicate(List<GradeDto> data);
 	
 	// 과목 석차 집계
 	List<GradeDto> gradeRanks(SortParam param);
