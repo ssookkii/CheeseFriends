@@ -33,7 +33,7 @@ public interface UserDao {
 	// 학생 가입
 	int addusersubject(TestEduDto dto);
 	String educodematching(String sub_code);
-
+	EducationDto addusereducheck(TestEduDto dto);
 	
 	// 학부모 가입
 	UserDto idmatching(String studentid);
@@ -43,6 +43,7 @@ public interface UserDao {
 	// 교사 가입
 	List<EducationDto> edusearch(String edu_name);
 	int adduseredu(TestEduDto dto);
+
 	
 	// 아이디 찾기
 	UserDto idsearch(UserDto dto);
@@ -117,7 +118,17 @@ public interface UserDao {
 	// 해당 번호로 가입된 계정이 있는지 체크
 	String phonecheck(String phone);
 	
+
 	String stuselect(MysubjectDto dto);
+
+
+	// 과목 학생 성적리스트
+	GradeDto subStudentList(MysubjectDto dto);
+	int setStudentGrade(GradeDto dto);
+	
+	// useredu 삭제
+	int deleteuseredu(EducationDto dto);
+	
 
 }
 	

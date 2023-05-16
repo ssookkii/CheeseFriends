@@ -284,6 +284,25 @@ public class UserController {
 		return "NO";
 	}
 	
+	@PostMapping(value = "addusereducheck")
+	public String addusereducheck(TestEduDto dto) {
+		System.out.println("UserController addusereducheck() " + new Date());
+		System.out.println(dto.toString());
+		
+		EducationDto dtocheck = service.addusereducheck(dto);
+		
+		if(dtocheck != null) {
+			System.out.println("dtocheck : notnull");
+			return "NO";
+		}else {
+			System.out.println("dtocheck : null");
+			service.adduseredu(dto);
+			return "YES";
+		}
+		
+	}
+	
+	
 	@PostMapping(value = "idsearch")
 	public UserDto idsearch(UserDto dto) {
 		System.out.println("UserController idsearch() " + new Date());
@@ -546,6 +565,14 @@ public class UserController {
 		
 		boolean is = service.changeapproved(dto);
 		boolean isS = service.makeapproved(dto);
+		
+		GradeDto student = service.subStudentList(dto);
+		student.setStudentId(dto.getId());
+		
+		System.out.println(student.toString());
+		
+		boolean gradeInsert = service.setStudentGrade(student);
+		
 		if(isS == true) {
 			return "YES";
 		}
@@ -561,13 +588,22 @@ public class UserController {
 		
 		System.out.println(dto.toString());
 		
-		boolean is = service.changequited(dto);
-		boolean isS = service.deletestudent(dto);
-		if(isS == true) {
+		service.changequited(dto);
+		service.deletestudent(dto);
+		
+		String id = dto.getId();
+		
+		List<MysubjectDto> list = service.breakcheck(id);
+		System.out.println(list.size());
+		System.out.println(list.toString());
+		
+		if(list.size() <= 0) {
+			System.out.println("useredu delete 작동");
 			return "YES";
+		} else {
+			return "NO";
 		}
-			
-		return "NO";
+
 	}
 	
 		// 소셜 로그인
@@ -687,6 +723,7 @@ public class UserController {
 		return "YES";
 	}
 	
+
 	@PostMapping(value = "stuselect")
 	public MysubjectDto stuselect(String subcode){
 		System.out.println("UserController eduselect() " + new Date());
@@ -697,4 +734,18 @@ public class UserController {
 			
 		return dto;
 	}
+
+	@PostMapping(value = "deleteuseredu")
+	public String deleteuseredu(EducationDto dto) {
+		System.out.println("UserController deleteuseredu() " + new Date());
+		
+		System.out.println(dto.toString());
+		
+		service.deleteuseredu(dto);
+		
+		return "";
+
+	}
+
+
 }
