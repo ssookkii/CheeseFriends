@@ -76,6 +76,13 @@
 	values(#{id}, #{educode})
 </insert>
 
+<select id="addusereducheck" parameterType="mul.cam.a.dto.TestEduDto" resultType="mul.cam.a.dto.EducationDto">
+	select *
+	from useredu
+	where user_id=#{id}
+	and edu_code=#{educode}
+</select>
+
 <select id="idsearch" parameterType="mul.cam.a.dto.UserDto" resultType="mul.cam.a.dto.UserDto">
 	SELECT ID, regidate
 	FROM USER
@@ -338,5 +345,32 @@
 	FROM USER
 	WHERE phone=#{phone}
 </select>
+
+<!-- 수강생 수강 신청 승인 시 grade 입력 -->
+<insert id="setStudentGrade" parameterType="mul.cam.a.dto.GradeDto">
+	insert into grade(sub_code, edu_code, sub_name, class_grade, student_id, student_grade, student_ranks, sub_total)
+	values(#{subCode}, #{eduCode}, #{subName}, #{classGrade}, #{studentId}, 0, 0, (SELECT IFNULL(COUNT(*), 0) FROM USERSUBJECT WHERE SUB_CODE = #{subCode})  )
+</insert>
+
+<!-- 과목을 듣는 학생 데이터 -->
+<select id="subStudentList" parameterType="mul.cam.a.dto.MysubjectDto" resultType="mul.cam.a.dto.GradeDto">
+	SELECT  S.SUB_CODE, S.EDU_CODE, 
+			S.SUB_NAME, S.CLASS_GRADE,
+	        T.ID
+	FROM
+	SUBJECT S INNER JOIN tempusersubject T
+		ON S.SUB_CODE = T.SUBCODE
+	WHERE S.EDUCATOR_NAME=#{educatorname} AND T.SUBCODE=#{subcode} AND T.ID=#{id};
+</select>
+
+<!-- 유저 남은 과목 있는지 체크 -->
+<!-- breakcheck 실행 -->
+
+<!-- 유저 남은 과목 없을시 삭제 -->
+<delete id="deleteuseredu" parameterType="mul.cam.a.dto.EducationDto">
+	delete from useredu
+	where user_id=#{id}
+	and edu_code=#{eduCode}
+</delete>
 
 </mapper>

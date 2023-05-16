@@ -109,6 +109,14 @@ public class UserService {
 		return s;
 	}
 	
+	public EducationDto addusereducheck(TestEduDto dto) {
+		System.out.println("UserService addusereducheck() " + new Date());
+		
+		EducationDto dtocheck = dao.addusereducheck(dto);
+		return dtocheck;
+	}
+	
+	
 	// 학부모 가입
 	public UserDto idmatching(String studentid){
 		System.out.println("UserService idmatching() " + new Date());
@@ -145,6 +153,9 @@ public class UserService {
 		int count = dao.adduseredu(dto);
 		return count>0?true:false;
 	}
+	
+	
+	
 	
 	// 아이디 찾기
 	public UserDto idsearch(UserDto dto) {
@@ -471,7 +482,19 @@ public class UserService {
 		return false;
 	}
 	
+	public GradeDto subStudentList(MysubjectDto dto) {
+		return dao.subStudentList(dto);
+	}
+	public boolean setStudentGrade(GradeDto dto) {
+		int count = dao.setStudentGrade(dto);
+		return count>0?true:false;
+	}
 	
+	// useredu 삭제
+	public boolean deleteuseredu(EducationDto dto) {
+		int count = dao.deleteuseredu(dto);
+		return count>0?true:false;
+	}
 	
 	
 }
