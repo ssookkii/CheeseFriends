@@ -31,7 +31,7 @@
 	<!-- 강의시간 업데이트 -->
 	<update id="timeTableUpdate" parameterType="mul.cam.a.dto.TimeTableDto">
 		UPDATE TIMETABLE
-		SET SUB_DAY=#{subDay}, SUB_START_TIME=#{subStartTime}, SUB_END_TIME=#{subEndTime}
+		SET SUB_DAY=#{subDay}, SUB_START=#{subStart}, SUB_START_TIME=#{subStartTime}, SUB_END_TIME=#{subEndTime}
 		WHERE SEQ=#{seq}
 	</update>
 	<!-- 강의시간 삭제 -->
