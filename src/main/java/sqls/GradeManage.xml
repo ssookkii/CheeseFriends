@@ -39,7 +39,7 @@
 		</where>
 	</select> -->
 	<!-- 학생성적입력 -->
-	<update id="gradeAdd" parameterType="java.util.List">
+<!-- 	<update id="gradeAdd" parameterType="java.util.List">
 	    UPDATE GRADE
 	    SET
 	    <foreach collection="list" item="item" separator=",">
@@ -47,7 +47,7 @@
 	        0,
 	        (SELECT IFNULL(COUNT(*), 0) FROM USERSUBJECT WHERE SUB_CODE = #{item.subCode})  
 	    </foreach>
-	</update>
+	</update> -->
 	<!-- 석차집계 -->
 	<select id="gradeRanks" parameterType="mul.cam.a.dto.SortParam" resultType="mul.cam.a.dto.GradeDto">
 		SELECT
@@ -74,8 +74,7 @@
 	<update id="gradeUpdate" parameterType="java.util.List">
 		<foreach collection="list" item="item" index="index" separator=";">
 		UPDATE GRADE
-		SET 
-		STUDENT_GRADE=#{item.studentGrade}
+		SET STUDENT_GRADE=#{item.studentGrade}, SUB_TOTAL=(SELECT IFNULL(COUNT(*), 0) FROM USERSUBJECT WHERE SUB_CODE = #{item.subCode})
 		WHERE STUDENT_ID=#{item.studentId} AND SUB_CODE=#{item.subCode}
 		</foreach>
 	</update>
