@@ -171,8 +171,7 @@ public class UserController {
 			 
 			 tts.setFilename(filename);
 			 
-			 
-			 
+			 edu.setFilename(filename);
 			 
 			 System.out.println(dto.toString());
 			 lecservice.writeLecture(dto);
@@ -688,5 +687,14 @@ public class UserController {
 		return "YES";
 	}
 	
-	
+	@PostMapping(value = "stuselect")
+	public MysubjectDto stuselect(String subcode){
+		System.out.println("UserController eduselect() " + new Date());
+		
+		System.out.println("subcode: " + subcode);
+		
+		MysubjectDto dto = service.stuselect(subcode);
+			
+		return dto;
+	}
 }
