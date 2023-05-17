@@ -85,7 +85,7 @@
 			S.CLASS_GRADE=#{classGrade},
 			T.EDUCATOR_NAME=#{educatorName},
 			T.CLASS_GRADE=#{classGrade}
-		WHERE S.SUB_CODE=#{subCode} AND T.SUB_CODE=#{subCode}
+		WHERE S.SUB_CODE=#{subCode}
 	</update>
 	
 	<!-- 과목 삭제 -->

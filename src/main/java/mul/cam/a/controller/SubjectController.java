@@ -53,7 +53,7 @@ public class SubjectController {
 	@PostMapping(value="subUpdate")
 	public String subUpdate(SubjectDto sub) {
 		System.out.println("SubjectController subUpdate()" + new Date());
-				
+		
 		boolean isS = service.subUpdate(sub);
 		
 		if(isS) {
