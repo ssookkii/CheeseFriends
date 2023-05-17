@@ -359,7 +359,7 @@
 <!-- 수강생 수강 신청 승인 시 grade 입력 -->
 <insert id="setStudentGrade" parameterType="mul.cam.a.dto.GradeDto">
 	insert into grade(sub_code, edu_code, sub_name, class_grade, student_id, student_grade, student_ranks, sub_total)
-	values(#{subCode}, #{eduCode}, #{subName}, #{classGrade}, #{studentId}, 0, 0, (SELECT IFNULL(COUNT(*), 0) FROM USERSUBJECT WHERE SUB_CODE = #{subCode})  )
+	values(#{subCode}, #{eduCode}, #{subName}, #{classGrade}, #{studentId}, 0, 0, 0)
 </insert>
 
 <!-- 과목을 듣는 학생 데이터 -->
